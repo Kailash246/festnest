@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post an Event - FestNest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/typography.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/navbar.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <a class="nav-logo" href="/index.html">
+      <img src="../fn_logo2.png" alt="FestNest Logo" class="logo-img" />
+      <span class="logo-text">FestNest</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" href="/pages/events.html">Events</a>
+      <a class="nav-link active" href="/pages/post-event.html">Post Event</a>
+      <a class="nav-link" href="/pages/saved.html">Saved</a>
+      <a class="nav-link" href="/pages/search.html">Search</a>
+      <a class="nav-link" href="/pages/about.html">Why FestNest</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" id="navLoginBtn">Log In</button>
+      <button class="btn btn-primary" id="navSignupBtn">Sign Up Free</button>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a class="drawer-link" href="/index.html">Home</a>
+    <a class="drawer-link" href="/pages/events.html">Events</a>
+    <a class="drawer-link active" href="/pages/post-event.html">Post Event</a>
+    <a class="drawer-link" href="/pages/saved.html">Saved Events</a>
+    <a class="drawer-link" href="/pages/search.html">Search</a>
+    <a class="drawer-link" href="/pages/about.html">Why FestNest</a>
+    <a class="drawer-link" href="/pages/profile.html">Profile</a>
+    <div class="drawer-auth">
+      <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
+      <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
+    </div>
+  </div>
+  <div class="post-page">
+    <div class="post-page-inner">
+      <div class="page-header"><h2>Post Your Event</h2><p>Reach 48,000+ students across India.</p></div>
+      <div class="post-layout">
+        <div class="post-form-card">
+          <form id="postEventForm" novalidate>
+            <div class="form-section">
+              <div class="form-section-title">Basic Information</div>
+              <div class="form-grid">
+                <div class="form-group form-group--full"><label class="form-label" for="pf-title">Event Title *</label><input class="form-input" id="pf-title" type="text" placeholder="e.g. TechFest 2025" required /></div>
+                <div class="form-group form-group--full"><label class="form-label" for="pf-desc">Description *</label><textarea class="form-textarea" id="pf-desc" placeholder="Describe your event..." required></textarea></div>
+                <div class="form-group"><label class="form-label" for="pf-category">Category *</label>
+                  <select class="form-select" id="pf-category" required>
+                    <option value="">Select Category</option>
+                    <option>Technical</option><option>Cultural</option><option>Hackathon</option>
+                    <option>Sports</option><option>Workshop</option><option>Management</option>
+                    <option>Literary</option><option>Other</option>
+                  </select>
+                </div>
+                <div class="form-group"><label class="form-label" for="pf-mode">Mode *</label>
+                  <select class="form-select" id="pf-mode">
+                    <option value="Offline">Offline</option><option value="Online">Online</option><option value="Hybrid">Hybrid</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Date and Location</div>
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label" for="pf-start-date">Start Date *</label><input class="form-input" id="pf-start-date" type="date" required /></div>
+                <div class="form-group"><label class="form-label" for="pf-end-date">End Date</label><input class="form-input" id="pf-end-date" type="date" /></div>
+                <div class="form-group"><label class="form-label" for="pf-college">College / Organization *</label><input class="form-input" id="pf-college" type="text" placeholder="e.g. IIT Bombay" required /></div>
+                <div class="form-group"><label class="form-label" for="pf-city">City / State</label><input class="form-input" id="pf-city" type="text" placeholder="e.g. Mumbai, MH" /></div>
+                <div class="form-group form-group--full"><label class="form-label" for="pf-venue-detail">Venue</label><input class="form-input" id="pf-venue-detail" type="text" placeholder="e.g. Main Auditorium" /></div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Prizes and Registration</div>
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label" for="pf-prize-1">1st Prize</label><input class="form-input" id="pf-prize-1" type="text" placeholder="e.g. 50000" /></div>
+                <div class="form-group"><label class="form-label" for="pf-prize-2">2nd Prize</label><input class="form-input" id="pf-prize-2" type="text" placeholder="e.g. 25000" /></div>
+                <div class="form-group"><label class="form-label" for="pf-prize-3">3rd Prize</label><input class="form-input" id="pf-prize-3" type="text" placeholder="e.g. 10000" /></div>
+                <div class="form-group"><label class="form-label" for="pf-prize-pool">Total Prize Pool</label><input class="form-input" id="pf-prize-pool" type="text" placeholder="e.g. 1,00,000" /></div>
+                <div class="form-group"><label class="form-label" for="pf-reg-fee">Registration Fee</label><input class="form-input" id="pf-reg-fee" type="text" placeholder="e.g. 200/team or Free" /></div>
+                <div class="form-group"><label class="form-label" for="pf-reg-link">Registration Link</label><input class="form-input" id="pf-reg-link" type="url" placeholder="https://forms.gle/..." /></div>
+                <div class="form-group form-group--full"><label class="form-label" for="pf-other-prizes">Other Perks</label><input class="form-input" id="pf-other-prizes" type="text" placeholder="Internship offers, goodies..." /></div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Rules and Eligibility</div>
+              <div class="form-grid">
+                <div class="form-group form-group--full"><label class="form-label" for="pf-eligibility">Eligibility</label><textarea class="form-textarea" id="pf-eligibility" placeholder="Who can participate?"></textarea></div>
+                <div class="form-group form-group--full"><label class="form-label" for="pf-rules">Rules</label><textarea class="form-textarea" id="pf-rules" placeholder="Important rules..."></textarea></div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Contact Information</div>
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label" for="pf-poc-name">POC Name *</label><input class="form-input" id="pf-poc-name" type="text" placeholder="Contact person name" required /></div>
+                <div class="form-group"><label class="form-label" for="pf-poc-phone">Phone *</label><input class="form-input" id="pf-poc-phone" type="tel" placeholder="+91 XXXXX XXXXX" required /></div>
+                <div class="form-group"><label class="form-label" for="pf-poc-email">Email *</label><input class="form-input" id="pf-poc-email" type="email" placeholder="poc@college.edu" required /></div>
+                <div class="form-group"><label class="form-label" for="pf-website">Website</label><input class="form-input" id="pf-website" type="url" placeholder="https://yourfest.edu" /></div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Media and Documents</div>
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label">Poster</label>
+                  <div class="upload-zone" id="posterUpload" role="button" tabindex="0">
+                    <div class="upload-zone-icon">Image</div>
+                    <div class="upload-zone-title">Upload Poster</div>
+                    <div class="upload-zone-sub">PNG, JPG, WebP - Max 5MB</div>
+                  </div>
+                </div>
+                <div class="form-group"><label class="form-label">Brochure (PDF)</label>
+                  <div class="upload-zone" id="brochureUpload" role="button" tabindex="0">
+                    <div class="upload-zone-icon">PDF</div>
+                    <div class="upload-zone-title">Upload Brochure</div>
+                    <div class="upload-zone-sub">PDF only - Max 10MB</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="post-submit-btn">Submit Event for Review</button>
+            <p class="post-submit-note">Events are reviewed and published within 24 hours.</p>
+          </form>
+        </div>
+        <aside>
+          <div class="post-sidebar-card">
+            <div class="preview-label">Live Preview</div>
+            <div class="preview-phone-wrap">
+              <div class="preview-card">
+                <div class="preview-card-banner" id="pvBanner" style="background:linear-gradient(135deg,#667eea,#764ba2);">Event</div>
+                <div class="preview-card-body">
+                  <div class="preview-card-name" id="pvName">Event Title</div>
+                  <div class="preview-card-college" id="pvCollege">College Name</div>
+                </div>
+              </div>
+            </div>
+            <div class="post-tips-title">Tips for Better Reach</div>
+            <ul class="post-tips-list">
+              <li class="post-tip-item">Upload a high-quality poster</li>
+              <li class="post-tip-item">Set clear prize pool details</li>
+              <li class="post-tip-item">Include all contact info</li>
+              <li class="post-tip-item">Add a direct registration link</li>
+            </ul>
+          </div>
+          <div class="post-sidebar-card" style="background:var(--pastel-purple);">
+            <div style="font-size:14px;font-weight:800;margin-bottom:6px;">Feature Your Event</div>
+            <p style="font-size:13px;color:var(--text-2);margin-bottom:14px;">Get 10x more visibility with Featured placement.</p>
+            <button class="btn btn-primary w-full" id="featureEventBtn">Get Featured</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-box modal-box--sm">
+      <div class="modal-icon">Success</div>
+      <div class="modal-title">Event Submitted!</div>
+      <div class="modal-desc">Your event will go live within 24 hours.</div>
+      <div class="modal-actions"><button class="btn btn-ghost" id="successClose">Close</button><a class="btn btn-primary" href="/pages/events.html">Browse Events</a></div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose">X</button>
+      <div class="auth-logo">FestNest</div>
+      <div class="auth-tabs">
+        <button class="auth-tab" id="tab-login">Log In</button>
+        <button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button>
+      </div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min. 8 characters" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">Continue with Google</button>
+        <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
+      </form>
+<form class="auth-form" id="signup-form" novalidate>
+  <div id="su-role-section">
+    <p style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:16px;line-height:1.5;">I want to join FestNest as a…</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+      <button type="button" class="su-role-card" data-role="student" aria-pressed="false" tabindex="0">
+        <span class="su-role-icon">🎓</span>
+        <span class="su-role-title">Student</span>
+        <span class="su-role-desc">Find &amp; attend events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="su-role-card" data-role="organizer" aria-pressed="false" tabindex="0">
+        <span class="su-role-icon">🏢</span>
+        <span class="su-role-title">Organizer</span>
+        <span class="su-role-desc">Post &amp; manage events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+    </div>
+    <p class="auth-footer-text" style="margin-top:12px;">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+  </div>
+  <div id="su-fields-section" style="display:none;flex-direction:column;gap:14px;">
+    <button type="button" id="su-back-btn" class="su-back-link" aria-label="Back to role selection">← Change role</button>
+    <div id="su-student-fields">
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-s-firstname">First Name *</label><input class="form-input" id="su-s-firstname" type="text" placeholder="Arjun" autocomplete="given-name" /></div>
+        <div class="form-group"><label class="form-label" for="su-s-lastname">Last Name *</label><input class="form-input" id="su-s-lastname" type="text" placeholder="Sharma" autocomplete="family-name" /></div>
+      </div>
+      <div class="form-group"><label class="form-label" for="su-s-college">College / University *</label><input class="form-input" id="su-s-college" type="text" placeholder="e.g. IIT Bombay" autocomplete="organization" /></div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-s-year">Year of Study</label><select class="form-select" id="su-s-year"><option value="">Select Year</option><option value="1st Year">1st Year</option><option value="2nd Year">2nd Year</option><option value="3rd Year">3rd Year</option><option value="4th Year">4th Year</option><option value="5th Year">5th Year</option><option value="Postgraduate">Postgraduate</option></select></div>
+        <div class="form-group"><label class="form-label" for="su-s-branch">Branch / Course</label><input class="form-input" id="su-s-branch" type="text" placeholder="e.g. B.Tech CSE" /></div>
+      </div>
+    </div>
+    <div id="su-org-fields" style="display:none;">
+      <div class="form-group"><label class="form-label" for="su-o-orgname">Organization / College Name *</label><input class="form-input" id="su-o-orgname" type="text" placeholder="e.g. IIT Bombay Tech Club" autocomplete="organization" /></div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-o-city">City</label><input class="form-input" id="su-o-city" type="text" placeholder="e.g. Mumbai" autocomplete="address-level2" /></div>
+        <div class="form-group"><label class="form-label" for="su-o-branch">Branch <span style="font-weight:400;color:var(--text-3);">(optional)</span></label><input class="form-input" id="su-o-branch" type="text" placeholder="e.g. Tech Dept." /></div>
+      </div>
+      <div class="form-group"><label class="form-label" for="su-o-phone">Phone Number</label><input class="form-input" id="su-o-phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" /></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group"><label class="form-label" for="su-email">Email Address *</label><input class="form-input" id="su-email" type="email" placeholder="you@college.edu" autocomplete="email" /></div>
+      <div class="form-group"><label class="form-label" for="su-password">Password *</label><input class="form-input" id="su-password" type="password" placeholder="Min. 8 characters" autocomplete="new-password" /></div>
+    </div>
+    <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+    <p class="auth-terms">By signing up you agree to our <a href="#">Terms</a> &amp; <a href="privacy-policy.html">Privacy Policy</a></p>
+    <p class="auth-footer-text">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+  </div>
+</form>
+    </div>
+  </div>
+  <div class="toast-container" id="toastContainer"></div>
+  <!-- Firebase (CDN v8) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <!-- Firebase config & initialization -->
+  <script src="../assets/js/firebase-config.js"></script>
+  <!-- Existing scripts -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/toast.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/post-event.js"></script>
+</body>
+</html>

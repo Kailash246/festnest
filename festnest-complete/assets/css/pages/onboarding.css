@@ -1,0 +1,367 @@
+/* ============================================================
+   FESTNEST — ONBOARDING PAGE
+   assets/css/pages/onboarding.css
+
+   DESIGN RULES:
+   - All values use tokens from variables.css (--grad, --radius, etc.)
+   - No hardcoded colours outside the token system
+   - Matches the auth modal card feel exactly
+   - No navbar — this is a standalone flow page
+   ============================================================ */
+
+/* ── Full-page background (matches auth modal backdrop feel) ── */
+.ob-body {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Subtle gradient bg — same as landing hero */
+  background-image:
+    radial-gradient(ellipse at 15% 20%, rgba(47,128,237,.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 80%, rgba(123,47,247,.07) 0%, transparent 60%);
+}
+
+/* ── Outer page wrapper ── */
+.ob-page {
+  width: 100%;
+  max-width: 560px;
+  padding: 32px 16px 48px;
+  margin: 0 auto;
+}
+
+/* ── Main card — mirrors .modal-box--auth dimensions & feel ── */
+.ob-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: 40px 40px 36px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEADER
+   ══════════════════════════════════════════════════════════ */
+
+.ob-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* Logo — same style as .auth-logo in components.css */
+.ob-logo {
+  display: inline-block;
+  font-family: 'Clash Display', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.ob-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.ob-subtitle {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+/* ── Step dots ── */
+.ob-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.ob-step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-3);
+  transition: var(--transition-md);
+  flex-shrink: 0;
+}
+
+.ob-step--active {
+  background: var(--grad);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(90,75,255,.35);
+}
+
+.ob-step--done {
+  background: #00BFA5;
+  border-color: transparent;
+  color: #fff;
+}
+
+.ob-step-line {
+  height: 2px;
+  width: 60px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTIONS
+   ══════════════════════════════════════════════════════════ */
+
+.ob-section {
+  margin-bottom: 28px;
+}
+
+.ob-section-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 14px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ROLE SELECTION CARDS
+   ══════════════════════════════════════════════════════════ */
+
+.ob-role-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.ob-role-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px 20px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: var(--transition-md);
+  font-family: inherit;
+  /* reset button defaults */
+  outline: none;
+  width: 100%;
+}
+
+.ob-role-card:hover {
+  border-color: var(--color-primary);
+  background: var(--pastel-purple);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Active / selected state */
+.ob-role-card--active {
+  border-color: var(--color-primary);
+  background: var(--pastel-purple);
+  box-shadow: 0 0 0 3px rgba(90,75,255,.15), var(--shadow-sm);
+}
+
+.ob-role-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.ob-role-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+
+.ob-role-desc {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* Checkmark — hidden by default, shown when active */
+.ob-role-check {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  background: var(--grad);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: var(--transition);
+}
+
+.ob-role-card--active .ob-role-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ob-role-card--active .ob-role-title {
+  color: var(--color-primary);
+}
+
+/* ══════════════════════════════════════════════════════════
+   FORM GRID — 2-col on wide, 1-col on narrow
+   ══════════════════════════════════════════════════════════ */
+
+.ob-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Full-width form fields */
+.ob-full {
+  grid-column: 1 / -1;
+}
+
+/* ── Email readonly state ── */
+input[readonly].form-input {
+  background: var(--bg);
+  color: var(--text-2);
+  cursor: default;
+  opacity: 0.85;
+}
+
+/* ── Verified badge next to email label ── */
+.ob-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--pastel-green);
+  color: #2E7D32;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* ── Optional label hint ── */
+.ob-optional {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+/* ── Validation: invalid field highlight ── */
+.form-input.ob-invalid,
+.form-select.ob-invalid {
+  border-color: #e53e3e;
+  background: #fff5f5;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SUBMIT BUTTON — full width, same gradient as .btn-primary
+   ══════════════════════════════════════════════════════════ */
+
+.ob-submit-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: var(--radius-lg);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   FORM SECTIONS — smooth transitions between Student/Organizer
+   ══════════════════════════════════════════════════════════ */
+
+.ob-form-section {
+  animation: fadeInSlideUp 0.3s ease-out forwards;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ob-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Spinner inside button (uses existing .spinner from animations.css) */
+.ob-submit-btn .spinner {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 520px) {
+  .ob-card {
+    padding: 28px 20px 28px;
+    border-radius: var(--radius-lg);
+  }
+
+  .ob-role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ob-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ob-full {
+    grid-column: 1;
+  }
+
+  .ob-title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .ob-page {
+    padding: 16px 10px 32px;
+  }
+}

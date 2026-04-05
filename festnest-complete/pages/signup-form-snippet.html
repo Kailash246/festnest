@@ -1,0 +1,296 @@
+<!--
+  ============================================================
+  FESTNEST — SIGNUP FORM (role-first)
+  ============================================================
+
+  REPLACE THIS EXACT BLOCK on EVERY page that has the auth modal:
+    events.html, profile.html, my-events.html, admin.html,
+    saved.html, search.html, post-event.html, index.html, etc.
+
+  FIND:
+    <form class="auth-form" id="signup-form" novalidate>
+      ... (everything up to the closing </form>) ...
+    </form>
+
+  REPLACE WITH the entire block below.
+
+  The login-form above it and everything else in the modal
+  stays completely untouched.
+
+  HOW IT WORKS:
+  - #su-role-section   → Step 1: two role cards (always shown first)
+  - #su-fields-section → Step 2: role fields + email + password
+                         (hidden until a role card is clicked)
+  - auth.js handles all the switching logic — no extra JS needed here.
+
+  INLINE STYLES EXPLAINED:
+  All new visual rules use the existing CSS token variables.
+  A small <style> block at the bottom adds the three new classes:
+    .su-role-card            — base card style
+    .su-role-card--active    — selected state (gradient border + bg)
+    .su-back-link            — "← Change role" back button
+  These are self-contained and don't override any existing class.
+  ============================================================
+-->
+<form class="auth-form" id="signup-form" novalidate>
+
+  <!-- ═══ STEP 1: ROLE SELECTION ═══════════════════════════════ -->
+  <div id="su-role-section">
+
+    <p style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:16px;line-height:1.5;">
+      I want to join FestNest as a…
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+
+      <!-- Student card -->
+      <button type="button"
+              class="su-role-card"
+              data-role="student"
+              aria-pressed="false"
+              tabindex="0">
+        <span class="su-role-icon">🎓</span>
+        <span class="su-role-title">Student</span>
+        <span class="su-role-desc">Find &amp; attend events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+
+      <!-- Organizer card -->
+      <button type="button"
+              class="su-role-card"
+              data-role="organizer"
+              aria-pressed="false"
+              tabindex="0">
+        <span class="su-role-icon">🏢</span>
+        <span class="su-role-title">Organizer</span>
+        <span class="su-role-desc">Post &amp; manage events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+
+    </div>
+
+    <p class="auth-footer-text" style="margin-top:12px;">
+      Have an account?
+      <button type="button" class="auth-switch-btn" data-switch="login">Log in</button>
+    </p>
+
+  </div>
+  <!-- /#su-role-section -->
+
+  <!-- ═══ STEP 2: FIELDS (hidden until role chosen) ═══════════ -->
+  <div id="su-fields-section" style="display:none;flex-direction:column;gap:14px;">
+
+    <!-- Back link -->
+    <button type="button" id="su-back-btn" class="su-back-link" aria-label="Back to role selection">
+      ← Change role
+    </button>
+
+    <!-- ── STUDENT FIELDS ─────────────────────────────── -->
+    <div id="su-student-fields">
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group">
+          <label class="form-label" for="su-s-firstname">First Name *</label>
+          <input class="form-input" id="su-s-firstname" type="text"
+                 placeholder="Arjun" autocomplete="given-name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="su-s-lastname">Last Name *</label>
+          <input class="form-input" id="su-s-lastname" type="text"
+                 placeholder="Sharma" autocomplete="family-name" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-s-college">College / University *</label>
+        <input class="form-input" id="su-s-college" type="text"
+               placeholder="e.g. IIT Bombay" autocomplete="organization" />
+      </div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group">
+          <label class="form-label" for="su-s-year">Year of Study</label>
+          <select class="form-select" id="su-s-year">
+            <option value="">Select Year</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+            <option value="5th Year">5th Year</option>
+            <option value="Postgraduate">Postgraduate</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="su-s-branch">Branch / Course</label>
+          <input class="form-input" id="su-s-branch" type="text"
+                 placeholder="e.g. B.Tech CSE" />
+        </div>
+      </div>
+    </div>
+    <!-- /#su-student-fields -->
+
+    <!-- ── ORGANIZER FIELDS ───────────────────────────── -->
+    <div id="su-org-fields" style="display:none;">
+      <div class="form-group">
+        <label class="form-label" for="su-o-orgname">Organization / College Name *</label>
+        <input class="form-input" id="su-o-orgname" type="text"
+               placeholder="e.g. IIT Bombay Tech Club" autocomplete="organization" />
+      </div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group">
+          <label class="form-label" for="su-o-city">City</label>
+          <input class="form-input" id="su-o-city" type="text"
+                 placeholder="e.g. Mumbai" autocomplete="address-level2" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="su-o-branch">Branch <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
+          <input class="form-input" id="su-o-branch" type="text"
+                 placeholder="e.g. Tech Dept." />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-o-phone">Phone Number</label>
+        <input class="form-input" id="su-o-phone" type="tel"
+               placeholder="+91 98765 43210" autocomplete="tel" />
+      </div>
+    </div>
+    <!-- /#su-org-fields -->
+
+    <!-- ── SHARED: email + password ──────────────────── -->
+    <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group">
+        <label class="form-label" for="su-email">Email Address *</label>
+        <input class="form-input" id="su-email" type="email"
+               placeholder="you@college.edu" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-password">Password *</label>
+        <input class="form-input" id="su-password" type="password"
+               placeholder="Min. 8 characters" autocomplete="new-password" />
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn btn-primary w-full btn-lg">
+      Create Free Account 🚀
+    </button>
+
+    <p class="auth-terms">
+      By signing up you agree to our
+      <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>
+    </p>
+
+    <p class="auth-footer-text">
+      Have an account?
+      <button type="button" class="auth-switch-btn" data-switch="login">Log in</button>
+    </p>
+
+  </div>
+  <!-- /#su-fields-section -->
+
+</form>
+<!-- /#signup-form -->
+
+
+<!--
+  ═══════════════════════════════════════════════════════════
+  INLINE STYLES — paste once, anywhere in the <head> or
+  at the bottom of components.css (either works).
+
+  All values use existing CSS tokens from variables.css.
+  Zero hardcoded colours.
+  ═══════════════════════════════════════════════════════════
+-->
+<style>
+/* ── Role selection cards ── */
+.su-role-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: 18px 12px 14px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: var(--transition-md);
+  font-family: inherit;
+  width: 100%;
+  outline: none;
+}
+.su-role-card:hover,
+.su-role-card:focus-visible {
+  border-color: var(--color-primary);
+  background: var(--pastel-purple);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.su-role-card--active {
+  border-color: var(--color-primary);
+  background: var(--pastel-purple);
+  box-shadow: 0 0 0 3px rgba(90,75,255,.15), var(--shadow-sm);
+}
+.su-role-icon  { font-size: 28px; line-height: 1; }
+.su-role-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.su-role-card--active .su-role-title { color: var(--color-primary); }
+.su-role-desc  { font-size: 11px; color: var(--text-2); line-height: 1.4; }
+
+/* Animated checkmark in top-right corner */
+.su-role-check {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--grad);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.su-role-card--active .su-role-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── "← Change role" back button ── */
+.su-back-link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--transition);
+  margin-bottom: -4px;
+}
+.su-back-link:hover { opacity: 0.75; }
+
+/* ── Spinner inside submit button ── */
+.btn .spinner {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* ── w-full utility (if not already in components.css) ── */
+.w-full { width: 100%; }
+</style>

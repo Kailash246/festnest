@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin Dashboard — FestNest</title>
+
+  <!-- Same fonts + CSS as every other page -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/typography.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/navbar.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
+</head>
+<body>
+
+  <!-- NAVBAR — same as every page -->
+  <nav class="navbar" id="navbar">
+    <a class="nav-logo" href="/index.html">
+      <img src="../fn_logo2.png" alt="FestNest Logo" class="logo-img" onerror="this.style.display='none'" />
+      <span class="logo-text">FestNest Admin</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" href="/pages/events.html">Events</a>
+      <a class="nav-link active" href="/pages/admin.html">Admin</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" id="navLoginBtn">Log In</button>
+      <button class="btn btn-primary" id="navSignupBtn">Sign Up</button>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a class="drawer-link" href="/index.html">🏠 Home</a>
+    <a class="drawer-link" href="/pages/events.html">🎉 Events</a>
+    <a class="drawer-link active" href="/pages/admin.html">⚙️ Admin</a>
+    <div class="drawer-auth">
+      <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
+      <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up</button>
+    </div>
+  </div>
+
+  <!-- PAGE BODY -->
+  <div style="padding-top:var(--nav-height);min-height:100vh;background:var(--bg);">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:36px var(--page-padding);">
+
+      <!-- PAGE HEADER -->
+      <div class="page-header" style="margin-bottom:36px;">
+        <h2>⚙️ Admin Dashboard</h2>
+        <p>Review and manage event submissions from organizers across India.</p>
+      </div>
+
+      <!-- STATS ROW -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px;">
+        <div class="stat-card">
+          <div class="stat-card-num" id="statTotal">—</div>
+          <div class="stat-card-label">Total Events</div>
+        </div>
+        <div class="stat-card" style="border-left:4px solid var(--color-accent);">
+          <div class="stat-card-num" style="color:var(--color-accent);" id="statPending">—</div>
+          <div class="stat-card-label">Pending Review</div>
+        </div>
+        <div class="stat-card" style="border-left:4px solid #00BFA5;">
+          <div class="stat-card-num" style="color:#00BFA5;" id="statApproved">—</div>
+          <div class="stat-card-label">Live Events</div>
+        </div>
+        <div class="stat-card" style="border-left:4px solid var(--color-primary);">
+          <div class="stat-card-num" id="statUsers">—</div>
+          <div class="stat-card-label">Total Users</div>
+        </div>
+      </div>
+
+      <!-- PENDING REVIEW SECTION -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <h3 style="font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px;">
+          ⏳ Pending Review
+          <span id="pendingCount"
+                style="background:var(--grad-warm);color:#fff;width:26px;height:26px;border-radius:50%;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;">
+            0
+          </span>
+        </h3>
+        <button class="btn btn-ghost btn-sm" onclick="location.reload()">🔄 Refresh</button>
+      </div>
+
+      <!-- Cards injected here by admin-dashboard.js -->
+      <div id="pendingEventsList"
+           class="events-grid"
+           style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
+        <!-- Skeleton / cards rendered by JS -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AUTH MODAL (same as all pages) -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose">✕</button>
+      <div class="auth-logo">🪺 FestNest</div>
+      <div class="auth-tabs">
+        <button class="auth-tab" id="tab-login">Log In</button>
+        <button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button>
+      </div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="admin@festnest.in" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <p class="auth-footer-text" style="margin-top:12px;">Admin accounts only.</p>
+      </form>
+<form class="auth-form" id="signup-form" novalidate style="display:none;">
+  <p class="auth-footer-text">Admin accounts are created manually.</p>
+</form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Scripts — exact same order as every page -->
+  <!-- Firebase (CDN v8) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <!-- Firebase config & initialization -->
+  <script src="../assets/js/firebase-config.js"></script>
+  <!-- Existing scripts -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/toast.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/auth-ui.js"></script>
+
+  <!-- Admin-only script -->
+  <script src="../assets/js/admin-dashboard.js"></script>
+</body>
+</html>

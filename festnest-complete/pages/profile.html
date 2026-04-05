@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — FestNest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/typography.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/navbar.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
+</head>
+<body>
+
+  <!-- NAVBAR — correct absolute paths -->
+  <nav class="navbar" id="navbar">
+    <a class="nav-logo" href="/index.html">
+      <img src="../fn_logo2.png" alt="FestNest" class="logo-img" onerror="this.style.display='none'" />
+      <span class="logo-text">FestNest</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" href="/pages/events.html">Events</a>
+      <a class="nav-link" href="/pages/post-event.html">Post Event</a>
+      <a class="nav-link" href="/pages/saved.html">Saved</a>
+      <a class="nav-link" href="/pages/search.html">Search</a>
+      <a class="nav-link" href="/pages/about.html">Why FestNest</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" id="navLoginBtn">Log In</button>
+      <button class="btn btn-primary" id="navSignupBtn">Sign Up Free</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a class="drawer-link" href="/index.html">🏠 Home</a>
+    <a class="drawer-link" href="/pages/events.html">🎉 Events</a>
+    <a class="drawer-link" href="/pages/post-event.html">➕ Post Event</a>
+    <a class="drawer-link" href="/pages/saved.html">🔖 Saved Events</a>
+    <a class="drawer-link" href="/pages/search.html">🔍 Search</a>
+    <a class="drawer-link" href="/pages/about.html">💡 Why FestNest</a>
+    <a class="drawer-link active" href="/pages/profile.html">👤 Profile</a>
+    <div class="drawer-auth">
+      <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
+      <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
+    </div>
+  </div>
+
+  <div class="profile-page">
+    <div class="profile-page-inner">
+      <div class="profile-layout">
+
+        <!-- LEFT SIDEBAR -->
+        <div>
+          <div class="profile-hero-card">
+            <!-- id="profileAvatar" — JS swaps in real image if available -->
+            <div class="profile-avatar" id="profileAvatar">👤</div>
+            <!-- id="profileName" — JS sets real name -->
+            <div class="profile-name" id="profileName">Loading...</div>
+            <!-- id="profileCollegeName" — JS sets real college -->
+            <div class="profile-college-name" id="profileCollegeName"></div>
+            <!-- id="profileYear" — JS sets branch + year -->
+            <div class="profile-year" id="profileYear"></div>
+          </div>
+
+          <div class="profile-info-card">
+            <div class="profile-info-row">
+              <span class="profile-info-icon">📧</span>
+              <div>
+                <div class="profile-info-label">Email</div>
+                <!-- id="profileEmail" — JS sets real email -->
+                <div class="profile-info-value" id="profileEmail">—</div>
+              </div>
+            </div>
+            <div class="profile-info-row">
+              <span class="profile-info-icon">📍</span>
+              <div>
+                <div class="profile-info-label">Location</div>
+                <!-- id="profileLocation" — JS sets city + state -->
+                <div class="profile-info-value" id="profileLocation">—</div>
+              </div>
+            </div>
+            <div class="profile-info-row">
+              <span class="profile-info-icon">📱</span>
+              <div>
+                <div class="profile-info-label">Phone</div>
+                <!-- id="profilePhone" — JS sets phone -->
+                <div class="profile-info-value" id="profilePhone">—</div>
+              </div>
+            </div>
+            <div class="profile-info-row">
+              <span class="profile-info-icon">🎓</span>
+              <div>
+                <div class="profile-info-label">Branch</div>
+                <!-- id="profileBranch" — JS sets branch -->
+                <div class="profile-info-value" id="profileBranch">—</div>
+              </div>
+            </div>
+            <div class="profile-info-row">
+              <span class="profile-info-icon">🏷</span>
+              <div>
+                <div class="profile-info-label">Role</div>
+                <!-- id="profileRole" — JS sets student/organizer/admin -->
+                <div class="profile-info-value" id="profileRole">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-menu-card">
+            <a class="profile-menu-item" href="/pages/saved.html">
+              <span class="profile-menu-icon">🔖</span>
+              <span class="profile-menu-text">Saved Events</span>
+              <span class="profile-menu-arrow">›</span>
+            </a>
+            <div class="profile-menu-item" id="pmRegistrations">
+              <span class="profile-menu-icon">📋</span>
+              <span class="profile-menu-text">My Registrations</span>
+              <span class="profile-menu-arrow">›</span>
+            </div>
+            <div class="profile-menu-item" id="pmNotifications">
+              <span class="profile-menu-icon">🔔</span>
+              <span class="profile-menu-text">Notifications</span>
+              <span class="profile-menu-arrow">›</span>
+            </div>
+            <div class="profile-menu-item" id="pmEdit">
+              <span class="profile-menu-icon">✏️</span>
+              <span class="profile-menu-text">Edit Profile</span>
+              <span class="profile-menu-arrow">›</span>
+            </div>
+
+            <!-- Post Event — always visible -->
+            <a class="profile-menu-item" href="/pages/post-event.html">
+              <span class="profile-menu-icon">📣</span>
+              <span class="profile-menu-text">Post an Event</span>
+              <span class="profile-menu-arrow">›</span>
+            </a>
+
+            <!-- Organizer / Admin: My Events — shown by JS based on role -->
+            <a class="profile-menu-item" href="/pages/my-events.html"
+               id="organizerPanelLink" style="display:none;">
+              <span class="profile-menu-icon">📊</span>
+              <span class="profile-menu-text">My Events</span>
+              <span class="profile-menu-arrow">›</span>
+            </a>
+
+            <!-- Admin dashboard — shown by JS if role=admin -->
+            <a class="profile-menu-item" href="/pages/admin.html"
+               id="adminPanelLink" style="display:none;">
+              <span class="profile-menu-icon">⚙️</span>
+              <span class="profile-menu-text" style="color:var(--color-accent);font-weight:800;">Admin Dashboard</span>
+              <span class="profile-menu-arrow">›</span>
+            </a>
+
+            <a class="profile-menu-item" href="/pages/about.html">
+              <span class="profile-menu-icon">ℹ️</span>
+              <span class="profile-menu-text">About FestNest</span>
+              <span class="profile-menu-arrow">›</span>
+            </a>
+            <div class="profile-menu-item" id="pmLogout">
+              <span class="profile-menu-icon">🚪</span>
+              <span class="profile-menu-text">Logout</span>
+              <span class="profile-menu-arrow profile-menu-arrow--danger">›</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT CONTENT -->
+        <div>
+          <div class="profile-stats-grid">
+            <div class="stat-card">
+              <!-- id="profileSavedCount" — JS fills with real count -->
+              <div class="stat-card-num" id="profileSavedCount">—</div>
+              <div class="stat-card-label">Events Saved</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-num">—</div>
+              <div class="stat-card-label">Registered</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-num">—</div>
+              <div class="stat-card-label">Events Won</div>
+            </div>
+          </div>
+
+          <div class="profile-activity-card">
+            <div class="profile-activity-title">📊 Recent Activity</div>
+            <div class="activity-item">
+              <div class="activity-icon" style="background:var(--pastel-purple);">🔖</div>
+              <div><div class="activity-event-title">Saved HackSpark 2025</div><div class="activity-time">2 hours ago</div></div>
+              <div class="activity-badge badge badge--purple">Saved</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon" style="background:var(--pastel-green);">✅</div>
+              <div><div class="activity-event-title">Registered for CodeQuest National</div><div class="activity-time">Yesterday</div></div>
+              <div class="activity-badge badge badge--green">Registered</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon" style="background:var(--pastel-blue);">👀</div>
+              <div><div class="activity-event-title">Viewed Culturama '25</div><div class="activity-time">2 days ago</div></div>
+              <div class="activity-badge badge badge--blue">Viewed</div>
+            </div>
+          </div>
+
+          <div class="profile-interests-card">
+            <div class="profile-interests-title">🎯 My Interests</div>
+            <div class="interests-tags">
+              <button class="filter-chip filter-chip--active" data-interest="hackathons">💻 Hackathons</button>
+              <button class="filter-chip filter-chip--active" data-interest="technical">🔬 Technical</button>
+              <button class="filter-chip filter-chip--active" data-interest="robotics">🤖 Robotics</button>
+              <button class="filter-chip" data-interest="cultural">🎭 Cultural</button>
+              <button class="filter-chip" data-interest="management">📊 Management</button>
+              <button class="filter-chip" data-interest="workshops">🛠 Workshops</button>
+              <button class="filter-chip" data-interest="sports">⚽ Sports</button>
+              <button class="filter-chip" data-interest="ai">🤖 AI / ML</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">🪺 FestNest</span>
+        <p class="footer-desc">India's centralized campus event discovery platform.</p>
+        <div class="footer-socials">
+          <a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a>
+          <a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Platform</h4>
+        <a class="footer-link" href="/pages/events.html">Browse Events</a>
+        <a class="footer-link" href="/pages/post-event.html">Post an Event</a>
+        <a class="footer-link" href="/pages/saved.html">Saved Events</a>
+        <a class="footer-link" href="/pages/search.html">Search</a>
+      </div>
+      <div class="footer-col"><h4>Company</h4>
+        <a class="footer-link" href="/pages/about.html">Why FestNest</a>
+        <a class="footer-link" href="#">Blog</a>
+        <a class="footer-link" href="#">Careers</a>
+      </div>
+      <div class="footer-col"><h4>Support</h4>
+        <a class="footer-link" href="#">Help Center</a>
+        <a class="footer-link" href="#">Contact Us</a>
+        <a class="footer-link" href="privacy-policy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div>
+      <div class="footer-bottom-links">
+        <a class="footer-bottom-link" href="#">Privacy</a>
+        <a class="footer-bottom-link" href="#">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose">✕</button>
+      <div class="auth-logo">🪺 FestNest</div>
+      <div class="auth-tabs">
+        <button class="auth-tab" id="tab-login">Log In</button>
+        <button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button>
+      </div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" autocomplete="email" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" autocomplete="current-password" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
+      </form>
+<form class="auth-form" id="signup-form" novalidate>
+  <div id="su-role-section">
+    <p style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:16px;line-height:1.5;">I want to join FestNest as a…</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+      <button type="button" class="su-role-card" data-role="student" aria-pressed="false" tabindex="0">
+        <span class="su-role-icon">🎓</span>
+        <span class="su-role-title">Student</span>
+        <span class="su-role-desc">Find &amp; attend events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="su-role-card" data-role="organizer" aria-pressed="false" tabindex="0">
+        <span class="su-role-icon">🏢</span>
+        <span class="su-role-title">Organizer</span>
+        <span class="su-role-desc">Post &amp; manage events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+    </div>
+    <p class="auth-footer-text" style="margin-top:12px;">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+  </div>
+  <div id="su-fields-section" style="display:none;flex-direction:column;gap:14px;">
+    <button type="button" id="su-back-btn" class="su-back-link" aria-label="Back to role selection">← Change role</button>
+    <div id="su-student-fields">
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-s-firstname">First Name *</label><input class="form-input" id="su-s-firstname" type="text" placeholder="Arjun" autocomplete="given-name" /></div>
+        <div class="form-group"><label class="form-label" for="su-s-lastname">Last Name *</label><input class="form-input" id="su-s-lastname" type="text" placeholder="Sharma" autocomplete="family-name" /></div>
+      </div>
+      <div class="form-group"><label class="form-label" for="su-s-college">College / University *</label><input class="form-input" id="su-s-college" type="text" placeholder="e.g. IIT Bombay" autocomplete="organization" /></div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-s-year">Year of Study</label><select class="form-select" id="su-s-year"><option value="">Select Year</option><option value="1st Year">1st Year</option><option value="2nd Year">2nd Year</option><option value="3rd Year">3rd Year</option><option value="4th Year">4th Year</option><option value="5th Year">5th Year</option><option value="Postgraduate">Postgraduate</option></select></div>
+        <div class="form-group"><label class="form-label" for="su-s-branch">Branch / Course</label><input class="form-input" id="su-s-branch" type="text" placeholder="e.g. B.Tech CSE" /></div>
+      </div>
+    </div>
+    <div id="su-org-fields" style="display:none;">
+      <div class="form-group"><label class="form-label" for="su-o-orgname">Organization / College Name *</label><input class="form-input" id="su-o-orgname" type="text" placeholder="e.g. IIT Bombay Tech Club" autocomplete="organization" /></div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-o-city">City</label><input class="form-input" id="su-o-city" type="text" placeholder="e.g. Mumbai" autocomplete="address-level2" /></div>
+        <div class="form-group"><label class="form-label" for="su-o-branch">Branch <span style="font-weight:400;color:var(--text-3);">(optional)</span></label><input class="form-input" id="su-o-branch" type="text" placeholder="e.g. Tech Dept." /></div>
+      </div>
+      <div class="form-group"><label class="form-label" for="su-o-phone">Phone Number</label><input class="form-input" id="su-o-phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" /></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group"><label class="form-label" for="su-email">Email Address *</label><input class="form-input" id="su-email" type="email" placeholder="you@college.edu" autocomplete="email" /></div>
+      <div class="form-group"><label class="form-label" for="su-password">Password *</label><input class="form-input" id="su-password" type="password" placeholder="Min. 8 characters" autocomplete="new-password" /></div>
+    </div>
+    <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+    <p class="auth-terms">By signing up you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></p>
+    <p class="auth-footer-text">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+  </div>
+</form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!--
+    SCRIPT LOAD ORDER — this is critical:
+    1. Firebase SDK (CDN) — loads firebase object
+    2. firebase-config.js → initializes Firebase
+    3. api.js      → defines FN_AUTH, FN_AUTH_API, FN_EVENTS_API
+    4. toast.js    → defines showToast()
+    5. utils.js    → defines debounce(), getCategoryGradient(), etc.
+    6. navbar.js   → uses FN_AUTH, showToast
+    7. auth.js     → uses FN_AUTH_API, defines requireAuth()
+    8. profile.js  → uses all of the above
+  -->
+  <!-- Firebase (CDN v8) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <!-- Firebase config & initialization -->
+  <script src="../assets/js/firebase-config.js"></script>
+  <!-- Existing scripts -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/toast.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/profile.js"></script>
+</body>
+</html>

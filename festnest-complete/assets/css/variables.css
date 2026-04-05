@@ -1,0 +1,54 @@
+/* ============================================================
+   FESTNEST — DESIGN TOKENS  |  assets/css/variables.css
+   ============================================================ */
+:root {
+  --grad:          linear-gradient(135deg, #2F80ED 0%, #7B2FF7 100%);
+  --grad-hover:    linear-gradient(135deg, #1a6fd4 0%, #6520e0 100%);
+  --grad-warm:     linear-gradient(135deg, #FF8A00, #FF5722);
+  --grad-card-1:   linear-gradient(135deg, #667eea, #764ba2);
+  --grad-card-2:   linear-gradient(135deg, #f093fb, #f5576c);
+  --grad-card-3:   linear-gradient(135deg, #4facfe, #00f2fe);
+  --grad-card-4:   linear-gradient(135deg, #43e97b, #38f9d7);
+  --grad-card-5:   linear-gradient(135deg, #fa709a, #fee140);
+  --grad-card-6:   linear-gradient(135deg, #a18cd1, #fbc2eb);
+
+  --color-primary: #5A4BFF;
+  --color-accent:  #FF8A00;
+
+  --bg:            #F4F6FB;
+  --bg-card:       #FFFFFF;
+  --bg-dark:       #0F0F1A;
+
+  --text-1:        #1A1A1A;
+  --text-2:        #666666;
+  --text-3:        #999999;
+  --border:        #EAECF0;
+
+  --pastel-blue:   #E8F0FE;
+  --pastel-purple: #F3E8FF;
+  --pastel-green:  #E8F5E9;
+  --pastel-pink:   #FCE4EC;
+  --pastel-yellow: #FFF9E6;
+  --pastel-orange: #FFF3E0;
+  --pastel-teal:   #E0F7FA;
+
+  --radius-sm:   8px;
+  --radius:      14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+
+  --shadow-sm:   0 2px 12px rgba(90,75,255,.08);
+  --shadow-md:   0 8px 30px rgba(90,75,255,.15);
+  --shadow-lg:   0 20px 60px rgba(90,75,255,.2);
+  --shadow-card: 0 2px 16px rgba(0,0,0,.07);
+
+  --nav-height:    72px;
+  --sidebar-width: 260px;
+  --container-max: 1280px;
+  --page-padding:  80px;
+
+  --transition:    all .2s ease;
+  --transition-md: all .3s ease;
+}
+@media(max-width:1024px){ :root{ --page-padding:40px; } }
+@media(max-width:768px){  :root{ --page-padding:20px; } }

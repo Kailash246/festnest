@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Events — FestNest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/typography.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/navbar.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a class="nav-logo" href="/index.html">
+      <img src="../fn_logo2.png" alt="FestNest" class="logo-img" onerror="this.style.display='none'" />
+      <span class="logo-text">FestNest</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" href="/pages/events.html">Events</a>
+      <a class="nav-link active" href="/pages/my-events.html">My Events</a>
+      <a class="nav-link" href="/pages/post-event.html">Post Event</a>
+      <a class="nav-link" href="/pages/saved.html">Saved</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" id="navLoginBtn">Log In</button>
+      <button class="btn btn-primary"  id="navSignupBtn">Sign Up Free</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a class="drawer-link" href="/index.html">🏠 Home</a>
+    <a class="drawer-link" href="/pages/events.html">🎉 Events</a>
+    <a class="drawer-link active" href="/pages/my-events.html">📋 My Events</a>
+    <a class="drawer-link" href="/pages/post-event.html">➕ Post Event</a>
+    <a class="drawer-link" href="/pages/saved.html">🔖 Saved</a>
+    <a class="drawer-link" href="/pages/profile.html">👤 Profile</a>
+    <div class="drawer-auth">
+      <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
+      <button class="btn btn-primary w-full"  id="drawerSignupBtn">Sign Up Free</button>
+    </div>
+  </div>
+
+  <!-- PAGE BODY -->
+  <div style="padding-top:var(--nav-height);min-height:100vh;background:var(--bg);">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:36px var(--page-padding);">
+
+      <!-- HEADER ROW -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px;">
+        <div class="page-header" style="margin-bottom:0;">
+          <h2 style="display:flex;align-items:center;gap:12px;">
+            📋 My Events
+            <span id="myEventsCount"
+                  style="background:var(--grad);color:#fff;min-width:26px;height:26px;padding:0 8px;
+                         border-radius:13px;font-size:12px;font-weight:800;
+                         display:inline-flex;align-items:center;justify-content:center;">
+              —
+            </span>
+          </h2>
+          <p>All events you've posted — track status, views, and manage them here.</p>
+        </div>
+        <a class="btn btn-primary" href="/pages/post-event.html">
+          ➕ Post New Event
+        </a>
+      </div>
+
+      <!-- STATS ROW -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;" id="myEventsStats">
+        <div class="stat-card"><div class="stat-card-num" id="statMyTotal">—</div><div class="stat-card-label">Total Events</div></div>
+        <div class="stat-card" style="border-left:4px solid #00BFA5;"><div class="stat-card-num" style="color:#00BFA5;" id="statMyApproved">—</div><div class="stat-card-label">Live</div></div>
+        <div class="stat-card" style="border-left:4px solid var(--color-accent);"><div class="stat-card-num" style="color:var(--color-accent);" id="statMyPending">—</div><div class="stat-card-label">Pending Review</div></div>
+        <div class="stat-card" style="border-left:4px solid #e53e3e;"><div class="stat-card-num" style="color:#e53e3e;" id="statMyRejected">—</div><div class="stat-card-label">Rejected</div></div>
+      </div>
+
+      <!-- FILTER TABS -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;" id="myEventsFilterTabs">
+        <button class="filter-chip filter-chip--active" data-status="all">All</button>
+        <button class="filter-chip" data-status="approved">✅ Live</button>
+        <button class="filter-chip" data-status="pending">⏳ Pending</button>
+        <button class="filter-chip" data-status="rejected">✕ Rejected</button>
+      </div>
+
+      <!-- EVENTS GRID — injected by my-events.js -->
+      <div class="events-grid" id="myEventsList"
+           style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
+        <!-- Skeleton / cards rendered by JS -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">🪺 FestNest</span>
+        <p class="footer-desc">India's centralized campus event discovery platform.</p>
+        <div class="footer-socials">
+          <a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a>
+          <a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Platform</h4>
+        <a class="footer-link" href="/pages/events.html">Browse Events</a>
+        <a class="footer-link" href="/pages/post-event.html">Post an Event</a>
+        <a class="footer-link" href="/pages/saved.html">Saved Events</a>
+      </div>
+      <div class="footer-col"><h4>Account</h4>
+        <a class="footer-link" href="/pages/profile.html">My Profile</a>
+        <a class="footer-link" href="/pages/my-events.html">My Events</a>
+      </div>
+      <div class="footer-col"><h4>Support</h4>
+        <a class="footer-link" href="#">Help Center</a>
+        <a class="footer-link" href="#">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div>
+    </div>
+  </footer>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose">✕</button>
+      <div class="auth-logo">🪺 FestNest</div>
+      <div class="auth-tabs">
+        <button class="auth-tab" id="tab-login">Log In</button>
+        <button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button>
+      </div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <p class="auth-footer-text" style="margin-top:12px;">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
+      </form>
+<form class="auth-form" id="signup-form" novalidate>
+  <div id="su-role-section">
+    <p style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:16px;line-height:1.5;">I want to join FestNest as a…</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+      <button type="button" class="su-role-card" data-role="student" aria-pressed="false" tabindex="0">
+        <span class="su-role-icon">🎓</span>
+        <span class="su-role-title">Student</span>
+        <span class="su-role-desc">Find &amp; attend events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="su-role-card" data-role="organizer" aria-pressed="false" tabindex="0">
+        <span class="su-role-icon">🏢</span>
+        <span class="su-role-title">Organizer</span>
+        <span class="su-role-desc">Post &amp; manage events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+    </div>
+    <p class="auth-footer-text" style="margin-top:12px;">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+  </div>
+  <div id="su-fields-section" style="display:none;flex-direction:column;gap:14px;">
+    <button type="button" id="su-back-btn" class="su-back-link" aria-label="Back to role selection">← Change role</button>
+    <div id="su-student-fields">
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-s-firstname">First Name *</label><input class="form-input" id="su-s-firstname" type="text" placeholder="Arjun" autocomplete="given-name" /></div>
+        <div class="form-group"><label class="form-label" for="su-s-lastname">Last Name *</label><input class="form-input" id="su-s-lastname" type="text" placeholder="Sharma" autocomplete="family-name" /></div>
+      </div>
+      <div class="form-group"><label class="form-label" for="su-s-college">College / University *</label><input class="form-input" id="su-s-college" type="text" placeholder="e.g. IIT Bombay" autocomplete="organization" /></div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-s-year">Year of Study</label><select class="form-select" id="su-s-year"><option value="">Select Year</option><option value="1st Year">1st Year</option><option value="2nd Year">2nd Year</option><option value="3rd Year">3rd Year</option><option value="4th Year">4th Year</option><option value="5th Year">5th Year</option><option value="Postgraduate">Postgraduate</option></select></div>
+        <div class="form-group"><label class="form-label" for="su-s-branch">Branch / Course</label><input class="form-input" id="su-s-branch" type="text" placeholder="e.g. B.Tech CSE" /></div>
+      </div>
+    </div>
+    <div id="su-org-fields" style="display:none;">
+      <div class="form-group"><label class="form-label" for="su-o-orgname">Organization / College Name *</label><input class="form-input" id="su-o-orgname" type="text" placeholder="e.g. IIT Bombay Tech Club" autocomplete="organization" /></div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-o-city">City</label><input class="form-input" id="su-o-city" type="text" placeholder="e.g. Mumbai" autocomplete="address-level2" /></div>
+        <div class="form-group"><label class="form-label" for="su-o-branch">Branch <span style="font-weight:400;color:var(--text-3);">(optional)</span></label><input class="form-input" id="su-o-branch" type="text" placeholder="e.g. Tech Dept." /></div>
+      </div>
+      <div class="form-group"><label class="form-label" for="su-o-phone">Phone Number</label><input class="form-input" id="su-o-phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" /></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group"><label class="form-label" for="su-email">Email Address *</label><input class="form-input" id="su-email" type="email" placeholder="you@college.edu" autocomplete="email" /></div>
+      <div class="form-group"><label class="form-label" for="su-password">Password *</label><input class="form-input" id="su-password" type="password" placeholder="Min. 8 characters" autocomplete="new-password" /></div>
+    </div>
+    <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+    <p class="auth-terms">By signing up you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></p>
+    <p class="auth-footer-text">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+  </div>
+</form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Scripts — exact order matters -->
+  <!-- Firebase (CDN v8) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <!-- Firebase config & initialization -->
+  <script src="../assets/js/firebase-config.js"></script>
+  <!-- Existing scripts -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/toast.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/my-events.js"></script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FestNest — India's #1 Campus Event Discovery Platform. Discover inter-college events, hackathons, fests, and competitions across India." />
+  <meta name="keywords" content="campus events, college fests, hackathons, inter-college, student competitions, India" />
+  <meta property="og:title" content="FestNest — Gather, Connect, Compete &amp; Win" />
+  <meta property="og:description" content="India's centralized campus event discovery platform for students and organizers." />
+  <title>FestNest — Gather, Connect, Compete &amp; Win</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/typography.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/navbar.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+  <link rel="stylesheet" href="assets/css/animations.css" />
+  <link rel="stylesheet" href="assets/css/pages/landing.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a class="nav-logo" href="index.html"><span class="nest-icon">🪺</span> FestNest</a>
+    <div class="nav-links">
+      <a class="nav-link active" href="index.html">Home</a>
+      <a class="nav-link" href="pages/events.html">Events</a>
+      <a class="nav-link" href="pages/post-event.html">Post Event</a>
+      <a class="nav-link" href="pages/saved.html">Saved</a>
+      <a class="nav-link" href="pages/search.html">Search</a>
+      <a class="nav-link" href="pages/about.html">Why FestNest</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" id="navLoginBtn">Log In</button>
+      <button class="btn btn-primary" id="navSignupBtn">Sign Up Free</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a class="drawer-link active" href="index.html">🏠 Home</a>
+    <a class="drawer-link" href="pages/events.html">🎉 Events</a>
+    <a class="drawer-link" href="pages/post-event.html">➕ Post Event</a>
+    <a class="drawer-link" href="pages/saved.html">🔖 Saved Events</a>
+    <a class="drawer-link" href="pages/search.html">🔍 Search</a>
+    <a class="drawer-link" href="pages/about.html">💡 Why FestNest</a>
+    <a class="drawer-link" href="pages/profile.html">👤 Profile</a>
+    <div class="drawer-auth">
+      <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
+      <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-dots"></div>
+    <div class="hero-bg-blob hero-bg-blob--right"></div>
+    <div class="hero-bg-blob hero-bg-blob--left"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="hero-badge-dot"></span>India's #1 Campus Event Platform</div>
+      <h1 class="hero-title">Gather, Connect,<br><span class="grad-text">Compete &amp; Win</span></h1>
+      <p class="hero-desc">Discover inter-college events, hackathons, fests, and competitions across India. One platform. Endless opportunities.</p>
+      <div class="hero-actions">
+        <a class="btn-hero btn-hero-primary" href="pages/events.html">Explore Events →</a>
+        <a class="btn-hero btn-hero-secondary" href="pages/post-event.html">Post Your Event</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num">2.4k+</div><div class="hero-stat-label">Active Events</div></div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat"><div class="hero-stat-num">850+</div><div class="hero-stat-label">Colleges</div></div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat"><div class="hero-stat-num">48k+</div><div class="hero-stat-label">Students</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-phone-wrap">
+        <div class="hero-phone">
+          <div class="phone-header">
+            <div class="phone-logo">🪺 FestNest</div>
+            <div class="phone-hero-mini"><div class="phone-hero-title">Discover Campus Events</div><div class="phone-hero-sub">Gather · Connect · Compete · Win</div></div>
+          </div>
+          <div class="phone-body">
+            <div class="phone-cats">
+              <div class="phone-cat phone-cat--active">All</div>
+              <div class="phone-cat">💻 Hack</div>
+              <div class="phone-cat">🎭 Cultural</div>
+            </div>
+            <div class="phone-card"><div class="phone-card-banner phone-banner-1">💻</div><div class="phone-card-body"><div class="phone-card-title">HackSpark 2025</div><div class="phone-card-college">🏛 IIT Bombay · ₹1,00,000</div></div></div>
+            <div class="phone-card"><div class="phone-card-banner phone-banner-2">🎭</div><div class="phone-card-body"><div class="phone-card-title">Culturama '25</div><div class="phone-card-college">🏛 Delhi University · Free</div></div></div>
+          </div>
+        </div>
+        <div class="floating-badge floating-badge--top">🏆 ₹1,00,000 Prize Pool</div>
+        <div class="floating-badge floating-badge--bot">🎉 850+ Colleges Listed</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="strip-stat"><div class="strip-num">2,400+</div><div class="strip-label">Events Listed</div></div>
+    <div class="strip-stat"><div class="strip-num">850+</div><div class="strip-label">Partner Colleges</div></div>
+    <div class="strip-stat"><div class="strip-num">48,000+</div><div class="strip-label">Students Registered</div></div>
+    <div class="strip-stat"><div class="strip-num">₹2Cr+</div><div class="strip-label">Prize Pool Listed</div></div>
+    <div class="strip-stat"><div class="strip-num">28</div><div class="strip-label">States Covered</div></div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section section--white" id="features">
+    <div class="section-header">
+      <span class="section-eyebrow">✨ Features</span>
+      <h2 class="section-title">Everything You Need to<br><span class="grad-text">Discover &amp; Compete</span></h2>
+      <p class="section-desc">FestNest is built for students and organizers — making campus event discovery seamless, fast, and fun.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-blue);">🔍</div><h3 class="feature-title">Smart Discovery</h3><p class="feature-desc">Filter events by category, location, date, mode, and prize pool. Find exactly what you're looking for in seconds.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-purple);">🏆</div><h3 class="feature-title">Win Prizes</h3><p class="feature-desc">Track hackathons, competitions, and fests with prize pools. Register directly and never miss a chance to compete.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-green);">🤝</div><h3 class="feature-title">Network &amp; Connect</h3><p class="feature-desc">Meet students from 850+ colleges. Build your network at fests, workshops, and inter-college events across India.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-pink);">📣</div><h3 class="feature-title">Organizer Tools</h3><p class="feature-desc">Post events, upload brochures, manage registrations, and reach 48,000+ students across India instantly.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-yellow);">🔖</div><h3 class="feature-title">Save &amp; Track</h3><p class="feature-desc">Bookmark events you're interested in. Get reminders and track your registration history all in one place.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-orange);">📱</div><h3 class="feature-title">Mobile-First</h3><p class="feature-desc">Optimized for every device. The same seamless experience whether you're on desktop, tablet, or phone.</p></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section section--bg" id="how-it-works">
+    <div class="section-header">
+      <span class="section-eyebrow">🚀 How It Works</span>
+      <h2 class="section-title">Get Started in<br><span class="grad-text">4 Simple Steps</span></h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-card"><div class="how-num">1</div><div class="how-icon">✍️</div><h3 class="how-title">Create Account</h3><p class="how-desc">Sign up with your college email in 30 seconds. No verification delays.</p></div>
+      <div class="how-card"><div class="how-num">2</div><div class="how-icon">🔍</div><h3 class="how-title">Discover Events</h3><p class="how-desc">Browse, filter, and search thousands of campus events near you.</p></div>
+      <div class="how-card"><div class="how-num">3</div><div class="how-icon">📝</div><h3 class="how-title">Register &amp; Save</h3><p class="how-desc">Register directly or save events for later. Track your registrations easily.</p></div>
+      <div class="how-card"><div class="how-num">4</div><div class="how-icon">🏆</div><h3 class="how-title">Compete &amp; Win</h3><p class="how-desc">Show up, perform, win prizes, and build your campus portfolio.</p></div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="section section--white" id="categories">
+    <div class="section-header">
+      <span class="section-eyebrow">📂 Categories</span>
+      <h2 class="section-title">Every Type of<br><span class="grad-text">Campus Event</span></h2>
+    </div>
+    <div class="categories-grid">
+      <a class="category-card" href="pages/events.html?cat=Hackathon" style="background:var(--pastel-purple);"><div class="category-icon">💻</div><div class="category-name">Hackathons</div><div class="category-count">48 events</div></a>
+      <a class="category-card" href="pages/events.html?cat=Cultural"  style="background:var(--pastel-pink);"><div class="category-icon">🎭</div><div class="category-name">Cultural Fests</div><div class="category-count">124 events</div></a>
+      <a class="category-card" href="pages/events.html?cat=Technical" style="background:var(--pastel-blue);"><div class="category-icon">🔬</div><div class="category-name">Technical</div><div class="category-count">87 events</div></a>
+      <a class="category-card" href="pages/events.html?cat=Sports"    style="background:var(--pastel-green);"><div class="category-icon">⚽</div><div class="category-name">Sports</div><div class="category-count">64 events</div></a>
+      <a class="category-card" href="pages/events.html?cat=Workshop"  style="background:var(--pastel-yellow);"><div class="category-icon">🛠</div><div class="category-name">Workshops</div><div class="category-count">39 events</div></a>
+      <a class="category-card" href="pages/events.html"               style="background:var(--pastel-teal);"><div class="category-icon">🌟</div><div class="category-name">View All</div><div class="category-count">2,400+ events</div></a>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section section--bg" id="testimonials">
+    <div class="section-header">
+      <span class="section-eyebrow">💬 Student Stories</span>
+      <h2 class="section-title">Loved by Students<br><span class="grad-text">Across India</span></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"FestNest helped me discover HackSpark at IIT Bombay. We won ₹25,000 and got PPO offers. This platform changed my life!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--pastel-purple);">👨‍💻</div><div><div class="testi-name">Rohit Verma</div><div class="testi-info">3rd Year · NIT Warangal</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"As an organizer, FestNest gave our cultural fest 10x more registrations than last year. Absolute game changer for college events!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--pastel-pink);">👩‍🎨</div><div><div class="testi-name">Priya Sharma</div><div class="testi-info">Event Coordinator · BITS Pilani</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Found 3 hackathons in one week, all within my city. The filter system is crazy good. Already made it to 2 finals!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--pastel-blue);">🧑‍�</div><div><div class="testi-name">Arjun Menon</div><div class="testi-info">2nd Year · VIT Vellore</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <div class="cta-banner-bg"></div>
+    <h2 class="cta-banner-title">Ready to Find Your Next Win?</h2>
+    <p class="cta-banner-desc">Join 48,000+ students already discovering events, competing, and building their futures on FestNest.</p>
+    <div class="cta-banner-actions">
+      <button class="btn btn-cta-white" id="ctaSignupBtn">Get Started — It's Free</button>
+      <a class="btn btn-cta-outline" href="pages/events.html">Browse Events</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">🪺 FestNest</span>
+        <p class="footer-desc">India's centralized campus event discovery platform. Helping students discover opportunities, connect with peers, and win at inter-college competitions.</p>
+        <div class="footer-socials"><a class="social-btn" href="#" aria-label="Twitter">𝕏</a><a class="social-btn" href="#" aria-label="LinkedIn">in</a><a class="social-btn" href="#" aria-label="Instagram">📸</a><a class="social-btn" href="#" aria-label="YouTube">▶</a></div>
+      </div>
+      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="pages/events.html">Browse Events</a><a class="footer-link" href="pages/post-event.html">Post an Event</a><a class="footer-link" href="pages/saved.html">Saved Events</a><a class="footer-link" href="pages/search.html">Search</a><a class="footer-link" href="pages/profile.html">My Profile</a></div>
+      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="pages/about.html">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a><a class="footer-link" href="#">Partner Colleges</a></div>
+      <div class="footer-col"><h4>Support</h4><a class="footer-link" href="#">Help Center</a><a class="footer-link" href="#">Contact Us</a><a class="footer-link" href="pages/privacy-policy.html">Privacy Policy</a><a class="footer-link" href="#">Terms of Service</a><a class="footer-link" href="#">Cookie Policy</a></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div>
+      <div class="footer-bottom-links"><a class="footer-bottom-link" href="#">Privacy</a><a class="footer-bottom-link" href="#">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div>
+    </div>
+  </footer>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose">✕</button>
+      <div class="auth-logo">🪺 FestNest</div>
+      <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" autocomplete="email" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" autocomplete="current-password" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
+      </form>
+<form class="auth-form" id="signup-form" novalidate>
+  <div id="su-role-section">
+    <p style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:16px;line-height:1.5;">I want to join FestNest as a…</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+      <button type="button" class="su-role-card" data-role="student" aria-pressed="false" tabindex="0">
+        <span class="su-role-icon">🎓</span>
+        <span class="su-role-title">Student</span>
+        <span class="su-role-desc">Find &amp; attend events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="su-role-card" data-role="organizer" aria-pressed="false" tabindex="0">
+        <span class="su-role-icon">🏢</span>
+        <span class="su-role-title">Organizer</span>
+        <span class="su-role-desc">Post &amp; manage events</span>
+        <span class="su-role-check" aria-hidden="true">✓</span>
+      </button>
+    </div>
+    <p class="auth-footer-text" style="margin-top:12px;">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+  </div>
+  <div id="su-fields-section" style="display:none;flex-direction:column;gap:14px;">
+    <button type="button" id="su-back-btn" class="su-back-link" aria-label="Back to role selection">← Change role</button>
+    <div id="su-student-fields">
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-s-firstname">First Name *</label><input class="form-input" id="su-s-firstname" type="text" placeholder="Arjun" autocomplete="given-name" /></div>
+        <div class="form-group"><label class="form-label" for="su-s-lastname">Last Name *</label><input class="form-input" id="su-s-lastname" type="text" placeholder="Sharma" autocomplete="family-name" /></div>
+      </div>
+      <div class="form-group"><label class="form-label" for="su-s-college">College / University *</label><input class="form-input" id="su-s-college" type="text" placeholder="e.g. IIT Bombay" autocomplete="organization" /></div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-s-year">Year of Study</label><select class="form-select" id="su-s-year"><option value="">Select Year</option><option value="1st Year">1st Year</option><option value="2nd Year">2nd Year</option><option value="3rd Year">3rd Year</option><option value="4th Year">4th Year</option><option value="5th Year">5th Year</option><option value="Postgraduate">Postgraduate</option></select></div>
+        <div class="form-group"><label class="form-label" for="su-s-branch">Branch / Course</label><input class="form-input" id="su-s-branch" type="text" placeholder="e.g. B.Tech CSE" /></div>
+      </div>
+    </div>
+    <div id="su-org-fields" style="display:none;">
+      <div class="form-group"><label class="form-label" for="su-o-orgname">Organization / College Name *</label><input class="form-input" id="su-o-orgname" type="text" placeholder="e.g. IIT Bombay Tech Club" autocomplete="organization" /></div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label class="form-label" for="su-o-city">City</label><input class="form-input" id="su-o-city" type="text" placeholder="e.g. Mumbai" autocomplete="address-level2" /></div>
+        <div class="form-group"><label class="form-label" for="su-o-branch">Branch <span style="font-weight:400;color:var(--text-3);">(optional)</span></label><input class="form-input" id="su-o-branch" type="text" placeholder="e.g. Tech Dept." /></div>
+      </div>
+      <div class="form-group"><label class="form-label" for="su-o-phone">Phone Number</label><input class="form-input" id="su-o-phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" /></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group"><label class="form-label" for="su-email">Email Address *</label><input class="form-input" id="su-email" type="email" placeholder="you@college.edu" autocomplete="email" /></div>
+      <div class="form-group"><label class="form-label" for="su-password">Password *</label><input class="form-input" id="su-password" type="password" placeholder="Min. 8 characters" autocomplete="new-password" /></div>
+    </div>
+    <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+    <p class="auth-terms">By signing up you agree to our <a href="#">Terms</a> &amp; <a href="pages/privacy-policy.html">Privacy Policy</a></p>
+    <p class="auth-footer-text">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+  </div>
+</form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Firebase (CDN v8) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <!-- Firebase config & initialization -->
+  <script src="assets/js/firebase-config.js"></script>
+
+  <!-- Existing scripts -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/toast.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/navbar.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/landing.js"></script>
+</body>
+</html>
