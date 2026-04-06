@@ -1,6 +1,14 @@
 {
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/events", "destination": "/pages/events.html" },
+    { "source": "/post", "destination": "/pages/post-event.html" },
+    { "source": "/saved", "destination": "/pages/saved.html" },
+    { "source": "/search", "destination": "/pages/search.html" },
+    { "source": "/why", "destination": "/pages/about.html" },
+    { "source": "/admin", "destination": "/pages/admin.html" },
+    { "source": "/profile", "destination": "/pages/profile.html" },
+    { "source": "/my-events", "destination": "/pages/my-events.html" },
+    { "source": "/event-detail", "destination": "/pages/event-detail.html" },
+    { "source": "/privacy", "destination": "/pages/privacy-policy.html" }
   ]
 }

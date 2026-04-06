@@ -19,17 +19,17 @@
 
   <!-- NAVBAR — correct absolute paths -->
   <nav class="navbar" id="navbar">
-    <a class="nav-logo" href="/index.html">
+    <a class="nav-logo" href="/">
       <img src="../fn_logo2.png" alt="FestNest" class="logo-img" onerror="this.style.display='none'" />
       <span class="logo-text">FestNest</span>
     </a>
     <div class="nav-links">
-      <a class="nav-link" href="/index.html">Home</a>
-      <a class="nav-link" href="/pages/events.html">Events</a>
-      <a class="nav-link" href="/pages/post-event.html">Post Event</a>
-      <a class="nav-link" href="/pages/saved.html">Saved</a>
-      <a class="nav-link" href="/pages/search.html">Search</a>
-      <a class="nav-link" href="/pages/about.html">Why FestNest</a>
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link" href="/events">Events</a>
+      <a class="nav-link" href="/post">Post Event</a>
+      <a class="nav-link" href="/saved">Saved</a>
+      <a class="nav-link" href="/search">Search</a>
+      <a class="nav-link" href="/why">Why FestNest</a>
     </div>
     <div class="nav-actions">
       <button class="btn btn-outline" id="navLoginBtn">Log In</button>
@@ -39,13 +39,13 @@
   </nav>
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <a class="drawer-link" href="/index.html">🏠 Home</a>
-    <a class="drawer-link" href="/pages/events.html">🎉 Events</a>
-    <a class="drawer-link" href="/pages/post-event.html">➕ Post Event</a>
-    <a class="drawer-link" href="/pages/saved.html">🔖 Saved Events</a>
-    <a class="drawer-link" href="/pages/search.html">🔍 Search</a>
-    <a class="drawer-link" href="/pages/about.html">💡 Why FestNest</a>
-    <a class="drawer-link active" href="/pages/profile.html">👤 Profile</a>
+    <a class="drawer-link" href="/">🏠 Home</a>
+    <a class="drawer-link" href="/events">🎉 Events</a>
+    <a class="drawer-link" href="/post">➕ Post Event</a>
+    <a class="drawer-link" href="/saved">🔖 Saved Events</a>
+    <a class="drawer-link" href="/search">🔍 Search</a>
+    <a class="drawer-link" href="/why">💡 Why FestNest</a>
+    <a class="drawer-link active" href="/profile">👤 Profile</a>
     <div class="drawer-auth">
       <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
       <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
@@ -113,7 +113,7 @@
           </div>
 
           <div class="profile-menu-card">
-            <a class="profile-menu-item" href="/pages/saved.html">
+            <a class="profile-menu-item" href="/saved">
               <span class="profile-menu-icon">🔖</span>
               <span class="profile-menu-text">Saved Events</span>
               <span class="profile-menu-arrow">›</span>
@@ -135,14 +135,14 @@
             </div>
 
             <!-- Post Event — always visible -->
-            <a class="profile-menu-item" href="/pages/post-event.html">
+            <a class="profile-menu-item" href="/post">
               <span class="profile-menu-icon">📣</span>
               <span class="profile-menu-text">Post an Event</span>
               <span class="profile-menu-arrow">›</span>
             </a>
 
             <!-- Organizer / Admin: My Events — shown by JS based on role -->
-            <a class="profile-menu-item" href="/pages/my-events.html"
+            <a class="profile-menu-item" href="/my-events"
                id="organizerPanelLink" style="display:none;">
               <span class="profile-menu-icon">📊</span>
               <span class="profile-menu-text">My Events</span>
@@ -150,14 +150,14 @@
             </a>
 
             <!-- Admin dashboard — shown by JS if role=admin -->
-            <a class="profile-menu-item" href="/pages/admin.html"
+            <a class="profile-menu-item" href="/admin"
                id="adminPanelLink" style="display:none;">
               <span class="profile-menu-icon">⚙️</span>
               <span class="profile-menu-text" style="color:var(--color-accent);font-weight:800;">Admin Dashboard</span>
               <span class="profile-menu-arrow">›</span>
             </a>
 
-            <a class="profile-menu-item" href="/pages/about.html">
+            <a class="profile-menu-item" href="/why">
               <span class="profile-menu-icon">ℹ️</span>
               <span class="profile-menu-text">About FestNest</span>
               <span class="profile-menu-arrow">›</span>
@@ -238,13 +238,13 @@
         </div>
       </div>
       <div class="footer-col"><h4>Platform</h4>
-        <a class="footer-link" href="/pages/events.html">Browse Events</a>
-        <a class="footer-link" href="/pages/post-event.html">Post an Event</a>
-        <a class="footer-link" href="/pages/saved.html">Saved Events</a>
-        <a class="footer-link" href="/pages/search.html">Search</a>
+        <a class="footer-link" href="/events">Browse Events</a>
+        <a class="footer-link" href="/post">Post an Event</a>
+        <a class="footer-link" href="/saved">Saved Events</a>
+        <a class="footer-link" href="/search">Search</a>
       </div>
       <div class="footer-col"><h4>Company</h4>
-        <a class="footer-link" href="/pages/about.html">Why FestNest</a>
+        <a class="footer-link" href="/why">Why FestNest</a>
         <a class="footer-link" href="#">Blog</a>
         <a class="footer-link" href="#">Careers</a>
       </div>
