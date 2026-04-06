@@ -171,13 +171,18 @@
   <style>
     /* Crop modal styles */
     #cropModal {
+      display: none;
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.8);
-      z-index: 9999;
-      padding: 20px;
       justify-content: center;
       align-items: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    #cropModal.show {
+      display: flex;
     }
 
     .crop-container {
@@ -185,7 +190,7 @@
       max-width: 500px;
       background: white;
       border-radius: 12px;
-      padding: 20px;
+      padding: 24px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       max-height: 80vh;
       overflow-y: auto;
@@ -215,17 +220,12 @@
 
     .crop-image-wrapper {
       margin-bottom: 20px;
-      position: relative;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid #ddd;
     }
 
     #cropImage {
       width: 100%;
       display: block;
       cursor: grab;
-      max-height: 400px;
     }
 
     #cropImage:active {
