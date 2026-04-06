@@ -97,81 +97,77 @@ document.addEventListener('DOMContentLoaded', function () {
   setupUploadZone('brochureUpload', 'application/pdf',                           MAX_BROCHURE_SIZE, '20 MB', f => { brochureFile = f; });
 
   /* ── Image Crop Modal ────────────────────────────────── */
-  /** Global Cropper instance **/
-  let cropper = null;
-  let selectedFile = null;
+  /** ════════════════════════════════════════
+     IMAGE CROPPER (WORKING IMPLEMENTATION)
+     ════════════════════════════════════════ */
 
-  /** Initialize image cropper on file select **/
+  console.log('Cropper loaded:', typeof Cropper);
+
+  let cropper;
+  const image = document.getElementById('cropImage');
+  const modal = document.getElementById('cropModal');
+
+  /** Open crop modal on file select **/
   function openCropModal(file) {
-    if (!file) return;
-    selectedFile = file;
+    if (!file || !image || !modal) return;
 
-    const modal = document.getElementById('cropModal');
-    const image = document.getElementById('cropImage');
+    const url = URL.createObjectURL(file);
+    image.src = url;
 
-    // Read file and set image source
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      image.src = e.target.result;
+    // Show modal using inline styles (more reliable)
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
 
-      // Show modal
-      modal.classList.add('show');
-      document.body.style.overflow = 'hidden';
+    // Wait for image to load, then initialize cropper
+    image.onload = function() {
+      console.log('Image loaded');
 
-      // Initialize cropper after image loads
-      image.onload = () => {
-        // Destroy old cropper
-        if (cropper) {
-          cropper.destroy();
-          cropper = null;
-        }
+      // Destroy old cropper
+      if (cropper) {
+        cropper.destroy();
+        cropper = null;
+      }
 
-        // Initialize new Cropper
-        cropper = new Cropper(image, {
-          aspectRatio: 16 / 9,
-          viewMode: 1,
+      // Initialize new Cropper
+      cropper = new Cropper(image, {
+        aspectRatio: 16 / 9,
+        viewMode: 1,
+        dragMode: 'move',
+        cropBoxMovable: false,
+        cropBoxResizable: false,
+        movable: true,
+        zoomable: true,
+        background: false,
+        autoCropArea: 1,
+      });
 
-          dragMode: 'move',
-
-          cropBoxMovable: false,
-          cropBoxResizable: false,
-
-          movable: true,
-          zoomable: true,
-
-          background: false,
-          autoCropArea: 1,
-        });
-      };
+      console.log('Cropper initialized');
     };
-    reader.readAsDataURL(file);
   }
 
-  /** Close crop modal and destroy cropper **/
+  /** Close crop modal **/
   function closeCrop() {
-    const modal = document.getElementById('cropModal');
-    modal.classList.remove('show');
+    const modalEl = document.getElementById('cropModal');
+    if (modalEl) {
+      modalEl.style.display = 'none';
+    }
     document.body.style.overflow = '';
     if (cropper) {
       cropper.destroy();
       cropper = null;
     }
-    selectedFile = null;
   }
 
   /** Crop and upload **/
   function cropAndUpload() {
     if (!cropper) {
-      showToast('Cropper not initialized', 'error');
+      console.error('Cropper not initialized');
+      showToast('Please select an image first', 'error');
       return;
     }
 
-    // Find the crop & upload button
-    const cropBtn = document.querySelector('.crop-actions button:last-child');
-    if (cropBtn) {
-      cropBtn.disabled = true;
-      cropBtn.innerHTML = '<span class="spinner"></span> Processing...';
-    }
+    // Get the crop upload button
+    const cropBtn = document.querySelector('.crop-actions button:nth-child(2)');
 
     try {
       cropper.getCroppedCanvas({
@@ -180,13 +176,16 @@ document.addEventListener('DOMContentLoaded', function () {
         imageSmoothingEnabled: true,
         imageSmoothingQuality: 'high',
       }).toBlob((blob) => {
+        console.log('Blob created');
+
         if (!blob) {
-          showToast('Failed to crop image', 'error');
-          if (cropBtn) {
-            cropBtn.disabled = false;
-            cropBtn.textContent = 'Crop & Upload';
-          }
+          showToast('Failed to create image', 'error');
           return;
+        }
+
+        if (cropBtn) {
+          cropBtn.disabled = true;
+          cropBtn.innerHTML = '<span class="spinner"></span> Uploading...';
         }
 
         const fd = new FormData();
@@ -200,11 +199,12 @@ document.addEventListener('DOMContentLoaded', function () {
           body: fd,
         })
         .then(res => {
+          console.log('Upload response:', res.status);
           if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
           return res.json();
         })
         .then(data => {
-          console.log('[FestNest] Poster uploaded:', data);
+          console.log('Upload success', data);
           posterFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
 
           // Update UI
@@ -218,27 +218,26 @@ document.addEventListener('DOMContentLoaded', function () {
             zone.classList.add('upload-zone--uploaded');
           }
 
-          showToast('🖼️ Poster cropped and ready!', 'success');
+          showToast('🖼️ Poster ready!', 'success');
           closeCrop();
         })
         .catch(err => {
-          console.error('[FestNest] Upload error:', err);
-          showToast('Failed to upload poster: ' + err.message, 'error');
+          console.error('Upload error', err);
+          showToast('Upload failed: ' + err.message, 'error');
+        })
+        .finally(() => {
           if (cropBtn) {
             cropBtn.disabled = false;
-            cropBtn.textContent = 'Crop & Upload';
+            cropBtn.innerHTML = 'Crop & Upload';
           }
         });
       }, 'image/jpeg', 0.9);
     } catch (err) {
-      console.error('[FestNest] Crop error:', err);
-      showToast('Crop error: ' + err.message, 'error');
-      if (cropBtn) {
-        cropBtn.disabled = false;
-        cropBtn.textContent = 'Crop & Upload';
-      }
+      console.error('Crop error', err);
+      showToast('Crop failed: ' + err.message, 'error');
     }
   }
+
 
   /** Modal click handler to close on overlay click **/
   document.getElementById('cropModal')?.addEventListener('click', (e) => {
