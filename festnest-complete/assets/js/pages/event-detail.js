@@ -310,9 +310,9 @@ function buildDetail(ev) {
         </div>
 
         ${ev.brochureUrl ? `
-        <a class="btn-download-brochure" href="${ev.brochureUrl}?fl_attachment=${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf" download onclick="event.stopPropagation();">
+        <button class="btn-download-brochure" onclick="downloadBrochure('${ev.brochureUrl}', '${ev.title.replace(/'/g, "\\'")}')";>
           📥 Download Brochure PDF
-        </a>` : ''}
+        </button>` : ''}
 
         <div class="detail-share-row">
           <button class="btn-share-action" id="detail-share-btn">🔗 Share</button>
@@ -413,4 +413,28 @@ function wireButtons(ev) {
   document.getElementById('detail-cal-btn')?.addEventListener('click', () => {
     showToast('📅 Added to calendar!', 'success');
   });
+}
+
+/* ── PDF Download Handler ────────────────────────────────── */
+function downloadBrochure(url, title) {
+  const cleanName = (title || 'festnest_brochure')
+    .replace(/[^a-zA-Z0-9]/g, '_')
+    .toLowerCase();
+
+  fetch(url)
+    .then(res => res.blob())
+    .then(blob => {
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = cleanName + '.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    })
+    .catch(err => {
+      console.error('Download failed:', err);
+      showToast('Failed to download brochure', 'error');
+    });
 }
