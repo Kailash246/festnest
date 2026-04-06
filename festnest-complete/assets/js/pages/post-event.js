@@ -97,42 +97,51 @@ document.addEventListener('DOMContentLoaded', function () {
   setupUploadZone('brochureUpload', 'application/pdf',                           MAX_BROCHURE_SIZE, '20 MB', f => { brochureFile = f; });
 
   /* ── Image Crop Modal ────────────────────────────────── */
+  /** Global cropper variables **/
   let cropper = null;
-  let currentPosterFile = null;
+  let selectedFile = null;
 
+  /** Open crop modal **/
   function openCropModal(file) {
-    currentPosterFile = file;
+    if (!file) return;
+    selectedFile = file;
+
     const modal = document.getElementById('cropModal');
     const img = document.getElementById('cropImage');
 
-    /* Read file and set image src */
     const reader = new FileReader();
     reader.onload = (e) => {
       img.src = e.target.result;
 
-      /* Initialize Cropper */
-      if (cropper) cropper.destroy();
-      cropper = new Cropper(img, {
-        aspectRatio: 16 / 9,
-        viewMode: 1,
-        autoCropArea: 1,
-        responsive: true,
-        guides: true,
-        background: true,
-        modal: false,
-        highlight: true,
-        cropBoxMovable: true,
-        cropBoxResizable: true,
-      });
+      // Destroy existing cropper
+      if (cropper) {
+        cropper.destroy();
+      }
 
-      /* Show modal */
+      // Initialize Cropper
+      setTimeout(() => {
+        cropper = new Cropper(img, {
+          aspectRatio: 16 / 9,
+          viewMode: 1,
+          autoCropArea: 1,
+          responsive: true,
+          guides: true,
+          background: true,
+          highlight: true,
+          cropBoxMovable: true,
+          cropBoxResizable: true,
+        });
+      }, 100);
+
+      // Show modal
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     };
     reader.readAsDataURL(file);
   }
 
-  function closeCropModal() {
+  /** Close crop modal **/
+  function closeCrop() {
     const modal = document.getElementById('cropModal');
     modal.style.display = 'none';
     document.body.style.overflow = '';
@@ -140,94 +149,109 @@ document.addEventListener('DOMContentLoaded', function () {
       cropper.destroy();
       cropper = null;
     }
-    currentPosterFile = null;
+    selectedFile = null;
   }
 
-  /* Crop modal controls */
-  document.getElementById('cropModalClose')?.addEventListener('click', closeCropModal);
-  document.getElementById('cropCancel')?.addEventListener('click', closeCropModal);
+  /** Zoom in **/
+  function zoomIn() {
+    if (cropper) {
+      cropper.zoom(0.1);
+    }
+  }
 
-  document.getElementById('cropZoomIn')?.addEventListener('click', () => {
-    if (cropper) cropper.zoom(0.1);
-  });
+  /** Zoom out **/
+  function zoomOut() {
+    if (cropper) {
+      cropper.zoom(-0.1);
+    }
+  }
 
-  document.getElementById('cropZoomOut')?.addEventListener('click', () => {
-    if (cropper) cropper.zoom(-0.1);
-  });
+  /** Crop and upload **/
+  function cropAndUpload() {
+    if (!cropper) {
+      showToast('Cropper not initialized', 'error');
+      return;
+    }
 
-  /* Crop and upload */
-  document.getElementById('cropSubmit')?.addEventListener('click', async () => {
-    if (!cropper || !currentPosterFile) return;
-
-    const cropBtn = document.getElementById('cropSubmit');
-    cropBtn.disabled = true;
-    cropBtn.innerHTML = '<span class=\"spinner\"></span> Processing...';
+    const cropBtn = document.querySelector('#cropSubmit');
+    if (cropBtn) {
+      cropBtn.disabled = true;
+      cropBtn.innerHTML = '<span class="spinner"></span> Processing...';
+    }
 
     try {
-      /* Get cropped canvas */
       cropper.getCroppedCanvas({
         width: 800,
         height: 450,
         imageSmoothingEnabled: true,
         imageSmoothingQuality: 'high',
-      }).toBlob(async (blob) => {
+      }).toBlob((blob) => {
         if (!blob) {
           showToast('Failed to crop image', 'error');
-          cropBtn.disabled = false;
-          cropBtn.textContent = 'Crop & Upload';
+          if (cropBtn) {
+            cropBtn.disabled = false;
+            cropBtn.textContent = 'Crop & Upload';
+          }
           return;
         }
 
-        try {
-          /* Create FormData with cropped blob */
-          const fd = new FormData();
-          fd.append('poster', blob, 'poster.jpg');
+        const fd = new FormData();
+        fd.append('poster', blob, 'poster.jpg');
 
-          /* Upload to backend */
-          const res = await fetch('/api/upload/poster', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${FN_AUTH.getToken()}`,
-            },
-            body: fd,
-          });
-
-          if (!res.ok) throw new Error('Upload failed');
-
-          const data = await res.json();
+        fetch('/api/upload/poster', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${FN_AUTH.getToken()}`,
+          },
+          body: fd,
+        })
+        .then(res => {
+          if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
+          return res.json();
+        })
+        .then(data => {
+          console.log('[FestNest] Poster uploaded:', data);
           posterFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
 
-          /* Update UI */
+          // Update UI
           const zone = document.getElementById('posterUpload');
-          zone.querySelector('.upload-zone-title').textContent = '✅ poster.jpg';
-          zone.querySelector('.upload-zone-sub').textContent = (blob.size / 1024 / 1024).toFixed(2) + ' MB';
-          zone.style.borderColor = '#00BFA5';
-          zone.classList.add('upload-zone--uploaded');
+          if (zone) {
+            const titleEl = zone.querySelector('.upload-zone-title');
+            const subEl = zone.querySelector('.upload-zone-sub');
+            if (titleEl) titleEl.textContent = '✅ poster.jpg';
+            if (subEl) subEl.textContent = (blob.size / 1024 / 1024).toFixed(2) + ' MB';
+            zone.style.borderColor = '#00BFA5';
+            zone.classList.add('upload-zone--uploaded');
+          }
 
           showToast('🖼️ Poster cropped and ready!', 'success');
-          closeCropModal();
-        } catch (err) {
-          console.error('[FestNest] Poster upload error:', err);
-          showToast('Failed to upload poster', 'error');
-          cropBtn.disabled = false;
-          cropBtn.textContent = 'Crop & Upload';
-        }
+          closeCrop();
+        })
+        .catch(err => {
+          console.error('[FestNest] Upload error:', err);
+          showToast('Failed to upload poster: ' + err.message, 'error');
+          if (cropBtn) {
+            cropBtn.disabled = false;
+            cropBtn.textContent = 'Crop & Upload';
+          }
+        });
       }, 'image/jpeg', 0.9);
     } catch (err) {
       console.error('[FestNest] Crop error:', err);
-      showToast('Failed to crop image', 'error');
-      cropBtn.disabled = false;
-      cropBtn.textContent = 'Crop & Upload';
+      showToast('Crop error: ' + err.message, 'error');
+      if (cropBtn) {
+        cropBtn.disabled = false;
+        cropBtn.textContent = 'Crop & Upload';
+      }
     }
-  });
+  }
 
-  /* Close crop modal on overlay click */
+  /** Modal event listeners **/
   document.getElementById('cropModal')?.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('cropModal')) {
-      closeCropModal();
+    if (e.target.id === 'cropModal') {
+      closeCrop();
     }
   });
-
 
   document.getElementById('featureEventBtn')?.addEventListener('click', () => {
     showToast('⭐ Feature placement launching soon!', 'info');
