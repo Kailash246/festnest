@@ -170,6 +170,11 @@
   .nav-actions .btn-danger {
     display: none;
   }
+  /* Hide profile button on mobile for cleaner navbar */
+  .nav-user-btn,
+  .nav-role-btn {
+    display: none !important;
+  }
   .hamburger { 
     display: flex; 
     flex-shrink: 0;

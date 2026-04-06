@@ -70,4 +70,4 @@
 .testi-name{font-size:14px;font-weight:700;color:var(--text-1)}.testi-info{font-size:12px;color:var(--text-2)}
 @media(max-width:1100px){.features-grid{grid-template-columns:repeat(2,1fr)}.how-grid{grid-template-columns:repeat(2,1fr)}.testimonials-grid{grid-template-columns:1fr}}
 @media(max-width:900px){.hero-visual{display:none}.hero{justify-content:center}.hero-content{max-width:100%}}
-@media(max-width:640px){.hero{flex-direction:column;padding-top:calc(var(--nav-height)+20px);padding-bottom:40px;min-height:unset}.features-grid,.how-grid,.testimonials-grid{grid-template-columns:1fr}.categories-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.hero{flex-direction:column;padding-top:calc(var(--nav-height)+40px);padding-bottom:40px;min-height:unset;margin-top:0}.features-grid,.how-grid,.testimonials-grid{grid-template-columns:1fr}.categories-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.hero{padding-top:calc(var(--nav-height)+30px)}}
