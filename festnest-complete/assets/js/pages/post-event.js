@@ -97,32 +97,38 @@ document.addEventListener('DOMContentLoaded', function () {
   setupUploadZone('brochureUpload', 'application/pdf',                           MAX_BROCHURE_SIZE, '20 MB', f => { brochureFile = f; });
 
   /* ── Image Crop Modal ────────────────────────────────── */
-  /** Global cropper variables **/
+  /** Global Cropper instance **/
   let cropper = null;
   let selectedFile = null;
 
-  /** Open crop modal **/
+  /** Initialize image cropper on file select **/
   function openCropModal(file) {
     if (!file) return;
     selectedFile = file;
 
     const modal = document.getElementById('cropModal');
-    const img = document.getElementById('cropImage');
+    const image = document.getElementById('cropImage');
 
+    // Create blob URL
     const reader = new FileReader();
     reader.onload = (e) => {
-      img.src = e.target.result;
+      const url = e.target.result;
+      image.src = url;
 
-      // IMPORTANT: Initialize cropper AFTER image loads
-      img.onload = function() {
-        // Destroy existing cropper completely
+      // Show modal first
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      // Initialize cropper AFTER image loads (handle cache)
+      const initializeCropper = () => {
+        // DESTROY old cropper completely
         if (cropper) {
           cropper.destroy();
           cropper = null;
         }
 
-        // Initialize Cropper with FIXED aspect ratio (like WhatsApp)
-        cropper = new Cropper(img, {
+        // CREATE new Cropper instance
+        cropper = new Cropper(image, {
           aspectRatio: 16 / 9,
           viewMode: 1,
 
@@ -140,34 +146,46 @@ document.addEventListener('DOMContentLoaded', function () {
           responsive: true,
           background: false,
 
-          // 🔥 FORCE crop box to exact size on ready
-          ready() {
-            const containerData = cropper.getContainerData();
+          // FORCE crop box to fixed position and size
+          ready: function() {
+            const container = cropper.getContainerData();
+            const width = container.width;
+            const height = width / (16 / 9);
+
+            // Center vertically
+            const top = Math.max(0, (container.height - height) / 2);
+
             cropper.setCropBoxData({
               left: 0,
-              top: 0,
-              width: containerData.width,
-              height: containerData.width / (16/9)
+              top: top,
+              width: width,
+              height: height
             });
           }
         });
 
-        // 🔄 Wheel zoom support
-        img.addEventListener('wheel', function(e) {
+        // Add wheel zoom listener
+        image.addEventListener('wheel', function(e) {
+          if (!cropper) return;
           e.preventDefault();
           const delta = e.deltaY > 0 ? -0.1 : 0.1;
           cropper.zoom(delta);
         }, { passive: false });
       };
 
-      // Show modal
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+      // Handle both fresh load and cached images
+      if (image.complete) {
+        // Image is already loaded (cached)
+        initializeCropper();
+      } else {
+        // Image not yet loaded
+        image.onload = initializeCropper;
+      }
     };
     reader.readAsDataURL(file);
   }
 
-  /** Close crop modal **/
+  /** Close crop modal and destroy cropper **/
   function closeCrop() {
     const modal = document.getElementById('cropModal');
     modal.style.display = 'none';
