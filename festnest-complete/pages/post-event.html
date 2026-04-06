@@ -167,38 +167,63 @@
       </div>
     </div>
   </div>
-  <!-- Image Crop Modal (FIXED 16:9 VERSION) -->
+  <!-- Image Crop Modal (CLEAN & SIMPLE) -->
   <style>
-    /* FORCE HIDE all cropper.js UI elements that allow resizing */
-    #cropModal .cropper-point,
-    .cropper-point {
-      display: none !important;
-      visibility: hidden !important;
-      width: 0 !important;
-      height: 0 !important;
+    /* Crop modal styles */
+    #cropModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 20px;
     }
 
-    #cropModal .cropper-line,
-    .cropper-line {
-      display: none !important;
-      visibility: hidden !important;
+    #cropModal.show {
+      display: flex;
     }
 
-    #cropModal .cropper-face,
-    .cropper-face {
-      cursor: grab !important;
+    .crop-container {
+      width: 90%;
+      max-width: 500px;
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-height: 80vh;
+      overflow-y: auto;
     }
 
-    /* Style the crop box border */
-    #cropModal .cropper-crop-box,
-    .cropper-crop-box {
-      border: 2px solid rgb(90, 75, 255) !important;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) !important;
+    .crop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
 
-    /* Image styling */
+    .crop-header h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .crop-header button {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      padding: 0;
+      color: #999;
+    }
+
+    .crop-image-wrapper {
+      margin-bottom: 20px;
+    }
+
     #cropImage {
-      max-width: 100%;
+      width: 100%;
       display: block;
       cursor: grab;
     }
@@ -207,36 +232,32 @@
       cursor: grabbing;
     }
 
-    /* Container styling */
-    .cropper-container {
-      background: transparent !important;
+    .crop-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
     }
 
-    .cropper-modal {
-      background: transparent !important;
+    /* Hide Cropper.js handles and grid */
+    .cropper-point,
+    .cropper-line {
+      display: none !important;
+    }
+
+    .cropper-crop-box {
+      border: 2px solid rgb(90, 75, 255) !important;
     }
   </style>
-  <div id="cropModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.7); z-index:9999; align-items:center; justify-content:center; padding:20px;">
-    <div style="width:90%; max-width:650px; background:white; border-radius:12px; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,.3); max-height:90vh; overflow-y:auto;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h3 style="margin:0; font-size:18px; font-weight:700;">Crop Event Poster</h3>
-        <button type="button" onclick="closeCrop()" style="background:none; border:none; font-size:28px; cursor:pointer; padding:0; color:#999;">×</button>
+  <div id="cropModal">
+    <div class="crop-container">
+      <div class="crop-header">
+        <h3>Crop Event Poster</h3>
+        <button type="button" onclick="closeCrop()">×</button>
       </div>
-      
-      <div style="margin-bottom:20px;">
-        <img id="cropImage" src="" style="width:100%; max-width:100%; display:block;" />
+      <div class="crop-image-wrapper">
+        <img id="cropImage" src="" />
       </div>
-
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
-        <button type="button" onclick="zoomIn()" class="btn btn-outline" style="display:flex; align-items:center; justify-content:center; gap:6px;">
-          🔍+ Zoom In
-        </button>
-        <button type="button" onclick="zoomOut()" class="btn btn-outline" style="display:flex; align-items:center; justify-content:center; gap:6px;">
-          🔍− Zoom Out
-        </button>
-      </div>
-
-      <div style="display:flex; gap:12px; justify-content:flex-end;">
+      <div class="crop-actions">
         <button type="button" onclick="closeCrop()" class="btn btn-ghost">Cancel</button>
         <button type="button" onclick="cropAndUpload()" class="btn btn-primary">Crop & Upload</button>
       </div>

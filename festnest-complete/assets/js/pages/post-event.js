@@ -109,25 +109,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('cropModal');
     const image = document.getElementById('cropImage');
 
-    // Create blob URL
+    // Read file and set image source
     const reader = new FileReader();
     reader.onload = (e) => {
-      const url = e.target.result;
-      image.src = url;
+      image.src = e.target.result;
 
-      // Show modal first
-      modal.style.display = 'flex';
+      // Show modal
+      modal.classList.add('show');
       document.body.style.overflow = 'hidden';
 
-      // Initialize cropper AFTER image loads (handle cache)
-      const initializeCropper = () => {
-        // DESTROY old cropper completely
+      // Initialize cropper after image loads
+      image.onload = () => {
+        // Destroy old cropper
         if (cropper) {
           cropper.destroy();
           cropper = null;
         }
 
-        // CREATE new Cropper instance
+        // Initialize new Cropper
         cropper = new Cropper(image, {
           aspectRatio: 16 / 9,
           viewMode: 1,
@@ -139,48 +138,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
           movable: true,
           zoomable: true,
-          scalable: false,
-          rotatable: false,
 
-          autoCropArea: 1,
-          responsive: true,
           background: false,
-
-          // FORCE crop box to fixed position and size
-          ready: function() {
-            const container = cropper.getContainerData();
-            const width = container.width;
-            const height = width / (16 / 9);
-
-            // Center vertically
-            const top = Math.max(0, (container.height - height) / 2);
-
-            cropper.setCropBoxData({
-              left: 0,
-              top: top,
-              width: width,
-              height: height
-            });
-          }
+          autoCropArea: 1,
         });
-
-        // Add wheel zoom listener
-        image.addEventListener('wheel', function(e) {
-          if (!cropper) return;
-          e.preventDefault();
-          const delta = e.deltaY > 0 ? -0.1 : 0.1;
-          cropper.zoom(delta);
-        }, { passive: false });
       };
-
-      // Handle both fresh load and cached images
-      if (image.complete) {
-        // Image is already loaded (cached)
-        initializeCropper();
-      } else {
-        // Image not yet loaded
-        image.onload = initializeCropper;
-      }
     };
     reader.readAsDataURL(file);
   }
@@ -188,27 +150,13 @@ document.addEventListener('DOMContentLoaded', function () {
   /** Close crop modal and destroy cropper **/
   function closeCrop() {
     const modal = document.getElementById('cropModal');
-    modal.style.display = 'none';
+    modal.classList.remove('show');
     document.body.style.overflow = '';
     if (cropper) {
       cropper.destroy();
       cropper = null;
     }
     selectedFile = null;
-  }
-
-  /** Zoom in **/
-  function zoomIn() {
-    if (cropper) {
-      cropper.zoom(0.1);
-    }
-  }
-
-  /** Zoom out **/
-  function zoomOut() {
-    if (cropper) {
-      cropper.zoom(-0.1);
-    }
   }
 
   /** Crop and upload **/
@@ -218,7 +166,8 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    const cropBtn = document.querySelector('#cropSubmit');
+    // Find the crop & upload button
+    const cropBtn = document.querySelector('.crop-actions button:last-child');
     if (cropBtn) {
       cropBtn.disabled = true;
       cropBtn.innerHTML = '<span class="spinner"></span> Processing...';
@@ -291,8 +240,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  /** Modal event listeners **/
+  /** Modal click handler to close on overlay click **/
   document.getElementById('cropModal')?.addEventListener('click', (e) => {
+    // Close if clicking on modal background (not the container)
     if (e.target.id === 'cropModal') {
       closeCrop();
     }
