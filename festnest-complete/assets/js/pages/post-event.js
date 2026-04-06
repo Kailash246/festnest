@@ -118,18 +118,32 @@ document.addEventListener('DOMContentLoaded', function () {
         cropper.destroy();
       }
 
-      // Initialize Cropper
+      // Initialize Cropper with FIXED aspect ratio
       setTimeout(() => {
         cropper = new Cropper(img, {
           aspectRatio: 16 / 9,
           viewMode: 1,
-          autoCropArea: 1,
+          
+          // 🔥 FIXED CROP BOX - User can only move/zoom image
+          dragMode: 'move',
+          cropBoxResizable: false,
+          cropBoxMovable: false,
+          
+          minCropBoxWidth: 300,
+          minCropBoxHeight: 170,
+          
+          background: false,
           responsive: true,
-          guides: true,
-          background: true,
+          autoCropArea: 1,
+          guides: false,
           highlight: true,
-          cropBoxMovable: true,
-          cropBoxResizable: true,
+        });
+
+        // 🔄 Wheel zoom support
+        img.addEventListener('wheel', function(e) {
+          e.preventDefault();
+          const delta = e.deltaY > 0 ? -0.1 : 0.1;
+          cropper.zoom(delta);
         });
       }, 100);
 
