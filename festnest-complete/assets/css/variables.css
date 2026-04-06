@@ -1,11 +1,9 @@
 /* ============================================================
    FESTNEST — DESIGN TOKENS  |  assets/css/variables.css
-   Modern Premium Color Palette & Spacing System
    ============================================================ */
 :root {
-  /* Premium Gradients */
-  --grad:          linear-gradient(135deg, #5A4BFF 0%, #7B2FF7 100%);
-  --grad-hover:    linear-gradient(135deg, #4a3ae8 0%, #6520e0 100%);
+  --grad:          linear-gradient(135deg, #2F80ED 0%, #7B2FF7 100%);
+  --grad-hover:    linear-gradient(135deg, #1a6fd4 0%, #6520e0 100%);
   --grad-warm:     linear-gradient(135deg, #FF8A00, #FF5722);
   --grad-card-1:   linear-gradient(135deg, #667eea, #764ba2);
   --grad-card-2:   linear-gradient(135deg, #f093fb, #f5576c);
@@ -14,58 +12,43 @@
   --grad-card-5:   linear-gradient(135deg, #fa709a, #fee140);
   --grad-card-6:   linear-gradient(135deg, #a18cd1, #fbc2eb);
 
-  /* Modern Color Palette */
   --color-primary: #5A4BFF;
   --color-accent:  #FF8A00;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error:   #EF4444;
 
-  /* Minimalist Backgrounds */
-  --bg:            #FAFBFC;
+  --bg:            #F4F6FB;
   --bg-card:       #FFFFFF;
   --bg-dark:       #0F0F1A;
-  --bg-subtle:     #F3F4F6;
 
-  /* Premium Typography Colors */
   --text-1:        #1A1A1A;
-  --text-2:        #6B7280;
-  --text-3:        #9CA3AF;
-  --border:        #E5E7EB;
+  --text-2:        #666666;
+  --text-3:        #999999;
+  --border:        #EAECF0;
 
-  /* Soft Pastel Backgrounds */
-  --pastel-blue:   #EFF6FF;
+  --pastel-blue:   #E8F0FE;
   --pastel-purple: #F3E8FF;
-  --pastel-green:  #ECFDF5;
-  --pastel-pink:   #FDF2F8;
-  --pastel-yellow: #FFFBEB;
-  --pastel-orange: #FFF7ED;
-  --pastel-teal:   #F0FDFA;
+  --pastel-green:  #E8F5E9;
+  --pastel-pink:   #FCE4EC;
+  --pastel-yellow: #FFF9E6;
+  --pastel-orange: #FFF3E0;
+  --pastel-teal:   #E0F7FA;
 
-  /* Modern Spacing (8px Grid) */
-  --radius-sm:     8px;
-  --radius:        12px;
-  --radius-lg:     16px;
-  --radius-xl:     24px;
-  --radius-2xl:    32px;
+  --radius-sm:   8px;
+  --radius:      14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
 
-  /* Premium Shadows */
-  --shadow-sm:     0 1px 2px rgba(0,0,0,.05);
-  --shadow-md:     0 4px 12px rgba(0,0,0,.08);
-  --shadow-lg:     0 12px 24px rgba(0,0,0,.12);
-  --shadow-xl:     0 20px 48px rgba(0,0,0,.15);
-  --shadow-card:   0 1px 3px rgba(0,0,0,.08);
+  --shadow-sm:   0 2px 12px rgba(90,75,255,.08);
+  --shadow-md:   0 8px 30px rgba(90,75,255,.15);
+  --shadow-lg:   0 20px 60px rgba(90,75,255,.2);
+  --shadow-card: 0 2px 16px rgba(0,0,0,.07);
 
-  /* Layout */
   --nav-height:    72px;
   --sidebar-width: 260px;
   --container-max: 1280px;
   --page-padding:  80px;
 
-  /* Smooth Transitions */
-  --transition:    all .2s cubic-bezier(.4, 0, .2, 1);
-  --transition-md: all .3s cubic-bezier(.4, 0, .2, 1);
-  --transition-lg: all .4s cubic-bezier(.4, 0, .2, 1);
+  --transition:    all .2s ease;
+  --transition-md: all .3s ease;
 }
 @media(max-width:1024px){ :root{ --page-padding:40px; } }
 @media(max-width:768px){  :root{ --page-padding:20px; } }

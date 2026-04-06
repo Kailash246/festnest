@@ -12,7 +12,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI08aQQCmbiUANmNFd8V3zLvCs5GQa9CvFKD6Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="assets/css/variables.css" />
   <link rel="stylesheet" href="assets/css/reset.css" />
   <link rel="stylesheet" href="assets/css/typography.css" />
@@ -46,13 +45,13 @@
   </nav>
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <a class="drawer-link" href="/"><i class="fas fa-home"></i> Home</a>
-    <a class="drawer-link" href="/events"><i class="fas fa-calendar-days"></i> Events</a>
-    <a class="drawer-link" href="/post"><i class="fas fa-plus"></i> Post Event</a>
-    <a class="drawer-link" href="/saved"><i class="fas fa-bookmark"></i> Saved Events</a>
-    <a class="drawer-link" href="/search"><i class="fas fa-search"></i> Search</a>
-    <a class="drawer-link" href="/why"><i class="fas fa-lightbulb"></i> Why FestNest</a>
-    <a class="drawer-link" href="/profile"><i class="fas fa-user"></i> Profile</a>
+    <a class="drawer-link active" href="/">🏠 Home</a>
+    <a class="drawer-link" href="/events">🎉 Events</a>
+    <a class="drawer-link" href="/post">➕ Post Event</a>
+    <a class="drawer-link" href="/saved">🔖 Saved Events</a>
+    <a class="drawer-link" href="/search">🔍 Search</a>
+    <a class="drawer-link" href="/why">💡 Why FestNest</a>
+    <a class="drawer-link" href="/profile">👤 Profile</a>
     <div class="drawer-auth">
       <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
       <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
@@ -90,15 +89,15 @@
           <div class="phone-body">
             <div class="phone-cats">
               <div class="phone-cat phone-cat--active">All</div>
-              <div class="phone-cat"><i class="fas fa-laptop-code"></i> Hack</div>
-              <div class="phone-cat"><i class="fas fa-masks-theater"></i> Cultural</div>
+              <div class="phone-cat">💻 Hack</div>
+              <div class="phone-cat">🎭 Cultural</div>
             </div>
-            <div class="phone-card"><div class="phone-card-banner phone-banner-1"><i class="fas fa-laptop-code"></i></div><div class="phone-card-body"><div class="phone-card-title">HackSpark 2025</div><div class="phone-card-college"><i class="fas fa-building"></i> IIT Bombay · ₹1,00,000</div></div></div>
-            <div class="phone-card"><div class="phone-card-banner phone-banner-2"><i class="fas fa-masks-theater"></i></div><div class="phone-card-body"><div class="phone-card-title">Culturama '25</div><div class="phone-card-college"><i class="fas fa-building"></i> Delhi University · Free</div></div></div>
+            <div class="phone-card"><div class="phone-card-banner phone-banner-1">💻</div><div class="phone-card-body"><div class="phone-card-title">HackSpark 2025</div><div class="phone-card-college">🏛 IIT Bombay · ₹1,00,000</div></div></div>
+            <div class="phone-card"><div class="phone-card-banner phone-banner-2">🎭</div><div class="phone-card-body"><div class="phone-card-title">Culturama '25</div><div class="phone-card-college">🏛 Delhi University · Free</div></div></div>
           </div>
         </div>
-        <div class="floating-badge floating-badge--top"><i class="fas fa-trophy" style="margin-right:8px;"></i>₹1,00,000 Prize Pool</div>
-        <div class="floating-badge floating-badge--bot"><i class="fas fa-graduation-cap" style="margin-right:8px;"></i>850+ Colleges Listed</div>
+        <div class="floating-badge floating-badge--top">🏆 ₹1,00,000 Prize Pool</div>
+        <div class="floating-badge floating-badge--bot">🎉 850+ Colleges Listed</div>
       </div>
     </div>
   </section>
@@ -115,58 +114,58 @@
   <!-- FEATURES -->
   <section class="section section--white" id="features">
     <div class="section-header">
-      <span class="section-eyebrow"><i class="fas fa-sparkles" style="margin-right:6px;"></i>Features</span>
+      <span class="section-eyebrow">✨ Features</span>
       <h2 class="section-title">Everything You Need to<br><span class="grad-text">Discover &amp; Compete</span></h2>
       <p class="section-desc">FestNest is built for students and organizers — making campus event discovery seamless, fast, and fun.</p>
     </div>
     <div class="features-grid">
-      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-blue);"><i class="fas fa-magnifying-glass"></i></div><h3 class="feature-title">Smart Discovery</h3><p class="feature-desc">Filter events by category, location, date, mode, and prize pool. Find exactly what you're looking for in seconds.</p></div>
-      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-purple);"><i class="fas fa-trophy"></i></div><h3 class="feature-title">Win Prizes</h3><p class="feature-desc">Track hackathons, competitions, and fests with prize pools. Register directly and never miss a chance to compete.</p></div>
-      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-green);"><i class="fas fa-handshake"></i></div><h3 class="feature-title">Network &amp; Connect</h3><p class="feature-desc">Meet students from 850+ colleges. Build your network at fests, workshops, and inter-college events across India.</p></div>
-      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-pink);"><i class="fas fa-bullhorn"></i></div><h3 class="feature-title">Organizer Tools</h3><p class="feature-desc">Post events, upload brochures, manage registrations, and reach 48,000+ students across India instantly.</p></div>
-      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-yellow);"><i class="fas fa-bookmark"></i></div><h3 class="feature-title">Save &amp; Track</h3><p class="feature-desc">Bookmark events you're interested in. Get reminders and track your registration history all in one place.</p></div>
-      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-orange);"><i class="fas fa-mobile"></i></div><h3 class="feature-title">Mobile-First</h3><p class="feature-desc">Optimized for every device. The same seamless experience whether you're on desktop, tablet, or phone.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-blue);">🔍</div><h3 class="feature-title">Smart Discovery</h3><p class="feature-desc">Filter events by category, location, date, mode, and prize pool. Find exactly what you're looking for in seconds.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-purple);">🏆</div><h3 class="feature-title">Win Prizes</h3><p class="feature-desc">Track hackathons, competitions, and fests with prize pools. Register directly and never miss a chance to compete.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-green);">🤝</div><h3 class="feature-title">Network &amp; Connect</h3><p class="feature-desc">Meet students from 850+ colleges. Build your network at fests, workshops, and inter-college events across India.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-pink);">📣</div><h3 class="feature-title">Organizer Tools</h3><p class="feature-desc">Post events, upload brochures, manage registrations, and reach 48,000+ students across India instantly.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-yellow);">🔖</div><h3 class="feature-title">Save &amp; Track</h3><p class="feature-desc">Bookmark events you're interested in. Get reminders and track your registration history all in one place.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:var(--pastel-orange);">📱</div><h3 class="feature-title">Mobile-First</h3><p class="feature-desc">Optimized for every device. The same seamless experience whether you're on desktop, tablet, or phone.</p></div>
     </div>
   </section>
 
   <!-- HOW IT WORKS -->
   <section class="section section--bg" id="how-it-works">
     <div class="section-header">
-      <span class="section-eyebrow"><i class="fas fa-rocket" style="margin-right:6px;"></i>How It Works</span>
+      <span class="section-eyebrow">🚀 How It Works</span>
       <h2 class="section-title">Get Started in<br><span class="grad-text">4 Simple Steps</span></h2>
     </div>
     <div class="how-grid">
-      <div class="how-card"><div class="how-num">1</div><i class="how-icon fas fa-pen-fancy"></i><h3 class="how-title">Create Account</h3><p class="how-desc">Sign up with your college email in 30 seconds. No verification delays.</p></div>
-      <div class="how-card"><div class="how-num">2</div><i class="how-icon fas fa-magnifying-glass"></i><h3 class="how-title">Discover Events</h3><p class="how-desc">Browse, filter, and search thousands of campus events near you.</p></div>
-      <div class="how-card"><div class="how-num">3</div><i class="how-icon fas fa-clipboard"></i><h3 class="how-title">Register &amp; Save</h3><p class="how-desc">Register directly or save events for later. Track your registrations easily.</p></div>
-      <div class="how-card"><div class="how-num">4</div><i class="how-icon fas fa-crown"></i><h3 class="how-title">Compete &amp; Win</h3><p class="how-desc">Show up, perform, win prizes, and build your campus portfolio.</p></div>
+      <div class="how-card"><div class="how-num">1</div><div class="how-icon">✍️</div><h3 class="how-title">Create Account</h3><p class="how-desc">Sign up with your college email in 30 seconds. No verification delays.</p></div>
+      <div class="how-card"><div class="how-num">2</div><div class="how-icon">🔍</div><h3 class="how-title">Discover Events</h3><p class="how-desc">Browse, filter, and search thousands of campus events near you.</p></div>
+      <div class="how-card"><div class="how-num">3</div><div class="how-icon">📝</div><h3 class="how-title">Register &amp; Save</h3><p class="how-desc">Register directly or save events for later. Track your registrations easily.</p></div>
+      <div class="how-card"><div class="how-num">4</div><div class="how-icon">🏆</div><h3 class="how-title">Compete &amp; Win</h3><p class="how-desc">Show up, perform, win prizes, and build your campus portfolio.</p></div>
     </div>
   </section>
 
   <!-- CATEGORIES -->
   <section class="section section--white" id="categories">
     <div class="section-header">
-      <span class="section-eyebrow"><i class="fas fa-folder" style="margin-right:6px;"></i>Categories</span>
+      <span class="section-eyebrow">📂 Categories</span>
       <h2 class="section-title">Every Type of<br><span class="grad-text">Campus Event</span></h2>
     </div>
     <div class="categories-grid">
-      <a class="category-card" href="/events?cat=Hackathon" style="background:var(--pastel-purple);"><i class="category-icon fas fa-laptop-code"></i><div class="category-name">Hackathons</div><div class="category-count">48 events</div></a>
-      <a class="category-card" href="/events?cat=Cultural"  style="background:var(--pastel-pink);"><i class="category-icon fas fa-masks-theater"></i><div class="category-name">Cultural Fests</div><div class="category-count">124 events</div></a>
-      <a class="category-card" href="/events?cat=Technical" style="background:var(--pastel-blue);"><i class="category-icon fas fa-flask"></i><div class="category-name">Technical</div><div class="category-count">87 events</div></a>
-      <a class="category-card" href="/events?cat=Sports"    style="background:var(--pastel-green);"><i class="category-icon fas fa-futbol"></i><div class="category-name">Sports</div><div class="category-count">64 events</div></a>
-      <a class="category-card" href="/events?cat=Workshop"  style="background:var(--pastel-yellow);"><i class="category-icon fas fa-wrench"></i><div class="category-name">Workshops</div><div class="category-count">39 events</div></a>
-      <a class="category-card" href="/events"               style="background:var(--pastel-teal);"><i class="category-icon fas fa-star"></i><div class="category-name">View All</div><div class="category-count">2,400+ events</div></a>
+      <a class="category-card" href="/events?cat=Hackathon" style="background:var(--pastel-purple);"><div class="category-icon">💻</div><div class="category-name">Hackathons</div><div class="category-count">48 events</div></a>
+      <a class="category-card" href="/events?cat=Cultural"  style="background:var(--pastel-pink);"><div class="category-icon">🎭</div><div class="category-name">Cultural Fests</div><div class="category-count">124 events</div></a>
+      <a class="category-card" href="/events?cat=Technical" style="background:var(--pastel-blue);"><div class="category-icon">🔬</div><div class="category-name">Technical</div><div class="category-count">87 events</div></a>
+      <a class="category-card" href="/events?cat=Sports"    style="background:var(--pastel-green);"><div class="category-icon">⚽</div><div class="category-name">Sports</div><div class="category-count">64 events</div></a>
+      <a class="category-card" href="/events?cat=Workshop"  style="background:var(--pastel-yellow);"><div class="category-icon">🛠</div><div class="category-name">Workshops</div><div class="category-count">39 events</div></a>
+      <a class="category-card" href="/events"               style="background:var(--pastel-teal);"><div class="category-icon">🌟</div><div class="category-name">View All</div><div class="category-count">2,400+ events</div></a>
     </div>
   </section>
 
   <!-- TESTIMONIALS -->
   <section class="section section--bg" id="testimonials">
     <div class="section-header">
-      <span class="section-eyebrow"><i class="fas fa-comment" style="margin-right:6px;"></i>Student Stories</span>
+      <span class="section-eyebrow">💬 Student Stories</span>
       <h2 class="section-title">Loved by Students<br><span class="grad-text">Across India</span></h2>
     </div>
     <div class="testimonials-grid">
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"FestNest helped me discover HackSpark at IIT Bombay. We won ₹25,000 and got PPO offers. This platform changed my life!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--pastel-purple);"><i class="fas fa-laptop-code"></i></div><div><div class="testi-name">Rohit Verma</div><div class="testi-info">3rd Year · NIT Warangal</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"FestNest helped me discover HackSpark at IIT Bombay. We won ₹25,000 and got PPO offers. This platform changed my life!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--pastel-purple);">👨‍💻</div><div><div class="testi-name">Rohit Verma</div><div class="testi-info">3rd Year · NIT Warangal</div></div></div></div>
       <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"As an organizer, FestNest gave our cultural fest 10x more registrations than last year. Absolute game changer for college events!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--pastel-pink);">👩‍🎨</div><div><div class="testi-name">Priya Sharma</div><div class="testi-info">Event Coordinator · BITS Pilani</div></div></div></div>
       <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Found 3 hackathons in one week, all within my city. The filter system is crazy good. Already made it to 2 finals!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--pastel-blue);">🧑‍�</div><div><div class="testi-name">Arjun Menon</div><div class="testi-info">2nd Year · VIT Vellore</div></div></div></div>
     </div>
@@ -189,14 +188,14 @@
       <div class="footer-brand">
         <span class="footer-logo">🪺 FestNest</span>
         <p class="footer-desc">India's centralized campus event discovery platform. Helping students discover opportunities, connect with peers, and win at inter-college competitions.</p>
-        <div class="footer-socials"><a class="social-btn" href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a><a class="social-btn" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a><a class="social-btn" href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a class="social-btn" href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a></div>
+        <div class="footer-socials"><a class="social-btn" href="#" aria-label="Twitter">𝕏</a><a class="social-btn" href="#" aria-label="LinkedIn">in</a><a class="social-btn" href="#" aria-label="Instagram">📸</a><a class="social-btn" href="#" aria-label="YouTube">▶</a></div>
       </div>
       <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="/events">Browse Events</a><a class="footer-link" href="/post">Post an Event</a><a class="footer-link" href="/saved">Saved Events</a><a class="footer-link" href="/search">Search</a><a class="footer-link" href="/profile">My Profile</a></div>
       <div class="footer-col"><h4>Company</h4><a class="footer-link" href="/why">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a><a class="footer-link" href="#">Partner Colleges</a></div>
       <div class="footer-col"><h4>Support</h4><a class="footer-link" href="#">Help Center</a><a class="footer-link" href="#">Contact Us</a><a class="footer-link" href="/privacy">Privacy Policy</a><a class="footer-link" href="#">Terms of Service</a><a class="footer-link" href="#">Cookie Policy</a></div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with <i class="fas fa-heart" style="color: var(--color-error);"></i> for students</div>
+      <div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div>
       <div class="footer-bottom-links"><a class="footer-bottom-link" href="#">Privacy</a><a class="footer-bottom-link" href="#">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div>
     </div>
   </footer>
@@ -212,7 +211,7 @@
         <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" autocomplete="current-password" /></div>
         <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
         <div class="auth-divider"><span>or</span></div>
-        <button type="button" class="btn btn-outline w-full"><i class="fab fa-google"></i> Continue with Google</button>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
         <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
       </form>
 <form class="auth-form" id="signup-form" novalidate>
@@ -220,13 +219,13 @@
     <p style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:16px;line-height:1.5;">I want to join FestNest as a…</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
       <button type="button" class="su-role-card" data-role="student" aria-pressed="false" tabindex="0">
-        <span class="su-role-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span class="su-role-icon">🎓</span>
         <span class="su-role-title">Student</span>
         <span class="su-role-desc">Find &amp; attend events</span>
         <span class="su-role-check" aria-hidden="true">✓</span>
       </button>
       <button type="button" class="su-role-card" data-role="organizer" aria-pressed="false" tabindex="0">
-        <span class="su-role-icon"><i class="fas fa-building"></i></span>
+        <span class="su-role-icon">🏢</span>
         <span class="su-role-title">Organizer</span>
         <span class="su-role-desc">Post &amp; manage events</span>
         <span class="su-role-check" aria-hidden="true">✓</span>
@@ -259,7 +258,7 @@
       <div class="form-group"><label class="form-label" for="su-email">Email Address *</label><input class="form-input" id="su-email" type="email" placeholder="you@college.edu" autocomplete="email" /></div>
       <div class="form-group"><label class="form-label" for="su-password">Password *</label><input class="form-input" id="su-password" type="password" placeholder="Min. 8 characters" autocomplete="new-password" /></div>
     </div>
-    <button type="submit" class="btn btn-primary w-full btn-lg"><i class="fas fa-rocket"></i> Create Free Account</button>
+    <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
     <p class="auth-terms">By signing up you agree to our <a href="#">Terms</a> &amp; <a href="/privacy">Privacy Policy</a></p>
     <p class="auth-footer-text">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
   </div>
