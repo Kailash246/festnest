@@ -113,30 +113,43 @@ document.addEventListener('DOMContentLoaded', function () {
     reader.onload = (e) => {
       img.src = e.target.result;
 
-      // Destroy existing cropper
-      if (cropper) {
-        cropper.destroy();
-      }
+      // IMPORTANT: Initialize cropper AFTER image loads
+      img.onload = function() {
+        // Destroy existing cropper completely
+        if (cropper) {
+          cropper.destroy();
+          cropper = null;
+        }
 
-      // Initialize Cropper with FIXED aspect ratio
-      setTimeout(() => {
+        // Initialize Cropper with FIXED aspect ratio (like WhatsApp)
         cropper = new Cropper(img, {
           aspectRatio: 16 / 9,
           viewMode: 1,
-          
-          // 🔥 FIXED CROP BOX - User can only move/zoom image
+
           dragMode: 'move',
-          cropBoxResizable: false,
+
           cropBoxMovable: false,
-          
-          minCropBoxWidth: 300,
-          minCropBoxHeight: 170,
-          
-          background: false,
-          responsive: true,
+          cropBoxResizable: false,
+
+          movable: true,
+          zoomable: true,
+          scalable: false,
+          rotatable: false,
+
           autoCropArea: 1,
-          guides: false,
-          highlight: true,
+          responsive: true,
+          background: false,
+
+          // 🔥 FORCE crop box to exact size on ready
+          ready() {
+            const containerData = cropper.getContainerData();
+            cropper.setCropBoxData({
+              left: 0,
+              top: 0,
+              width: containerData.width,
+              height: containerData.width / (16/9)
+            });
+          }
         });
 
         // 🔄 Wheel zoom support
@@ -144,8 +157,8 @@ document.addEventListener('DOMContentLoaded', function () {
           e.preventDefault();
           const delta = e.deltaY > 0 ? -0.1 : 0.1;
           cropper.zoom(delta);
-        });
-      }, 100);
+        }, { passive: false });
+      };
 
       // Show modal
       modal.style.display = 'flex';

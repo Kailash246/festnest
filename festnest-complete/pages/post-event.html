@@ -169,11 +169,21 @@
   </div>
   <!-- Image Crop Modal (WORKING VERSION) -->
   <style>
-    /* Hide crop box resize handles */
+    /* Hide ALL crop box resize handles and lines (VERY IMPORTANT) */
     .cropper-point {
       display: none !important;
     }
+    .cropper-line {
+      display: none !important;
+    }
+    .cropper-crop-box {
+      border: 2px solid rgba(90, 75, 255, 0.8) !important;
+    }
+    
+    /* Image cursor feedback */
     #cropImage {
+      max-width: 100%;
+      display: block;
       cursor: grab;
     }
     #cropImage:active {
