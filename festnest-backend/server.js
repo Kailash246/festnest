@@ -49,6 +49,9 @@ const ALLOWED = [
   'http://localhost:5500',   // VS Code Live Server
   'http://127.0.0.1:5500',
   'http://localhost:3000',
+  'https://festnest.in',         // Production custom domain
+  'https://www.festnest.in',     // Production custom domain with www
+  'https://festnest.vercel.app', // Vercel deployment
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
