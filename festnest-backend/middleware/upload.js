@@ -13,12 +13,12 @@ const storage = multer.memoryStorage();
 const imageFilter = (req, file, cb) => {
   const ALLOWED = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
   if (ALLOWED.includes(file.mimetype)) return cb(null, true);
-  cb(new Error('Poster must be an image: JPG, PNG, or WebP (max 5 MB)'), false);
+  cb(new Error('Poster must be an image: JPG, PNG, or WebP (max 2 MB)'), false);
 };
 
 const pdfFilter = (req, file, cb) => {
   if (file.mimetype === 'application/pdf') return cb(null, true);
-  cb(new Error('Brochure must be a PDF file (max 10 MB)'), false);
+  cb(new Error('Brochure must be a PDF file (max 20 MB)'), false);
 };
 
 const combinedFilter = (req, file, cb) => {
@@ -32,23 +32,28 @@ const wrapMulter = (upFn) => (req, res, next) => {
   upFn(req, res, (err) => {
     if (!err) return next();
     if (err instanceof multer.MulterError) {
-      const msg = err.code === 'LIMIT_FILE_SIZE' ? 'File too large.' : err.message;
+      let msg = 'File error.';
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        msg = 'File exceeds maximum allowed size.';
+      } else {
+        msg = err.message;
+      }
       return res.status(400).json({ success: false, message: msg });
     }
     return res.status(400).json({ success: false, message: err.message });
   });
-};
+};2
 
 /* ── Exported middleware ──────────────────────────────────── */
 
 /** Single poster upload (used in standalone upload route) */
 exports.uploadPoster = wrapMulter(
-  multer({ storage, limits: { fileSize: 5 * 1024 * 1024 }, fileFilter: imageFilter }).single('poster')
+  multer({ storage, limits: { fileSize: 2 * 1024 * 1024 }, fileFilter: imageFilter }).single('poster')
 );
 
 /** Single brochure upload */
 exports.uploadBrochure = wrapMulter(
-  multer({ storage, limits: { fileSize: 10 * 1024 * 1024 }, fileFilter: pdfFilter }).single('brochure')
+  multer({ storage, limits: { fileSize: 20 * 1024 * 1024 }, fileFilter: pdfFilter }).single('brochure')
 );
 
 /**
@@ -58,7 +63,7 @@ exports.uploadBrochure = wrapMulter(
 exports.uploadEventFiles = wrapMulter(
   multer({
     storage,
-    limits: { fileSize: 10 * 1024 * 1024 },
+    limits: { fileSize: 20 * 1024 * 1024 },
     fileFilter: combinedFilter,
   }).fields([
     { name: 'poster',   maxCount: 1 },

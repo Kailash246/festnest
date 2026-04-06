@@ -44,10 +44,11 @@ router.post('/brochure',
 
       const result = await uploadToCloudinary(req.file.buffer, 'festnest/brochures', 'raw');
       res.json({
-        success:  true,
-        url:      result.secure_url,
-        publicId: result.public_id,
-        bytes:    result.bytes,
+        success:     true,
+        url:         result.secure_url,
+        downloadUrl: result.secure_url + '?fl_attachment=true',
+        publicId:    result.public_id,
+        bytes:       result.bytes,
       });
     } catch (err) {
       next(err);

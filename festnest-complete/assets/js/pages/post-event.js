@@ -57,7 +57,10 @@ document.addEventListener('DOMContentLoaded', function () {
   let posterFile   = null;
   let brochureFile = null;
 
-  function setupUploadZone(zoneId, accept, onFile) {
+  const MAX_POSTER_SIZE   = 2 * 1024 * 1024;   // 2 MB
+  const MAX_BROCHURE_SIZE = 20 * 1024 * 1024;  // 20 MB
+
+  function setupUploadZone(zoneId, accept, maxSize, maxSizeLabel, onFile) {
     const zone = document.getElementById(zoneId);
     if (!zone) return;
 
@@ -74,6 +77,14 @@ document.addEventListener('DOMContentLoaded', function () {
     input.addEventListener('change', () => {
       const file = input.files[0];
       if (!file) return;
+
+      /* ── File size validation ── */
+      if (file.size > maxSize) {
+        alert(`${zoneId === 'posterUpload' ? 'Poster' : 'Brochure'} must be less than ${maxSizeLabel}.`);
+        input.value = '';
+        return;
+      }
+
       onFile(file);
       zone.querySelector('.upload-zone-title').textContent = '✅ ' + file.name;
       zone.querySelector('.upload-zone-sub').textContent   = (file.size / 1024 / 1024).toFixed(2) + ' MB';
@@ -82,8 +93,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  setupUploadZone('posterUpload',   'image/jpeg,image/jpg,image/png,image/webp', f => { posterFile   = f; });
-  setupUploadZone('brochureUpload', 'application/pdf',                           f => { brochureFile = f; });
+  setupUploadZone('posterUpload',   'image/jpeg,image/jpg,image/png,image/webp', MAX_POSTER_SIZE,   '2 MB', f => { posterFile   = f; });
+  setupUploadZone('brochureUpload', 'application/pdf',                           MAX_BROCHURE_SIZE, '20 MB', f => { brochureFile = f; });
 
   /* ── Feature button ── */
   document.getElementById('featureEventBtn')?.addEventListener('click', () => {
@@ -150,6 +161,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!pocPhone) { showFieldError('pf-poc-phone',  'POC phone is required.');             valid = false; }
     if (!pocEmail) { showFieldError('pf-poc-email',  'POC email is required.');             valid = false; }
     if (!valid) return;
+
+    /* ── File size validation (additional check before submission) ── */
+    if (posterFile && posterFile.size > MAX_POSTER_SIZE) {
+      alert('Poster must be less than 2 MB. Current size: ' + (posterFile.size / 1024 / 1024).toFixed(2) + ' MB');
+      return;
+    }
+    if (brochureFile && brochureFile.size > MAX_BROCHURE_SIZE) {
+      alert('Brochure must be less than 20 MB. Current size: ' + (brochureFile.size / 1024 / 1024).toFixed(2) + ' MB');
+      return;
+    }
 
     /* ── Auth check ── */
     if (!FN_AUTH.isLoggedIn()) {
