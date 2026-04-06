@@ -24,8 +24,8 @@ const API_BASE = (() => {
     // Use same port as the page to avoid CORS
     return `${window.location.protocol}//${window.location.hostname}:5000/api`;
   }
-  // Production — update this after deploying
-  return 'https://your-festnest-backend.onrender.com/api';
+  // Production — Render backend
+  return 'https://festnest.onrender.com/api';
 })();
 
 /* ════════════════════════════════════════════════════════════
