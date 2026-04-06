@@ -93,10 +93,142 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  setupUploadZone('posterUpload',   'image/jpeg,image/jpg,image/png,image/webp', MAX_POSTER_SIZE,   '2 MB', f => { posterFile   = f; });
+  setupUploadZone('posterUpload',   'image/jpeg,image/jpg,image/png,image/webp', MAX_POSTER_SIZE,   '2 MB', f => { openCropModal(f); });
   setupUploadZone('brochureUpload', 'application/pdf',                           MAX_BROCHURE_SIZE, '20 MB', f => { brochureFile = f; });
 
-  /* ── Feature button ── */
+  /* ── Image Crop Modal ────────────────────────────────── */
+  let cropper = null;
+  let currentPosterFile = null;
+
+  function openCropModal(file) {
+    currentPosterFile = file;
+    const modal = document.getElementById('cropModal');
+    const img = document.getElementById('cropImage');
+
+    /* Read file and set image src */
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.src = e.target.result;
+
+      /* Initialize Cropper */
+      if (cropper) cropper.destroy();
+      cropper = new Cropper(img, {
+        aspectRatio: 16 / 9,
+        viewMode: 1,
+        autoCropArea: 1,
+        responsive: true,
+        guides: true,
+        background: true,
+        modal: false,
+        highlight: true,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+      });
+
+      /* Show modal */
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function closeCropModal() {
+    const modal = document.getElementById('cropModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+    if (cropper) {
+      cropper.destroy();
+      cropper = null;
+    }
+    currentPosterFile = null;
+  }
+
+  /* Crop modal controls */
+  document.getElementById('cropModalClose')?.addEventListener('click', closeCropModal);
+  document.getElementById('cropCancel')?.addEventListener('click', closeCropModal);
+
+  document.getElementById('cropZoomIn')?.addEventListener('click', () => {
+    if (cropper) cropper.zoom(0.1);
+  });
+
+  document.getElementById('cropZoomOut')?.addEventListener('click', () => {
+    if (cropper) cropper.zoom(-0.1);
+  });
+
+  /* Crop and upload */
+  document.getElementById('cropSubmit')?.addEventListener('click', async () => {
+    if (!cropper || !currentPosterFile) return;
+
+    const cropBtn = document.getElementById('cropSubmit');
+    cropBtn.disabled = true;
+    cropBtn.innerHTML = '<span class=\"spinner\"></span> Processing...';
+
+    try {
+      /* Get cropped canvas */
+      cropper.getCroppedCanvas({
+        width: 800,
+        height: 450,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+      }).toBlob(async (blob) => {
+        if (!blob) {
+          showToast('Failed to crop image', 'error');
+          cropBtn.disabled = false;
+          cropBtn.textContent = 'Crop & Upload';
+          return;
+        }
+
+        try {
+          /* Create FormData with cropped blob */
+          const fd = new FormData();
+          fd.append('poster', blob, 'poster.jpg');
+
+          /* Upload to backend */
+          const res = await fetch('/api/upload/poster', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${FN_AUTH.getToken()}`,
+            },
+            body: fd,
+          });
+
+          if (!res.ok) throw new Error('Upload failed');
+
+          const data = await res.json();
+          posterFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
+
+          /* Update UI */
+          const zone = document.getElementById('posterUpload');
+          zone.querySelector('.upload-zone-title').textContent = '✅ poster.jpg';
+          zone.querySelector('.upload-zone-sub').textContent = (blob.size / 1024 / 1024).toFixed(2) + ' MB';
+          zone.style.borderColor = '#00BFA5';
+          zone.classList.add('upload-zone--uploaded');
+
+          showToast('🖼️ Poster cropped and ready!', 'success');
+          closeCropModal();
+        } catch (err) {
+          console.error('[FestNest] Poster upload error:', err);
+          showToast('Failed to upload poster', 'error');
+          cropBtn.disabled = false;
+          cropBtn.textContent = 'Crop & Upload';
+        }
+      }, 'image/jpeg', 0.9);
+    } catch (err) {
+      console.error('[FestNest] Crop error:', err);
+      showToast('Failed to crop image', 'error');
+      cropBtn.disabled = false;
+      cropBtn.textContent = 'Crop & Upload';
+    }
+  });
+
+  /* Close crop modal on overlay click */
+  document.getElementById('cropModal')?.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('cropModal')) {
+      closeCropModal();
+    }
+  });
+
+
   document.getElementById('featureEventBtn')?.addEventListener('click', () => {
     showToast('⭐ Feature placement launching soon!', 'info');
   });
