@@ -20,366 +20,216 @@
   <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
 
   <style>
-    /* ── Legal page layout — FestNest design system ── */
-    .legal-page {
-      padding-top: var(--nav-height); min-height: 100vh; background: var(--bg);
-      position: relative; overflow-x: hidden;
-    }
+    /* ── Legal page layout — no new design, just structure ── */
+    .legal-page { padding-top: var(--nav-height); min-height: 100vh; background: var(--bg); }
 
-    /* Hero with gradients & visual polish */
     .legal-hero {
       background: linear-gradient(135deg, #042f2e 0%, #134e4a 50%, #0f172a 100%);
-      padding: 64px var(--page-padding) 48px;
+      padding: 48px var(--page-padding) 40px;
       text-align: center;
-      position: relative;
-      border-bottom: 1px solid rgba(13,148,136,.15);
     }
-    .legal-hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(13,148,136,.08) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .legal-hero::after {
-      content: '';
-      position: absolute;
-      bottom: -30%;
-      left: -15%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(79,245,146,.06) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .legal-hero > * { position: relative; z-index: 1; }
-    
     .legal-hero-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(13,148,136,.25); border: 1px solid rgba(13,148,136,.5);
-      border-radius: 24px; padding: 6px 16px; margin-bottom: 20px;
-      font-size: 11px; color: #5eead4; font-weight: 700; letter-spacing: .05em;
-      text-transform: uppercase;
+      background: rgba(13,148,136,.2); border: 1px solid rgba(13,148,136,.4);
+      border-radius: 20px; padding: 4px 14px; margin-bottom: 16px;
+      font-size: 12px; color: #5eead4; font-weight: 700; letter-spacing: .04em;
     }
     .legal-hero h1 {
-      font-family: 'Clash Display', sans-serif; font-size: clamp(2rem,5vw,3.2rem);
-      font-weight: 700; color: #fff; margin-bottom: 12px;
-      line-height: 1.2;
+      font-family: 'Clash Display', sans-serif; font-size: clamp(1.8rem,4vw,2.6rem);
+      font-weight: 700; color: #fff; margin-bottom: 8px;
     }
-    .legal-hero p {
-      color: #94a3b8; font-size: 16px; margin-bottom: 24px;
-      font-weight: 500;
-    }
-    .legal-meta-chips {
-      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-      max-width: 700px; margin: 0 auto;
-    }
+    .legal-hero p { color: #94a3b8; font-size: 15px; margin-bottom: 20px; }
+    .legal-meta-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
     .legal-meta-chip {
-      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
-      border-radius: 8px; padding: 6px 14px; font-size: 12px; color: #cbd5e1;
-      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 6px; padding: 4px 12px; font-size: 12px; color: #94a3b8;
     }
 
-    /* Two-column layout */
+    /* ── Two-column layout ── */
     .legal-layout {
-      display: flex; gap: 40px; padding: 48px var(--page-padding) 80px;
+      display: flex; gap: 32px; padding: 32px var(--page-padding) 80px;
       max-width: var(--container-max); margin: 0 auto; align-items: flex-start;
     }
 
-    /* Sticky TOC sidebar — styled as card */
+    /* ── Sticky TOC sidebar ── */
     .legal-toc {
-      width: 220px; flex-shrink: 0; position: sticky;
-      top: calc(var(--nav-height) + 28px);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow-sm);
+      width: 200px; flex-shrink: 0; position: sticky;
+      top: calc(var(--nav-height) + 24px);
     }
     .legal-toc-label {
-      font-size: 9px; font-weight: 800; color: var(--text-3);
-      text-transform: uppercase; letter-spacing: .12em;
-      margin-bottom: 14px; padding-left: 0;
-      display: block;
+      font-size: 10px; font-weight: 800; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: 10px; padding-left: 8px;
     }
     .legal-toc-link {
-      display: block; padding: 8px 10px; font-size: 13px;
-      color: var(--text-2); text-decoration: none; font-weight: 500;
-      border-left: 2.5px solid transparent; border-radius: 0 8px 8px 0;
-      transition: var(--transition-md); line-height: 1.5;
-      margin-bottom: 4px;
+      display: block; padding: 7px 10px; font-size: 12.5px;
+      color: var(--text-3); text-decoration: none; font-weight: 500;
+      border-left: 2px solid transparent; border-radius: 0 6px 6px 0;
+      transition: var(--transition); line-height: 1.4;
     }
-    .legal-toc-link:hover {
-      color: #0d9488; background: #f0fdfa; border-left-color: #0d9488;
-      padding-left: 12px;
-    }
-    .legal-toc-link.active {
-      color: #0d9488; background: #f0fdfa; border-left-color: #0d9488;
-      font-weight: 700; padding-left: 12px;
+    .legal-toc-link:hover, .legal-toc-link.active {
+      color: #0d9488; background: #f0fdfa; border-left-color: #0d9488; font-weight: 700;
     }
 
-    /* Main content card — premium styling */
+    /* ── Main content card ── */
     .legal-card {
       flex: 1; min-width: 0; background: var(--bg-card);
       border-radius: var(--radius-xl); border: 1px solid var(--border);
-      padding: 48px; box-shadow: var(--shadow-sm);
+      padding: 40px 44px; box-shadow: var(--shadow-sm);
     }
 
-    /* Section headings — strong visual hierarchy */
-    .legal-section {
-      scroll-margin-top: calc(var(--nav-height) + 28px);
-      margin-bottom: 32px;
-    }
+    /* ── Section headings ── */
+    .legal-section { scroll-margin-top: calc(var(--nav-height) + 24px); }
     .legal-h2 {
-      font-family: 'Clash Display', sans-serif; font-size: 1.28rem; font-weight: 700;
-      color: var(--text-1); margin: 40px 0 18px 0; padding-bottom: 12px;
-      border-bottom: 2px solid var(--border);
-      display: flex; align-items: center; gap: 12px;
-      line-height: 1.3;
+      font-family: 'Clash Display', sans-serif; font-size: 1.15rem; font-weight: 700;
+      color: var(--text-1); margin: 44px 0 14px; padding-top: 20px;
+      border-top: 2px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
     }
-    .legal-h2:first-of-type { margin-top: 0; }
+    .legal-h2:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
     .legal-num {
-      font-size: 11px; font-weight: 800; color: #fff;
-      background:#0d9488; border: none;
-      padding: 4px 8px; border-radius: 6px; letter-spacing: .04em;
-      flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
-      min-width: 28px; height: 28px;
+      font-size: 10px; font-weight: 800; color: #0d9488;
+      background: #f0fdfa; border: 1px solid #0d948830;
+      padding: 3px 7px; border-radius: 5px; letter-spacing: .05em; flex-shrink: 0;
     }
     .legal-h3 {
-      font-family: 'Clash Display', sans-serif; font-size: 14px; font-weight: 700;
-      color: var(--text-1); margin: 24px 0 10px;
-      text-transform: uppercase; letter-spacing: .05em;
+      font-family: 'Clash Display', sans-serif; font-size: 13px; font-weight: 700;
+      color: var(--text-1); margin: 20px 0 8px;
+      text-transform: uppercase; letter-spacing: .04em;
     }
 
-    /* Text — optimized for readability */
+    /* ── Text ── */
     .legal-p {
-      font-size: 15.5px; line-height: 1.8; color: var(--text-2);
-      margin-bottom: 16px; max-width: 750px;
+      font-size: 15px; line-height: 1.85; color: var(--text-2); margin-bottom: 14px;
     }
-    .legal-p strong { color: var(--text-1); font-weight: 700; }
     .legal-ul {
-      padding-left: 4px; margin-bottom: 16px;
-      display: flex; flex-direction: column; gap: 10px;
-      max-width: 750px;
+      padding-left: 20px; margin-bottom: 14px;
+      display: flex; flex-direction: column; gap: 6px;
     }
-    .legal-ul li {
-      font-size: 15.5px; line-height: 1.75; color: var(--text-2);
-      list-style: none;
-      position: relative; padding-left: 24px;
-    }
-    .legal-ul li::before {
-      content: '›'; position: absolute; left: 0; color: #0d9488;
-      font-weight: 800; font-size: 18px;
-    }
+    .legal-ul li { font-size: 15px; line-height: 1.75; color: var(--text-2); }
 
-    /* Callout boxes — modern card-based design */
+    /* ── Callout boxes — reuse existing pastel system ── */
     .callout {
-      border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 20px;
-      border-left: none; border: 1px solid;
-      max-width: 750px;
+      border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 18px;
     }
-    .callout-teal  { background: #f0fdfa; border-color: #0d948830; }
-    .callout-amber { background: var(--pastel-yellow); border-color: rgba(255,138,0,.2); }
-    .callout-red   { background: var(--pastel-pink); border-color: rgba(220,38,38,.2); }
+    .callout-teal  { background: #f0fdfa; border-left: 3px solid #0d9488; }
+    .callout-amber { background: var(--pastel-yellow); border-left: 3px solid var(--color-accent); }
+    .callout-red   { background: var(--pastel-pink); border-left: 3px solid #dc2626; }
     .callout-label {
       font-size: 11px; font-weight: 800; text-transform: uppercase;
-      letter-spacing: .07em; margin-bottom: 8px;
-      display: flex; align-items: center; gap: 6px;
+      letter-spacing: .06em; margin-bottom: 6px;
+      display: flex; align-items: center; gap: 5px;
     }
     .callout-teal  .callout-label { color: #0d9488; }
     .callout-amber .callout-label { color: var(--color-accent); }
     .callout-red   .callout-label { color: #dc2626; }
-    .callout p {
-      font-size: 14.5px; line-height: 1.7; color: var(--text-2);
-      margin: 0;
-    }
-    .callout a { color: #0d9488; font-weight: 600; text-decoration: none; }
-    .callout a:hover { text-decoration: underline; }
+    .callout p { font-size: 14px; line-height: 1.7; color: var(--text-2); margin: 0; }
+    .callout a { color: #0d9488; }
 
-    /* ── Rights cards — styled list items ── */
+    /* ── Rights cards ── */
     .right-card {
       display: flex; gap: 14px; padding: 14px 16px;
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius); margin-bottom: 10px;
-      transition: var(--transition);
-    }
-    .right-card:hover {
-      background: #f9fafb; border-color: #d0d5dd;
     }
     .right-badge {
-      font-size: 10px; font-weight: 800; color: #fff;
-      background: #0d9488; border: none;
+      font-size: 11px; font-weight: 800; color: #0d9488;
+      background: #f0fdfa; border: 1px solid #0d948830;
       border-radius: 6px; padding: 4px 8px; flex-shrink: 0;
       align-self: flex-start; font-family: 'Clash Display', sans-serif;
-      white-space: nowrap; display: inline-flex; align-items: center; justify-content: center;
-      min-width: 24px; height: 24px;
+      white-space: nowrap;
     }
     .right-title {
       font-family: 'Clash Display', sans-serif; font-size: 14px;
       font-weight: 700; color: var(--text-1); margin-bottom: 4px;
     }
-    .right-desc {
-      font-size: 13.5px; color: var(--text-2); line-height: 1.65;
-    }
+    .right-desc { font-size: 13.5px; color: var(--text-2); line-height: 1.65; }
 
-    /* ── Third-party table — modern grid styling ── */
+    /* ── Third-party table ── */
     .legal-table {
       border: 1px solid var(--border); border-radius: var(--radius-lg);
-      overflow: hidden; margin-bottom: 20px; width: 100%;
-      max-width: 750px;
+      overflow: hidden; margin-bottom: 18px; width: 100%;
     }
     .legal-table-head {
-      display: grid; grid-template-columns: 160px 1fr 100px;
-      gap: 12px; padding: 14px 16px; background: var(--bg);
+      display: grid; grid-template-columns: 150px 1fr 90px;
+      gap: 8px; padding: 10px 16px; background: var(--bg);
       border-bottom: 1px solid var(--border);
     }
     .legal-table-head span {
-      font-size: 11px; font-weight: 800; color: var(--text-3);
-      text-transform: uppercase; letter-spacing: .05em;
+      font-size: 11px; font-weight: 800; color: var(--text-3); text-transform: uppercase;
     }
     .legal-table-row {
-      display: grid; grid-template-columns: 160px 1fr 100px;
-      gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: 150px 1fr 90px;
+      gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border);
       align-items: center;
-      transition: var(--transition);
-    }
-    .legal-table-row:hover {
-      background: #f9fafb;
     }
     .legal-table-row:last-child { border-bottom: none; }
     .legal-table-row:nth-child(even) { background: var(--bg); }
-    .legal-table-name {
-      font-size: 14px; font-weight: 700; color: var(--text-1);
-    }
-    .legal-table-purpose {
-      font-size: 13.5px; color: var(--text-2); line-height: 1.5;
-    }
-    .legal-table-link {
-      font-size: 12px; color: #0d9488; font-weight: 600;
-      text-decoration: none; transition: var(--transition);
-    }
-    .legal-table-link:hover { color: #059669; text-decoration: underline; }
+    .legal-table-name { font-size: 13.5px; font-weight: 700; color: var(--text-1); }
+    .legal-table-purpose { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .legal-table-link { font-size: 12px; color: #0d9488; font-weight: 600; }
 
     /* ── Retention table ── */
     .retention-row {
-      display: grid; grid-template-columns: 1fr 180px; gap: 12px;
-      padding: 14px 16px; border-radius: var(--radius); margin-bottom: 8px;
-      border: 1px solid var(--border);
-      transition: var(--transition);
+      display: grid; grid-template-columns: 1fr 180px; gap: 8px 16px;
+      padding: 12px 16px; border-radius: var(--radius); margin-bottom: 5px;
     }
-    .retention-row:hover {
-      background: #f9fafb; border-color: #d0d5dd;
-    }
-    .retention-type {
-      font-size: 14px; font-weight: 700; color: var(--text-1);
-    }
-    .retention-note {
-      font-size: 12px; color: var(--text-3); margin-top: 3px;
-    }
+    .retention-row:nth-child(odd) { background: var(--bg); }
+    .retention-type { font-size: 13.5px; font-weight: 700; color: var(--text-1); }
+    .retention-note { font-size: 12px; color: var(--text-3); margin-top: 2px; }
     .retention-period {
-      display: inline-flex; align-self: center; background: #f0fdfa;
-      color: #0d9488; border: 1px solid #0d948830; border-radius: 20px;
-      padding: 4px 10px; font-size: 12px; font-weight: 700;
-      white-space: nowrap; justify-self: end;
+      display: inline-flex; align-self: center; background: #f0fdfa; color: #0d9488;
+      border: 1px solid #0d948830; border-radius: 20px;
+      padding: 3px 10px; font-size: 11.5px; font-weight: 700; white-space: nowrap;
     }
 
-    /* ── Contact cards — grid layout ── */
-    .contact-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px; margin-bottom: 20px; max-width: 750px;
-    }
+    /* ── Contact cards ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
     .contact-card {
-      border: 1px solid var(--border); border-radius: var(--radius-lg);
-      padding: 16px; background: var(--bg);
-      transition: var(--transition);
+      border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; background: var(--bg);
     }
-    .contact-card:hover {
-      background: var(--bg-card); border-color: #0d9488; box-shadow: var(--shadow-sm);
-    }
-    .contact-card-role {
-      font-size: 11px; font-weight: 800; text-transform: uppercase;
-      letter-spacing: .06em; margin-bottom: 8px; color: var(--text-3);
-    }
-    .contact-card-email {
-      font-size: 14px; font-weight: 700; color: var(--text-1);
-      display: block; margin-bottom: 6px;
-    }
-    .contact-card-note {
-      font-size: 13px; color: var(--text-2); line-height: 1.6;
-    }
+    .contact-card-role { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+    .contact-card-email { font-size: 14px; font-weight: 700; color: var(--text-1); display: block; margin-bottom: 6px; }
+    .contact-card-note { font-size: 12px; color: var(--text-3); line-height: 1.5; }
 
     /* ── Legal footer ── */
     .legal-footer {
-      margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--border);
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
       display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 12px;
+      flex-wrap: wrap; gap: 8px;
     }
-    .legal-footer span {
-      font-size: 13px; color: var(--text-3);
-    }
+    .legal-footer span { font-size: 12px; color: var(--text-3); }
 
-    /* ── Mobile TOC toggle — improved UX ── */
+    /* ── Mobile TOC toggle ── */
     .legal-toc-mobile-btn {
-      display: none; width: 100%; padding: 14px 16px;
+      display: none; width: 100%; padding: 12px 16px;
       background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); font-size: 14px; font-weight: 700;
-      color: var(--text-1); cursor: pointer; margin-bottom: 16px;
-      font-family: 'Clash Display', sans-serif; text-align: left;
+      border-radius: var(--radius); font-size: 14px; font-weight: 700;
+      color: var(--text-2); cursor: pointer; margin-bottom: 16px;
+      font-family: inherit; text-align: left;
       justify-content: space-between; align-items: center;
-      transition: var(--transition);
-    }
-    .legal-toc-mobile-btn:hover {
-      background: var(--bg); border-color: #0d9488;
     }
     .legal-toc-mobile-menu {
       background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 8px; margin-bottom: 16px;
-      display: none; box-shadow: var(--shadow-sm);
+      border-radius: var(--radius); padding: 8px; margin-bottom: 16px; display: none;
     }
     .legal-toc-mobile-menu a {
-      display: block; padding: 10px 12px; font-size: 13px;
+      display: block; padding: 8px 12px; font-size: 14px;
       color: var(--text-2); text-decoration: none; border-radius: 6px;
-      transition: var(--transition);
-      font-weight: 500;
     }
-    .legal-toc-mobile-menu a:hover {
-      background: #f0fdfa; color: #0d9488; font-weight: 700;
-    }
-    .legal-toc-mobile-menu a.active {
-      background: #f0fdfa; color: #0d9488; font-weight: 700;
-    }
+    .legal-toc-mobile-menu a:hover { background: var(--bg); color: #0d9488; }
 
-    /* ── Responsive design ── */
-    @media (max-width: 1024px) {
+    @media (max-width: 900px) {
       .legal-toc { display: none; }
       .legal-toc-mobile-btn { display: flex; }
-      .legal-card { padding: 32px 28px; }
-      .legal-layout { gap: 24px; padding: 32px var(--page-padding) 60px; }
+      .legal-card { padding: 24px 22px; }
     }
-
-    @media (max-width: 768px) {
+    @media (max-width: 640px) {
       .legal-layout { padding: 20px var(--page-padding) 60px; }
-      .legal-hero {
-        padding: 48px var(--page-padding) 32px;
-      }
-      .legal-hero h1 {
-        font-size: clamp(1.6rem, 4vw, 2rem);
-      }
-      .legal-meta-chips {
-        flex-direction: column; align-items: center;
-      }
-      .legal-card { padding: 24px 18px; }
-      .legal-p, .legal-ul { max-width: 100%; }
-      .callout { max-width: 100%; }
-      .contact-grid {
-        grid-template-columns: 1fr;
-        max-width: 100%;
-      }
-      .legal-table { max-width: 100%; }
+      .legal-table-head, .legal-table-row { grid-template-columns: 120px 1fr; }
+      .legal-table-link { display: none; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .retention-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
