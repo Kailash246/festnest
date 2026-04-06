@@ -49,12 +49,9 @@ router.post('/brochure',
         .replace(/[^a-zA-Z0-9]/g, '_')
         .toLowerCase();
 
-      /* FORCE DOWNLOAD + NAME using Cloudinary RAW transformation */
+      /* CORRECT METHOD for RAW files: use query parameter */
       const rawUrl = result.secure_url;
-      const downloadUrl = rawUrl.replace(
-        '/raw/upload/',
-        `/raw/upload/fl_attachment:${fileName}.pdf/`
-      );
+      const downloadUrl = `${rawUrl}?fl_attachment=${fileName}.pdf`;
 
       res.json({
         success: true,

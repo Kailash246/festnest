@@ -46,13 +46,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     
     document.title = `${ev.title} — FestNest`;
     
-    // DEBUG: Log brochure download URL transformation
+    // DEBUG: Log brochure download URL
     if (ev.brochureUrl) {
-      const downloadUrl = ev.brochureUrl.replace(
-        '/raw/upload/',
-        `/raw/upload/fl_attachment:${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf/`
-      );
-      console.log('DOWNLOAD URL:', downloadUrl);
+      const downloadUrl = `${ev.brochureUrl}?fl_attachment=${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf`;
+      console.log('Brochure downloadUrl:', downloadUrl);
     }
     
     page.innerHTML = buildDetail(ev);
@@ -313,7 +310,7 @@ function buildDetail(ev) {
         </div>
 
         ${ev.brochureUrl ? `
-        <a class="btn-download-brochure" href="${ev.brochureUrl.replace('/raw/upload/', `/raw/upload/fl_attachment:${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf/`)}" download onclick="event.stopPropagation();">
+        <a class="btn-download-brochure" href="${ev.brochureUrl}?fl_attachment=${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf" download onclick="event.stopPropagation();">
           📥 Download Brochure PDF
         </a>` : ''}
 
