@@ -27,3 +27,27 @@ p{line-height:1.7}
 @media (max-width: 768px) {
   body { padding-top: 40px; }
 }
+
+/* ── Content Centering & Containers ── */
+.container, .page-container, .page-wrapper, .main-content {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* ── Empty State Centering ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 40px 16px;
+}
+
+.empty-state button {
+  margin-top: 16px;
+}
