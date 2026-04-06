@@ -49,11 +49,11 @@ router.post('/brochure',
         .replace(/[^a-zA-Z0-9]/g, '_')
         .toLowerCase();
 
-      /* FORCE DOWNLOAD + NAME using Cloudinary transformation */
+      /* FORCE DOWNLOAD + NAME using Cloudinary RAW transformation */
       const rawUrl = result.secure_url;
       const downloadUrl = rawUrl.replace(
-        '/upload/',
-        `/upload/fl_attachment:${fileName}.pdf/`
+        '/raw/upload/',
+        `/raw/upload/fl_attachment:${fileName}.pdf/`
       );
 
       res.json({

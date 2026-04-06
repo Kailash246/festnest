@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     // DEBUG: Log brochure download URL transformation
     if (ev.brochureUrl) {
       const downloadUrl = ev.brochureUrl.replace(
-        '/upload/',
-        `/upload/fl_attachment:${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf/`
+        '/raw/upload/',
+        `/raw/upload/fl_attachment:${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf/`
       );
-      console.log('📥 Brochure Download URL:', downloadUrl);
+      console.log('DOWNLOAD URL:', downloadUrl);
     }
     
     page.innerHTML = buildDetail(ev);
@@ -313,7 +313,7 @@ function buildDetail(ev) {
         </div>
 
         ${ev.brochureUrl ? `
-        <a class="btn-download-brochure" href="${ev.brochureUrl.replace('/upload/', `/upload/fl_attachment:${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf/`)}" download onclick="event.stopPropagation();">
+        <a class="btn-download-brochure" href="${ev.brochureUrl.replace('/raw/upload/', `/raw/upload/fl_attachment:${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf/`)}" download onclick="event.stopPropagation();">
           📥 Download Brochure PDF
         </a>` : ''}
 
