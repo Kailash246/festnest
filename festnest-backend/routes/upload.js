@@ -43,10 +43,21 @@ router.post('/brochure',
       if (!req.file) return res.status(400).json({ success: false, message: 'No brochure file received.' });
 
       const result = await uploadToCloudinary(req.file.buffer, 'festnest/brochures', 'raw');
+      
+      /* Construct clean filename from event title or use default */
+      let fileName = 'festnest_brochure';
+      if (req.body.eventTitle) {
+        fileName = req.body.eventTitle
+          .replace(/[^a-zA-Z0-9\s]/g, '')
+          .trim()
+          .replace(/\s+/g, '_')
+          .toLowerCase();
+      }
+
       res.json({
         success:     true,
         url:         result.secure_url,
-        downloadUrl: result.secure_url + '?fl_attachment=true',
+        downloadUrl: result.secure_url + `?fl_attachment=${fileName}.pdf`,
         publicId:    result.public_id,
         bytes:       result.bytes,
       });

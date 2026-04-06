@@ -303,7 +303,7 @@ function buildDetail(ev) {
         </div>
 
         ${ev.brochureUrl ? `
-        <a class="btn-download-brochure" href="${ev.brochureUrl}" target="_blank" rel="noopener">
+        <a class="btn-download-brochure" href="${ev.brochureUrl}?fl_attachment=${ev.title.replace(/[^a-zA-Z0-9\\s]/g, '').trim().replace(/\\s+/g, '_').toLowerCase()}.pdf" download onclick="event.stopPropagation();">
           📥 Download Brochure PDF
         </a>` : ''}
 
