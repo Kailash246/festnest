@@ -463,6 +463,14 @@ const seed = async () => {
     console.log('\n🌱 FestNest Database Seeder');
     console.log('════════════════════════════\n');
 
+    /* Validate MongoDB URI is set */
+    if (!process.env.MONGODB_URI) {
+      throw new Error(
+        'MONGODB_URI environment variable is not set!\n' +
+        '   Ensure .env file exists with: MONGODB_URI=mongodb+srv://...'
+      );
+    }
+
     /* Connect */
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('✅ Connected to MongoDB Atlas\n');

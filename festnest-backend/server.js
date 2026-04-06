@@ -25,6 +25,13 @@ initializeFirebase();
 const app = express();
 
 /* ── Database ─────────────────────────────────────────────── */
+if (!process.env.MONGODB_URI) {
+  console.error('❌  FATAL: MONGODB_URI environment variable is not set!');
+  console.error('   On Render: Add MONGODB_URI to Environment Variables in dashboard');
+  console.error('   Locally: Ensure .env file exists with MONGODB_URI=mongodb+srv://...');
+  process.exit(1);
+}
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅  MongoDB connected'))
   .catch(err => { console.error('❌  MongoDB:', err.message); process.exit(1); });

@@ -4,6 +4,9 @@ const Event = require('./models/Event');
 
 async function checkEvent() {
   try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI environment variable is not set. Ensure .env file exists.');
+    }
     await mongoose.connect(process.env.MONGODB_URI);
     
     const eventId = '69d1280bde96fff9e9023808';

@@ -5,6 +5,9 @@ const Organizer = require('./models/Organizer');
 
 async function check() {
   try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI environment variable is not set. Ensure .env file exists.');
+    }
     await mongoose.connect(process.env.MONGODB_URI);
     
     console.log('\n=== CHECKING DATABASE ===\n');
