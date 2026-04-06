@@ -45,6 +45,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     
     document.title = `${ev.title} — FestNest`;
+    
+    // DEBUG: Log brochure download URL transformation
+    if (ev.brochureUrl) {
+      const downloadUrl = ev.brochureUrl.replace(
+        '/upload/',
+        `/upload/fl_attachment:${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf/`
+      );
+      console.log('📥 Brochure Download URL:', downloadUrl);
+    }
+    
     page.innerHTML = buildDetail(ev);
     wireButtons(ev);
     initExpandDescription();   // NEW: wire expand/collapse
@@ -303,7 +313,7 @@ function buildDetail(ev) {
         </div>
 
         ${ev.brochureUrl ? `
-        <a class="btn-download-brochure" href="${ev.brochureUrl}?fl_attachment=${ev.title.replace(/[^a-zA-Z0-9\\s]/g, '').trim().replace(/\\s+/g, '_').toLowerCase()}.pdf" download onclick="event.stopPropagation();">
+        <a class="btn-download-brochure" href="${ev.brochureUrl.replace('/upload/', `/upload/fl_attachment:${ev.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}.pdf/`)}" download onclick="event.stopPropagation();">
           📥 Download Brochure PDF
         </a>` : ''}
 

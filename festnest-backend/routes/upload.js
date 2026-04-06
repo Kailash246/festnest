@@ -44,22 +44,24 @@ router.post('/brochure',
 
       const result = await uploadToCloudinary(req.file.buffer, 'festnest/brochures', 'raw');
       
-      /* Construct clean filename from event title or use default */
-      let fileName = 'festnest_brochure';
-      if (req.body.eventTitle) {
-        fileName = req.body.eventTitle
-          .replace(/[^a-zA-Z0-9\s]/g, '')
-          .trim()
-          .replace(/\s+/g, '_')
-          .toLowerCase();
-      }
+      /* Create clean filename from event title */
+      const fileName = (req.body.title || 'festnest_brochure')
+        .replace(/[^a-zA-Z0-9]/g, '_')
+        .toLowerCase();
+
+      /* FORCE DOWNLOAD + NAME using Cloudinary transformation */
+      const rawUrl = result.secure_url;
+      const downloadUrl = rawUrl.replace(
+        '/upload/',
+        `/upload/fl_attachment:${fileName}.pdf/`
+      );
 
       res.json({
-        success:     true,
-        url:         result.secure_url,
-        downloadUrl: result.secure_url + `?fl_attachment=${fileName}.pdf`,
-        publicId:    result.public_id,
-        bytes:       result.bytes,
+        success: true,
+        url: rawUrl,
+        downloadUrl: downloadUrl,
+        publicId: result.public_id,
+        bytes: result.bytes,
       });
     } catch (err) {
       next(err);
