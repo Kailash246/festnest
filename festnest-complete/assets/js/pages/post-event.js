@@ -579,14 +579,19 @@ document.addEventListener('DOMContentLoaded', function () {
       canvas.height = 720;
 
       const ctx = canvas.getContext('2d');
-      if (!ctx) throw new Error('Failed to get canvas context');
+      if (!ctx) {
+        console.error('[FLOW] ❌ Failed to get 2D canvas context');
+        throw new Error('Failed to get canvas context');
+      }
+
+      console.log('[FLOW] ✅ Canvas created (1280x720)');
 
       // Create image element to draw from
       const imgElement = new Image();
       imgElement.crossOrigin = 'anonymous';
 
       imgElement.onload = () => {
-        console.log('[FLOW] Image loaded for canvas drawing...');
+        console.log('[FLOW] ✅ Image element loaded for canvas drawing');
         
         try {
           // CRITICAL FORMULA: Map visible frame to source image region
@@ -604,7 +609,23 @@ document.addEventListener('DOMContentLoaded', function () {
             visibleY: visibleY.toFixed(2),
             visibleWidth: visibleWidth.toFixed(2),
             visibleHeight: visibleHeight.toFixed(2),
+            frameWidth,
+            frameHeight,
+            imageDisplayWidth,
+            imageDisplayHeight,
+            originalImageSize: `${originalWidth}x${originalHeight}`,
+            translateOffset: `(${translateX.toFixed(0)}, ${translateY.toFixed(0)})`,
           });
+
+          // Verify calculations are valid
+          if (visibleWidth <= 0 || visibleHeight <= 0) {
+            console.error('[FLOW] ❌ Invalid visible dimensions:', { visibleWidth, visibleHeight });
+            throw new Error('Invalid crop region');
+          }
+
+          console.log('[FLOW] Calling ctx.drawImage with params:');
+          console.log('[FLOW]   source: (' + visibleX.toFixed(0) + ', ' + visibleY.toFixed(0) + ', ' + visibleWidth.toFixed(0) + ', ' + visibleHeight.toFixed(0) + ')');
+          console.log('[FLOW]   destination: (0, 0, 1280, 720)');
 
           // Draw the exact visible portion of the original image onto canvas
           ctx.drawImage(
@@ -619,18 +640,33 @@ document.addEventListener('DOMContentLoaded', function () {
             canvas.height       // destination height
           );
 
-          console.log('[FLOW] Canvas drawn successfully, converting to blob...');
+          console.log('[FLOW] ✅ Canvas drawn successfully with visible crop region');
 
           // Convert canvas to blob and upload
           canvas.toBlob((blob) => {
             if (!blob) {
-              console.error('[FLOW] Failed to create blob');
+              console.error('[FLOW] ❌ Failed to create blob - canvas.toBlob returned null');
               showToast('Failed to generate image', 'error');
               resetProcessing();
               return;
             }
 
-            console.log('[FLOW] Blob created:', blob.size, 'bytes');
+            console.log('[FLOW] ✅ Blob created successfully');
+            console.log('[FLOW] Blob size:', blob.size, 'bytes', '(' + (blob.size / 1024 / 1024).toFixed(2) + ' MB)');
+            console.log('[FLOW] Blob type:', blob.type);
+            
+            // Verify blob is valid
+            if (blob.size === 0) {
+              console.error('[FLOW] ❌ Blob is empty (0 bytes)');
+              showToast('Generated image is empty', 'error');
+              resetProcessing();
+              return;
+            }
+
+            if (blob.type !== 'image/jpeg') {
+              console.warn('[FLOW] ⚠️  Blob type is', blob.type, 'expected image/jpeg');
+            }
+
             uploadPosterBlob(blob);
           }, 'image/jpeg', 0.95);
         } catch (err) {
@@ -700,28 +736,63 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log('[FLOW] ========== UPLOAD TRIGGERED ==========');
     console.log('[FLOW] uploadPosterBlob() executing with blob:', blob.size, 'bytes');
+    console.log('[FLOW] Blob type:', blob.type);
     
     const btn = document.querySelector('.crop-actions .btn-done');
 
+    // Build FormData with blob
     const fd = new FormData();
     fd.append('poster', blob, 'poster.jpg');
 
+    // Debug: Log FormData contents
+    console.log('[FLOW] FormData constructed:');
+    for (let [key, value] of fd.entries()) {
+      console.log('[FLOW]   -', key, ':', value instanceof File ? `File(${value.name}, ${value.size} bytes, ${value.type})` : value);
+    }
+
+    // Get auth token
+    const authToken = FN_AUTH.getToken();
+    console.log('[FLOW] Auth token present:', !!authToken, authToken ? '(length: ' + authToken.length + ')' : '(MISSING!)');
+
     console.log('[FLOW] Sending POST to /api/upload/poster...');
+    console.log('[FLOW] Headers:', { Authorization: `Bearer ${authToken ? '[TOKEN]' : '[MISSING]'}` });
 
     fetch('/api/upload/poster', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${FN_AUTH.getToken()}`,
+        Authorization: `Bearer ${authToken}`,
       },
       body: fd,
     })
     .then(res => {
-      console.log('[FLOW] Upload response status:', res.status);
-      if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
-      return res.json();
+      console.log('[FLOW] ========== RESPONSE RECEIVED ==========');
+      console.log('[FLOW] Status:', res.status, res.statusText);
+      console.log('[FLOW] Content-Type:', res.headers.get('content-type'));
+      
+      if (!res.ok) {
+        console.error('[FLOW] ❌ Upload failed - HTTP', res.status);
+        throw new Error(`Upload failed: ${res.status} ${res.statusText}`);
+      }
+
+      // Try to parse as JSON
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        return res.json();
+      } else {
+        console.warn('[FLOW] ⚠️  Response is not JSON:', contentType);
+        return res.text().then(text => {
+          console.log('[FLOW] Response text:', text);
+          try {
+            return JSON.parse(text);
+          } catch (e) {
+            return { success: true, text: text };
+          }
+        });
+      }
     })
     .then(data => {
-      console.log('[FLOW] Upload success:', data);
+      console.log('[FLOW] ========== UPLOAD SUCCESS ==========');
+      console.log('[FLOW] Response data:', data);
 
       // Store the cropped file
       selectedFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
@@ -751,8 +822,29 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('[FLOW] Upload complete, isCropping reset to false');
     })
     .catch(err => {
-      console.error('[FLOW] Poster upload error:', err);
-      showToast('Upload failed: ' + err.message, 'error');
+      console.error('[FLOW] ========== UPLOAD FAILED ==========');
+      console.error('[FLOW] ❌ Upload error:', err);
+      console.error('[FLOW] Error message:', err.message);
+      console.error('[FLOW] Error name:', err.name);
+      console.error('[FLOW] Full error:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      
+      // Specific error handling
+      if (err.message.includes('401') || err.message.includes('Unauthorized')) {
+        console.error('[FLOW] 🔐 Authorization failed - check auth token');
+        showToast('Upload failed: Authentication error', 'error');
+      } else if (err.message.includes('400') || err.message.includes('Bad Request')) {
+        console.error('[FLOW] 📋 Bad request - check FormData or payload');
+        showToast('Upload failed: Invalid request format', 'error');
+      } else if (err.message.includes('413') || err.message.includes('Payload')) {
+        console.error('[FLOW] 📦 File too large');
+        showToast('Upload failed: File too large', 'error');
+      } else if (err.message.includes('CORS') || err.message.includes('Failed to fetch')) {
+        console.error('[FLOW] 🌐 Network/CORS error'),
+        showToast('Upload failed: Network error (check CORS)', 'error');
+      } else {
+        showToast('Upload failed: ' + err.message, 'error');
+      }
+
       isProcessing = false;
       if (btn) {
         btn.disabled = false;
