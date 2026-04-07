@@ -754,10 +754,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const authToken = FN_AUTH.getToken();
     console.log('[FLOW] Auth token present:', !!authToken, authToken ? '(length: ' + authToken.length + ')' : '(MISSING!)');
 
-    console.log('[FLOW] Sending POST to /api/upload/poster...');
+    console.log('[FLOW] Sending POST to', API_BASE + '/upload/poster', '...');
     console.log('[FLOW] Headers:', { Authorization: `Bearer ${authToken ? '[TOKEN]' : '[MISSING]'}` });
 
-    fetch('/api/upload/poster', {
+    fetch(API_BASE + '/upload/poster', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${authToken}`,
