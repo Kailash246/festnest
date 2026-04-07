@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="FestNest Terms and Conditions — the legal agreement between you and FestNest Technologies Pvt. Ltd." />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FestNest Terms and Conditions — the legal agreement governing your use of FestNest under Indian law." />
   <title>Terms &amp; Conditions — FestNest</title>
-
-  <link rel="icon" type="image/png" href="/assets/images/fn_logo2.png?v=1">
-  <link rel="shortcut icon" href="/assets/images/fn_logo2.png?v=1">
-  <link rel="apple-touch-icon" href="/assets/images/fn_logo2.png?v=1">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/variables.css" />
   <link rel="stylesheet" href="../assets/css/reset.css" />
@@ -21,146 +14,91 @@
   <link rel="stylesheet" href="../assets/css/footer.css" />
   <link rel="stylesheet" href="../assets/css/animations.css" />
   <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
-
   <style>
     .legal-page { padding-top: var(--nav-height); min-height: 100vh; background: var(--bg); }
+    .legal-body  { display: flex; gap: 28px; padding: 32px var(--page-padding) 80px; max-width: var(--container-max); margin: 0 auto; align-items: flex-start; }
 
-    /* T&C hero — warm dark vs privacy's teal dark */
-    .legal-hero {
-      background: linear-gradient(135deg, #1c1917 0%, #292524 60%, #1c1917 100%);
-      padding: 48px var(--page-padding) 40px; text-align: center;
-      border-bottom: 3px solid #b45309;
-    }
-    .legal-hero-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(180,83,9,.2); border: 1px solid rgba(180,83,9,.5);
-      border-radius: 4px; padding: 4px 14px; margin-bottom: 16px;
-      font-size: 11px; color: #fcd34d; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-    }
-    .legal-hero h1 {
-      font-family: 'Clash Display', sans-serif; font-size: clamp(1.8rem,4vw,2.6rem);
-      font-weight: 700; color: #fafaf9; margin-bottom: 8px;
-    }
-    .legal-hero p { color: #a8a29e; font-size: 15px; margin-bottom: 20px; }
-    .legal-meta-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-    .legal-meta-chip {
-      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
-      border-radius: 4px; padding: 4px 12px; font-size: 12px; color: #a8a29e;
-    }
+    .legal-toc { width: 230px; flex-shrink: 0; position: sticky; top: calc(var(--nav-height) + 20px); }
+    .legal-toc-inner { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--border); }
+    .legal-toc-heading { font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px; }
+    .legal-toc a { display: block; padding: 7px 10px; font-size: 13px; color: var(--text-2); text-decoration: none; border-left: 2px solid transparent; border-radius: 0 6px 6px 0; transition: var(--transition); line-height: 1.4; font-weight: 500; }
+    .legal-toc a:hover, .legal-toc a.active { color: var(--color-accent); background: var(--pastel-yellow); border-left-color: var(--color-accent); font-weight: 700; }
 
-    .legal-layout {
-      display: flex; gap: 32px; padding: 32px var(--page-padding) 80px;
-      max-width: var(--container-max); margin: 0 auto; align-items: flex-start;
-    }
+    .legal-main { flex: 1; min-width: 0; }
 
-    /* Sidebar — amber accent for T&C */
-    .legal-toc { width: 200px; flex-shrink: 0; position: sticky; top: calc(var(--nav-height) + 24px); }
-    .legal-toc-label { font-size: 10px; font-weight: 800; color: var(--text-3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; padding-left: 8px; }
-    .legal-toc-link {
-      display: block; padding: 7px 10px; font-size: 12.5px; color: var(--text-3);
-      text-decoration: none; font-weight: 500; border-left: 2px solid transparent;
-      border-radius: 0 6px 6px 0; transition: var(--transition); line-height: 1.4;
-    }
-    .legal-toc-link:hover, .legal-toc-link.active {
-      color: #b45309; background: var(--pastel-yellow); border-left-color: #b45309; font-weight: 700;
-    }
+    .ls { scroll-margin-top: calc(var(--nav-height) + 24px); }
+    .ls-h2 { font-family: 'Clash Display', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text-1); display: flex; align-items: center; gap: 10px; margin: 40px 0 14px; padding-top: 24px; border-top: 2px solid var(--border); }
+    .ls-h2:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
+    .ls-h2 .ls-num { font-size: 11px; font-weight: 800; letter-spacing: .04em; color: var(--color-accent); background: var(--pastel-yellow); border: 1px solid rgba(255,138,0,.25); padding: 3px 8px; border-radius: 6px; flex-shrink: 0; }
+    .ls-h3 { font-family: 'Clash Display', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-1); margin: 20px 0 8px; }
+    .ls-p { font-size: 15px; line-height: 1.85; color: var(--text-2); margin-bottom: 14px; }
+    .ls-ul { padding-left: 20px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 5px; }
+    .ls-ul li { font-size: 15px; line-height: 1.75; color: var(--text-2); }
 
-    .legal-card {
-      flex: 1; min-width: 0; background: var(--bg-card); border-radius: var(--radius-xl);
-      border: 1px solid var(--border); padding: 40px 44px; box-shadow: var(--shadow-sm);
-    }
+    /* Callouts use existing FestNest pastel tokens */
+    .callout { padding: 14px 16px; border-radius: var(--radius); margin-bottom: 18px; }
+    .callout-yellow { background: var(--pastel-yellow); border-left: 3px solid var(--color-accent); }
+    .callout-blue   { background: var(--pastel-blue);   border-left: 3px solid var(--color-primary); }
+    .callout-pink   { background: var(--pastel-pink);   border-left: 3px solid #f5576c; }
+    .callout-green  { background: var(--pastel-green);  border-left: 3px solid #00BFA5; }
+    .callout-label  { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+    .callout-yellow .callout-label { color: var(--color-accent); }
+    .callout-blue   .callout-label { color: var(--color-primary); }
+    .callout-pink   .callout-label { color: #e53e3e; }
+    .callout-green  .callout-label { color: #00BFA5; }
+    .callout p { font-size: 14px; line-height: 1.75; color: var(--text-2); margin: 0; }
 
-    .legal-section { scroll-margin-top: calc(var(--nav-height) + 24px); }
-    .legal-h2 {
-      font-family: 'Clash Display', sans-serif; font-size: 1.15rem; font-weight: 700;
-      color: var(--text-1); margin: 44px 0 14px; padding-top: 20px;
-      border-top: 2px solid var(--border); display: flex; align-items: center; gap: 10px;
-    }
-    .legal-h2:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
-    .legal-num {
-      font-size: 10px; font-weight: 800; color: #b45309;
-      background: var(--pastel-yellow); border: 1px solid #b4530930;
-      padding: 3px 7px; border-radius: 5px; letter-spacing: .05em; flex-shrink: 0;
-    }
-    .legal-h3 {
-      font-family: 'Clash Display', sans-serif; font-size: 13px; font-weight: 700;
-      color: var(--text-1); margin: 20px 0 8px; text-transform: uppercase; letter-spacing: .04em;
-    }
-    .legal-p { font-size: 15px; line-height: 1.85; color: var(--text-2); margin-bottom: 14px; }
-    .legal-ul { padding-left: 20px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
-    .legal-ul li { font-size: 15px; line-height: 1.75; color: var(--text-2); }
+    /* Role cards — same pattern as why-card */
+    .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+    .role-card { border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border); background: var(--bg-card); transition: var(--transition-md); }
+    .role-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+    .role-icon { font-size: 32px; margin-bottom: 10px; }
+    .role-title { font-family: 'Clash Display', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-1); margin-bottom: 6px; }
+    .role-badge { display: inline-block; font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+    .role-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+    .role-list li { font-size: 13.5px; color: var(--text-2); line-height: 1.6; display: flex; align-items: flex-start; gap: 6px; }
 
-    /* Callout boxes — amber accent for T&C */
-    .callout { border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 18px; }
-    .callout-amber { background: var(--pastel-yellow); border-left: 3px solid #b45309; }
-    .callout-blue  { background: var(--pastel-blue);   border-left: 3px solid var(--color-primary); }
-    .callout-red   { background: var(--pastel-pink);   border-left: 3px solid #dc2626; }
-    .callout-green { background: var(--pastel-green);  border-left: 3px solid #065f46; }
-    .callout-label {
-      font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
-      margin-bottom: 6px; display: flex; align-items: center; gap: 5px;
-    }
-    .callout-amber .callout-label { color: #b45309; }
-    .callout-blue  .callout-label { color: var(--color-primary); }
-    .callout-red   .callout-label { color: #dc2626; }
-    .callout-green .callout-label { color: #065f46; }
-    .callout p { font-size: 14px; line-height: 1.7; color: var(--text-2); margin: 0; }
+    /* Permitted / Prohibited grid */
+    .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+    .rule-col-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .rule-item { display: flex; gap: 8px; font-size: 13.5px; color: var(--text-2); line-height: 1.6; padding: 6px 10px; border-radius: 6px; margin-bottom: 5px; }
+    .rule-ok  .rule-col-label { color: #00BFA5; }
+    .rule-no  .rule-col-label { color: #e53e3e; }
+    .rule-ok  .rule-item { background: var(--pastel-green); }
+    .rule-no  .rule-item { background: var(--pastel-pink); }
+    .rule-ok  .rule-icon { color: #00BFA5; font-weight: 800; flex-shrink: 0; }
+    .rule-no  .rule-icon { color: #e53e3e; font-weight: 800; flex-shrink: 0; }
 
-    /* Role cards */
-    .role-cards { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
-    .role-card { flex: 1; min-width: 200px; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-    .role-card-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-    .role-card-icon { font-size: 24px; }
-    .role-card-title { font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 14px; color: var(--text-1); }
-    .role-card-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-top: 2px; }
-    .role-card-body { padding: 12px 16px; }
-    .role-card-body li { font-size: 13px; color: var(--text-2); line-height: 1.6; padding: 4px 0; list-style: none; display: flex; gap: 6px; }
+    .contact-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .contact-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px; }
+    .contact-role { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--color-accent); margin-bottom: 6px; }
+    .contact-email { display: block; font-size: 13.5px; font-weight: 700; color: var(--text-1); margin-bottom: 5px; text-decoration: none; }
+    .contact-email:hover { color: var(--color-primary); }
+    .contact-note { font-size: 12px; color: var(--text-3); line-height: 1.5; }
 
-    /* Allowed / Prohibited rule grid */
-    .rule-grid { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
-    .rule-col { flex: 1; min-width: 180px; }
-    .rule-col-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
-    .rule-col--ok   .rule-col-label { color: #065f46; }
-    .rule-col--no   .rule-col-label { color: #dc2626; }
-    .rule-item { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--text-2); line-height: 1.6; padding: 5px 8px; border-radius: 6px; margin-bottom: 4px; }
-    .rule-col--ok .rule-item { background: var(--pastel-green); }
-    .rule-col--no .rule-item { background: var(--pastel-pink); }
-    .rule-icon { font-weight: 800; flex-shrink: 0; font-size: 11px; margin-top: 2px; }
-    .rule-col--ok .rule-icon { color: #065f46; }
-    .rule-col--no .rule-icon { color: #dc2626; }
+    .legal-footer-row { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .legal-footer-row span { font-size: 12px; color: var(--text-3); }
 
-    /* Contact cards */
-    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 18px; }
-    .contact-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; background: var(--bg); }
-    .contact-card-role { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-    .contact-card-email { font-size: 14px; font-weight: 700; color: var(--text-1); display: block; margin-bottom: 5px; }
-    .contact-card-note { font-size: 12px; color: var(--text-3); line-height: 1.5; }
+    .mob-toc-btn { display: none; width: 100%; margin-bottom: 14px; text-align: left; justify-content: space-between; }
+    .mob-toc-menu { display: none; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 8px; margin-bottom: 14px; }
+    .mob-toc-menu a { display: block; padding: 8px 12px; font-size: 14px; color: var(--text-2); text-decoration: none; border-radius: 6px; }
+    .mob-toc-menu a:hover { background: var(--pastel-yellow); color: var(--color-accent); }
 
-    .legal-footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-    .legal-footer span { font-size: 12px; color: var(--text-3); }
-
-    .legal-toc-mobile-btn { display: none; width: 100%; padding: 12px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-weight: 700; color: var(--text-2); cursor: pointer; margin-bottom: 16px; font-family: inherit; text-align: left; justify-content: space-between; align-items: center; }
-    .legal-toc-mobile-menu { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; margin-bottom: 16px; display: none; }
-    .legal-toc-mobile-menu a { display: block; padding: 8px 12px; font-size: 14px; color: var(--text-2); text-decoration: none; border-radius: 6px; }
-    .legal-toc-mobile-menu a:hover { background: var(--bg); color: #b45309; }
-
-    @media (max-width: 900px) { .legal-toc { display: none; } .legal-toc-mobile-btn { display: flex; } .legal-card { padding: 24px 22px; } }
-    @media (max-width: 640px) { .legal-layout { padding: 20px var(--page-padding) 60px; } .role-cards, .rule-grid { flex-direction: column; } }
+    @media (max-width: 960px) { .legal-toc { display: none; } .mob-toc-btn { display: flex; } }
+    @media (max-width: 640px) { .legal-body { padding: 20px var(--page-padding) 60px; } .role-grid, .rule-grid { grid-template-columns: 1fr; } .contact-row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
   <nav class="navbar" id="navbar">
-    <a class="nav-logo" href="/index.html">
-      <img src="../fn_logo2.png" alt="FestNest" class="logo-img" onerror="this.style.display='none'" />
-      <span class="logo-text">FestNest</span>
-    </a>
+    <a class="nav-logo" href="../index.html"><span class="nest-icon">🪺</span> FestNest</a>
     <div class="nav-links">
-      <a class="nav-link" href="/index.html">Home</a>
-      <a class="nav-link" href="/pages/events.html">Events</a>
-      <a class="nav-link" href="/pages/post-event.html">Post Event</a>
-      <a class="nav-link" href="/pages/saved.html">Saved</a>
-      <a class="nav-link" href="/pages/about.html">Why FestNest</a>
+      <a class="nav-link" href="../index.html">Home</a>
+      <a class="nav-link" href="events.html">Events</a>
+      <a class="nav-link" href="post-event.html">Post Event</a>
+      <a class="nav-link" href="saved.html">Saved</a>
+      <a class="nav-link" href="search.html">Search</a>
+      <a class="nav-link" href="about.html">Why FestNest</a>
     </div>
     <div class="nav-actions">
       <button class="btn btn-outline" id="navLoginBtn">Log In</button>
@@ -170,11 +108,13 @@
   </nav>
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <a class="drawer-link" href="/index.html">🏠 Home</a>
-    <a class="drawer-link" href="/pages/events.html">🎉 Events</a>
-    <a class="drawer-link" href="/pages/post-event.html">➕ Post Event</a>
-    <a class="drawer-link" href="/pages/saved.html">🔖 Saved</a>
-    <a class="drawer-link" href="/pages/about.html">💡 Why FestNest</a>
+    <a class="drawer-link" href="../index.html">🏠 Home</a>
+    <a class="drawer-link" href="events.html">🎉 Events</a>
+    <a class="drawer-link" href="post-event.html">➕ Post Event</a>
+    <a class="drawer-link" href="saved.html">🔖 Saved Events</a>
+    <a class="drawer-link" href="search.html">🔍 Search</a>
+    <a class="drawer-link" href="about.html">💡 Why FestNest</a>
+    <a class="drawer-link" href="profile.html">👤 Profile</a>
     <div class="drawer-auth">
       <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
       <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
@@ -182,166 +122,164 @@
   </div>
 
   <div class="legal-page">
-    <div class="legal-hero">
-      <div class="legal-hero-badge">⚖️ Legal Agreement · India Jurisdiction</div>
-      <h1>Terms &amp; Conditions</h1>
-      <p>of Use for FestNest · India's Campus Event Platform</p>
-      <div class="legal-meta-chips">
-        <span class="legal-meta-chip">Last Updated: 6 April 2026</span>
-        <span class="legal-meta-chip">Effective: 6 April 2026</span>
-        <span class="legal-meta-chip">Indian Contract Act, 1872</span>
-        <span class="legal-meta-chip">IT Act, 2000</span>
+
+    <!-- HERO — same about-hero-section class and gradient -->
+    <div class="about-hero-section">
+      <span class="section-eyebrow">⚖️ Legally Binding Agreement · India</span>
+      <h1 class="about-hero-title">Terms &amp; Conditions</h1>
+      <p class="about-hero-desc">The legal agreement governing your use of FestNest — written clearly so every student and organizer understands exactly what applies to them.</p>
+      <div class="about-hero-chips">
+        <div class="about-chip">📅 Last Updated: 6 April 2026</div>
+        <div class="about-chip">🇮🇳 Indian Contract Act, 1872</div>
+        <div class="about-chip">💻 IT Act, 2000</div>
+        <div class="about-chip">🛡️ DPDP Act, 2023</div>
       </div>
     </div>
 
-    <div class="legal-layout">
+    <div class="legal-body">
+
       <aside class="legal-toc">
-        <div class="legal-toc-label">Sections</div>
-        <a class="legal-toc-link" href="#t1">01 Acceptance</a>
-        <a class="legal-toc-link" href="#t2">02 Eligibility</a>
-        <a class="legal-toc-link" href="#t3">03 Account Rules</a>
-        <a class="legal-toc-link" href="#t4">04 User Roles</a>
-        <a class="legal-toc-link" href="#t5">05 Event Posting</a>
-        <a class="legal-toc-link" href="#t6">06 Prohibited Conduct</a>
-        <a class="legal-toc-link" href="#t7">07 Intellectual Property</a>
-        <a class="legal-toc-link" href="#t8">08 Platform Availability</a>
-        <a class="legal-toc-link" href="#t9">09 Liability Limitation</a>
-        <a class="legal-toc-link" href="#t10">10 Indemnification</a>
-        <a class="legal-toc-link" href="#t11">11 Termination</a>
-        <a class="legal-toc-link" href="#t12">12 Dispute Resolution</a>
-        <a class="legal-toc-link" href="#t13">13 Governing Law</a>
-        <a class="legal-toc-link" href="#t14">14 Modifications</a>
-        <a class="legal-toc-link" href="#t15">15 Contact</a>
+        <div class="legal-toc-inner">
+          <div class="legal-toc-heading">Sections</div>
+          <a href="#t1">01 · Acceptance</a>
+          <a href="#t2">02 · Eligibility</a>
+          <a href="#t3">03 · Account Rules</a>
+          <a href="#t4">04 · User Roles</a>
+          <a href="#t5">05 · Event Posting</a>
+          <a href="#t6">06 · Prohibited Conduct</a>
+          <a href="#t7">07 · Intellectual Property</a>
+          <a href="#t8">08 · Platform Availability</a>
+          <a href="#t9">09 · Liability</a>
+          <a href="#t10">10 · Indemnification</a>
+          <a href="#t11">11 · Termination</a>
+          <a href="#t12">12 · Dispute Resolution</a>
+          <a href="#t13">13 · Governing Law</a>
+          <a href="#t14">14 · Modifications</a>
+          <a href="#t15">15 · Contact</a>
+        </div>
       </aside>
 
-      <main style="flex:1;min-width:0;">
-        <button class="legal-toc-mobile-btn" id="legalTocBtn">
-          <span>📋 Jump to section</span><span id="legalTocArrow">▼</span>
+      <main class="legal-main">
+
+        <button class="btn btn-ghost mob-toc-btn" id="mobTocBtn">
+          📋 Jump to a section <span id="mobTocArr">▼</span>
         </button>
-        <div class="legal-toc-mobile-menu" id="legalTocMenu">
-          <a href="#t1">01 Acceptance</a><a href="#t2">02 Eligibility</a>
-          <a href="#t3">03 Account Rules</a><a href="#t4">04 User Roles</a>
-          <a href="#t5">05 Event Posting</a><a href="#t6">06 Prohibited Conduct</a>
-          <a href="#t7">07 Intellectual Property</a><a href="#t8">08 Platform Availability</a>
-          <a href="#t9">09 Liability Limitation</a><a href="#t10">10 Indemnification</a>
-          <a href="#t11">11 Termination</a><a href="#t12">12 Dispute Resolution</a>
-          <a href="#t13">13 Governing Law</a><a href="#t14">14 Modifications</a>
-          <a href="#t15">15 Contact</a>
+        <div class="mob-toc-menu" id="mobTocMenu">
+          <a href="#t1">01 · Acceptance</a><a href="#t2">02 · Eligibility</a>
+          <a href="#t3">03 · Account Rules</a><a href="#t4">04 · User Roles</a>
+          <a href="#t5">05 · Event Posting</a><a href="#t6">06 · Prohibited Conduct</a>
+          <a href="#t7">07 · Intellectual Property</a><a href="#t8">08 · Platform Availability</a>
+          <a href="#t9">09 · Liability</a><a href="#t10">10 · Indemnification</a>
+          <a href="#t11">11 · Termination</a><a href="#t12">12 · Dispute Resolution</a>
+          <a href="#t13">13 · Governing Law</a><a href="#t14">14 · Modifications</a>
+          <a href="#t15">15 · Contact</a>
         </div>
 
-        <div class="legal-card">
+        <div class="sidebar-card" style="padding:36px 40px;">
 
           <div class="callout callout-blue">
             <div class="callout-label">📋 Plain-English Notice</div>
-            <p>These Terms are a legally binding agreement between you and FestNest Technologies Pvt. Ltd. Key points are highlighted throughout. If you do not agree, do not use FestNest.</p>
+            <p>These Terms are a legally binding agreement between you and FestNest Technologies Pvt. Ltd. Key obligations are highlighted throughout. If you do not agree, please do not use FestNest.</p>
           </div>
 
           <!-- T1 -->
-          <div class="legal-section" id="t1">
-            <h2 class="legal-h2"><span class="legal-num">01</span> Acceptance of Terms</h2>
-            <p class="legal-p">By accessing, registering on, or using FestNest in any way — whether as a student, event organizer, or visitor — you enter into a legally binding agreement with <strong>FestNest Technologies Pvt. Ltd.</strong> and agree to be bound by these Terms and Conditions ("Terms"), our <a href="/pages/privacy.html">Privacy Policy</a>, and any additional guidelines we publish.</p>
-            <p class="legal-p">These Terms are governed by the <strong>Indian Contract Act, 1872</strong>, the <strong>Information Technology Act, 2000</strong>, and all applicable Indian laws. Your use of FestNest constitutes a valid and binding acceptance of these Terms.</p>
-            <div class="callout callout-amber">
+          <div class="ls" id="t1">
+            <h2 class="ls-h2"><span class="ls-num">01</span> Acceptance of Terms</h2>
+            <p class="ls-p">By accessing, registering on, or using FestNest in any way — whether as a student, event organizer, or visitor — you enter into a legally binding agreement with <strong>FestNest Technologies Pvt. Ltd.</strong> and agree to be bound by these Terms and Conditions ("Terms"), our <a href="privacy.html" style="color:var(--color-primary);">Privacy Policy</a>, and any additional guidelines we publish.</p>
+            <p class="ls-p">These Terms are governed by the <strong>Indian Contract Act, 1872</strong>, the <strong>Information Technology Act, 2000</strong>, and all other applicable Indian laws. Your use of FestNest constitutes a valid and binding acceptance of these Terms.</p>
+            <div class="callout callout-yellow">
               <div class="callout-label">📅 Effective Date</div>
               <p>These Terms are effective from <strong>6 April 2026</strong>. Using FestNest on or after this date means you accept the current version.</p>
             </div>
           </div>
 
           <!-- T2 -->
-          <div class="legal-section" id="t2">
-            <h2 class="legal-h2"><span class="legal-num">02</span> User Eligibility</h2>
-            <p class="legal-p">To use FestNest, you must meet all of the following criteria:</p>
-            <ul class="legal-ul">
+          <div class="ls" id="t2">
+            <h2 class="ls-h2"><span class="ls-num">02</span> User Eligibility</h2>
+            <p class="ls-p">To use FestNest, you must meet all of the following criteria:</p>
+            <ul class="ls-ul">
               <li>You must be at least <strong>18 years of age</strong>. FestNest is not intended for persons under 18.</li>
               <li>You must be enrolled in, employed by, or affiliated with an Indian college, university, or educational institution.</li>
               <li>You must provide accurate, complete, and current registration information.</li>
               <li>You must not have had a previous FestNest account suspended or terminated for a Terms violation.</li>
               <li>You must have the legal capacity to enter into a binding contract under Indian law.</li>
             </ul>
-            <p class="legal-p">By registering, you represent and warrant that you meet all of the above criteria. FestNest Technologies Pvt. Ltd. reserves the right to verify eligibility and suspend non-compliant accounts.</p>
+            <p class="ls-p">By registering, you represent and warrant that you meet all of the above. FestNest Technologies Pvt. Ltd. reserves the right to verify eligibility and suspend non-compliant accounts.</p>
           </div>
 
           <!-- T3 -->
-          <div class="legal-section" id="t3">
-            <h2 class="legal-h2"><span class="legal-num">03</span> Account Responsibilities</h2>
-            <p class="legal-p">Your account is your responsibility. When you create a FestNest account, you agree to:</p>
-            <ul class="legal-ul">
+          <div class="ls" id="t3">
+            <h2 class="ls-h2"><span class="ls-num">03</span> Account Responsibilities</h2>
+            <p class="ls-p">When you create a FestNest account, you agree to:</p>
+            <ul class="ls-ul">
               <li>Provide truthful, accurate, and complete information during registration and keep it updated.</li>
               <li>Maintain the security and confidentiality of your login credentials. Do not share your password.</li>
               <li>Accept full responsibility for all activity that occurs under your account, whether or not you authorized it.</li>
-              <li>Immediately notify FestNest at <a href="mailto:support@festnest.in">support@festnest.in</a> if you suspect unauthorized access.</li>
+              <li>Immediately notify FestNest at <a href="mailto:support@festnest.in" style="color:var(--color-primary);">support@festnest.in</a> if you suspect unauthorized access to your account.</li>
               <li>Not create multiple accounts for the same person, or create accounts to circumvent a suspension.</li>
             </ul>
-            <div class="callout callout-amber">
+            <div class="callout callout-yellow">
               <div class="callout-label">⚠️ Account Security</div>
               <p>FestNest is not liable for any loss or damage arising from your failure to keep your credentials secure. If you lose access due to sharing credentials, we cannot guarantee full recovery.</p>
             </div>
           </div>
 
           <!-- T4 -->
-          <div class="legal-section" id="t4">
-            <h2 class="legal-h2"><span class="legal-num">04</span> User Roles &amp; Permissions</h2>
-            <p class="legal-p">FestNest operates a role-based system. Your role determines what you can do on the platform:</p>
-            <div class="role-cards">
-              <div class="role-card">
-                <div class="role-card-head" style="background:var(--pastel-blue);">
-                  <span class="role-card-icon">🎓</span>
-                  <div>
-                    <div class="role-card-title">Student</div>
-                    <span class="role-card-badge" style="background:var(--color-primary);color:#fff;">Default Role</span>
-                  </div>
-                </div>
-                <ul class="role-card-body">
-                  <li><span style="color:var(--color-primary)">›</span>Browse and search approved events</li>
-                  <li><span style="color:var(--color-primary)">›</span>Save (bookmark) events for later</li>
-                  <li><span style="color:var(--color-primary)">›</span>Register interest in events</li>
-                  <li><span style="color:var(--color-primary)">›</span>Manage your personal profile</li>
+          <div class="ls" id="t4">
+            <h2 class="ls-h2"><span class="ls-num">04</span> User Roles &amp; Permissions</h2>
+            <p class="ls-p">FestNest operates a role-based system. Your role determines what you can do on the platform:</p>
+            <div class="role-grid">
+              <div class="role-card" style="background:var(--pastel-blue);">
+                <div class="role-icon">🎓</div>
+                <div class="role-title">Student</div>
+                <span class="role-badge" style="background:var(--color-primary);color:#fff;">Default Role</span>
+                <ul class="role-list">
+                  <li><span style="color:var(--color-primary);font-weight:800;">›</span> Browse and search approved events</li>
+                  <li><span style="color:var(--color-primary);font-weight:800;">›</span> Save (bookmark) events for later</li>
+                  <li><span style="color:var(--color-primary);font-weight:800;">›</span> Register interest in events</li>
+                  <li><span style="color:var(--color-primary);font-weight:800;">›</span> Manage your personal profile</li>
                 </ul>
               </div>
-              <div class="role-card">
-                <div class="role-card-head" style="background:var(--pastel-purple);">
-                  <span class="role-card-icon">🏢</span>
-                  <div>
-                    <div class="role-card-title">Organizer</div>
-                    <span class="role-card-badge" style="background:#7c3aed;color:#fff;">Event Creator</span>
-                  </div>
-                </div>
-                <ul class="role-card-body">
-                  <li><span style="color:#7c3aed">›</span>All Student permissions, plus:</li>
-                  <li><span style="color:#7c3aed">›</span>Submit events for admin review</li>
-                  <li><span style="color:#7c3aed">›</span>Upload event posters &amp; PDFs</li>
-                  <li><span style="color:#7c3aed">›</span>Manage and delete own event listings</li>
-                  <li><span style="color:#7c3aed">›</span>Access organizer dashboard</li>
+              <div class="role-card" style="background:var(--pastel-purple);">
+                <div class="role-icon">🏢</div>
+                <div class="role-title">Organizer</div>
+                <span class="role-badge" style="background:#7c3aed;color:#fff;">Event Creator</span>
+                <ul class="role-list">
+                  <li><span style="color:#7c3aed;font-weight:800;">›</span> All Student permissions, plus:</li>
+                  <li><span style="color:#7c3aed;font-weight:800;">›</span> Submit events for admin review</li>
+                  <li><span style="color:#7c3aed;font-weight:800;">›</span> Upload event posters &amp; PDFs</li>
+                  <li><span style="color:#7c3aed;font-weight:800;">›</span> Manage and delete own event listings</li>
+                  <li><span style="color:#7c3aed;font-weight:800;">›</span> Access organizer dashboard</li>
                 </ul>
               </div>
             </div>
-            <p class="legal-p">A third role — <strong>Admin</strong> — is reserved exclusively for FestNest Technologies Pvt. Ltd. personnel and cannot be requested by users. Misrepresenting your role to gain unauthorized access is a material breach of these Terms.</p>
+            <p class="ls-p">A third role — <strong>Admin</strong> — is reserved exclusively for FestNest Technologies Pvt. Ltd. personnel and cannot be requested by users. Misrepresenting your role to gain unauthorized access is a material breach of these Terms.</p>
           </div>
 
           <!-- T5 -->
-          <div class="legal-section" id="t5">
-            <h2 class="legal-h2"><span class="legal-num">05</span> Event Posting Rules</h2>
-            <p class="legal-p">Organizers who submit events to FestNest agree to the following terms for every submission:</p>
-            <ul class="legal-ul">
-              <li>The event must be a genuine, real college or campus event — hackathons, workshops, cultural fests, sports meets, seminars, or similar activities.</li>
-              <li>All information submitted — dates, venues, prize amounts, eligibility, contact details — must be accurate and verifiable.</li>
-              <li>You must have the authority to post the event (you represent the organizing institution, club, or body).</li>
-              <li>Event poster images and brochures must be original or properly licensed.</li>
+          <div class="ls" id="t5">
+            <h2 class="ls-h2"><span class="ls-num">05</span> Event Posting Rules</h2>
+            <p class="ls-p">Organizers who submit events to FestNest agree that every submission must:</p>
+            <ul class="ls-ul">
+              <li>Be a genuine, real college or campus event — hackathons, workshops, cultural fests, sports meets, seminars, or similar academic or extracurricular activities.</li>
+              <li>Contain accurate and verifiable information — dates, venues, prize amounts, eligibility criteria, and contact details.</li>
+              <li>Be submitted by someone with authority to represent the organizing institution, club, or body.</li>
+              <li>Use only original or properly licensed event poster images and brochures.</li>
             </ul>
-            <h3 class="legal-h3">Review & Approval Process</h3>
-            <p class="legal-p">All event submissions are reviewed by FestNest administrators before being published. We reserve the right to approve, reject, or request changes to any submission at our sole discretion. Rejection does not entitle the organizer to any compensation.</p>
-            <div class="callout callout-amber">
+            <h3 class="ls-h3">Review & Approval Process</h3>
+            <p class="ls-p">All event submissions are reviewed by FestNest administrators before being published. We reserve the right to approve, reject, or request changes to any submission at our sole discretion, without being required to give reasons.</p>
+            <div class="callout callout-yellow">
               <div class="callout-label">📣 Material Changes to Events</div>
               <p>If a published event is cancelled, postponed, or materially changes (venue, date, prizes), you are required to update FestNest immediately. Failure to do so may result in event removal and account suspension.</p>
             </div>
           </div>
 
           <!-- T6 -->
-          <div class="legal-section" id="t6">
-            <h2 class="legal-h2"><span class="legal-num">06</span> Prohibited Content &amp; Conduct</h2>
-            <p class="legal-p">The following is strictly prohibited on FestNest. Violations may result in immediate account suspension and legal action:</p>
+          <div class="ls" id="t6">
+            <h2 class="ls-h2"><span class="ls-num">06</span> Prohibited Content &amp; Conduct</h2>
+            <p class="ls-p">The following is strictly prohibited on FestNest. Violations may result in immediate account suspension and legal action:</p>
             <div class="rule-grid">
-              <div class="rule-col rule-col--ok">
+              <div class="rule-ok">
                 <div class="rule-col-label">✓ Permitted</div>
                 <div class="rule-item"><span class="rule-icon">✓</span>Genuine college &amp; campus events</div>
                 <div class="rule-item"><span class="rule-icon">✓</span>Academic competitions &amp; fests</div>
@@ -350,38 +288,37 @@
                 <div class="rule-item"><span class="rule-icon">✓</span>Cultural &amp; literary festivals</div>
                 <div class="rule-item"><span class="rule-icon">✓</span>Inter-college sports events</div>
               </div>
-              <div class="rule-col rule-col--no">
+              <div class="rule-no">
                 <div class="rule-col-label">✕ Prohibited</div>
                 <div class="rule-item"><span class="rule-icon">✕</span>Fake, misleading, or fraudulent events</div>
                 <div class="rule-item"><span class="rule-icon">✕</span>Events promoting illegal activity</div>
                 <div class="rule-item"><span class="rule-icon">✕</span>Spam or duplicate listings</div>
                 <div class="rule-item"><span class="rule-icon">✕</span>Commercial sales or MLM schemes</div>
                 <div class="rule-item"><span class="rule-icon">✕</span>Offensive or discriminatory content</div>
-                <div class="rule-item"><span class="rule-icon">✕</span>Unauthorized use of trademarks</div>
                 <div class="rule-item"><span class="rule-icon">✕</span>Political rallies or propaganda</div>
               </div>
             </div>
-            <p class="legal-p">You also agree not to: use automated bots or scrapers on the platform; interfere with FestNest's technical infrastructure; impersonate any person or organization; or engage in any activity that violates Indian law.</p>
+            <p class="ls-p">You also agree not to: use automated bots or scrapers on the platform; interfere with FestNest's technical infrastructure; impersonate any person or organization; or engage in any activity that violates Indian law.</p>
           </div>
 
           <!-- T7 -->
-          <div class="legal-section" id="t7">
-            <h2 class="legal-h2"><span class="legal-num">07</span> Intellectual Property</h2>
-            <h3 class="legal-h3">FestNest's Intellectual Property</h3>
-            <p class="legal-p">The FestNest brand, logo, platform design, software, database structure, and all associated materials are the exclusive intellectual property of <strong>FestNest Technologies Pvt. Ltd.</strong>, protected under applicable Indian IP laws. You may not copy, reproduce, modify, or commercially exploit any FestNest materials without our written permission.</p>
-            <h3 class="legal-h3">Your Content & Licenses</h3>
-            <p class="legal-p">When you submit content to FestNest — event descriptions, images, PDFs, profile information — you retain ownership of that content. By submitting it, you grant FestNest Technologies Pvt. Ltd. a <strong>non-exclusive, royalty-free, worldwide license</strong> to host, display, reproduce, and distribute your content within FestNest for the purpose of operating the service. This license ends when you delete the content or close your account, subject to reasonable technical delays and legal retention requirements.</p>
+          <div class="ls" id="t7">
+            <h2 class="ls-h2"><span class="ls-num">07</span> Intellectual Property</h2>
+            <h3 class="ls-h3">FestNest's Intellectual Property</h3>
+            <p class="ls-p">The FestNest brand, logo, platform design, software, database structure, and all associated materials are the exclusive intellectual property of <strong>FestNest Technologies Pvt. Ltd.</strong>, protected under applicable Indian IP laws. You may not copy, reproduce, modify, or commercially exploit any FestNest materials without our written permission.</p>
+            <h3 class="ls-h3">Your Content & Licenses</h3>
+            <p class="ls-p">When you submit content to FestNest — event descriptions, images, PDFs, profile information — you retain ownership. By submitting, you grant FestNest Technologies Pvt. Ltd. a <strong>non-exclusive, royalty-free, worldwide license</strong> to host, display, reproduce, and distribute your content within FestNest to operate the service. This license ends when you delete the content or close your account, subject to legal retention requirements.</p>
             <div class="callout callout-blue">
               <div class="callout-label">©️ Reporting IP Violations</div>
-              <p>If you believe content on FestNest infringes your intellectual property rights, contact <a href="mailto:legal@festnest.in">legal@festnest.in</a> with details. We will investigate and respond promptly.</p>
+              <p>If you believe content on FestNest infringes your intellectual property rights, contact <a href="mailto:legal@festnest.in" style="color:var(--color-primary);">legal@festnest.in</a> with details. We will investigate and respond promptly.</p>
             </div>
           </div>
 
           <!-- T8 -->
-          <div class="legal-section" id="t8">
-            <h2 class="legal-h2"><span class="legal-num">08</span> Platform Availability &amp; Changes</h2>
-            <p class="legal-p">FestNest is provided on an "as is" and "as available" basis. We do not warrant that the platform will be available 100% of the time, error-free, or free from interruptions.</p>
-            <ul class="legal-ul">
+          <div class="ls" id="t8">
+            <h2 class="ls-h2"><span class="ls-num">08</span> Platform Availability &amp; Changes</h2>
+            <p class="ls-p">FestNest is provided on an "as is" and "as available" basis. We do not warrant that the platform will be available 100% of the time, error-free, or free from interruptions.</p>
+            <ul class="ls-ul">
               <li>We may take FestNest offline for maintenance, upgrades, or emergency fixes — with or without prior notice.</li>
               <li>We reserve the right to modify, add, remove, or suspend any feature at any time.</li>
               <li>We are not responsible for loss of data or functionality resulting from planned or unplanned downtime.</li>
@@ -390,10 +327,10 @@
           </div>
 
           <!-- T9 -->
-          <div class="legal-section" id="t9">
-            <h2 class="legal-h2"><span class="legal-num">09</span> Limitation of Liability</h2>
-            <p class="legal-p">To the maximum extent permitted by applicable Indian law, <strong>FestNest Technologies Pvt. Ltd.</strong>, its directors, employees, and affiliates shall not be liable for:</p>
-            <ul class="legal-ul">
+          <div class="ls" id="t9">
+            <h2 class="ls-h2"><span class="ls-num">09</span> Limitation of Liability</h2>
+            <p class="ls-p">To the maximum extent permitted by applicable Indian law, <strong>FestNest Technologies Pvt. Ltd.</strong>, its directors, employees, and affiliates shall not be liable for:</p>
+            <ul class="ls-ul">
               <li>Any indirect, incidental, special, punitive, or consequential damages arising from your use of FestNest.</li>
               <li>Loss of data, revenue, opportunities, or goodwill.</li>
               <li>Actions or omissions of event organizers — including cancellations, fraudulent events, or failure to deliver prizes.</li>
@@ -401,18 +338,18 @@
               <li>Third-party service failures (Firebase, Cloudinary, email providers, hosting providers).</li>
               <li>Unauthorized access to your account resulting from your failure to secure your credentials.</li>
             </ul>
-            <div class="callout callout-amber">
+            <div class="callout callout-yellow">
               <div class="callout-label">🏛️ FestNest is a Discovery Platform</div>
               <p>FestNest connects students with events. We are not the organizer of any event listed by third-party users. We do not verify prize claims, manage registrations, or guarantee any event will take place. Your participation in any event is at your own risk.</p>
             </div>
-            <p class="legal-p">Our maximum aggregate liability to you for any claim shall not exceed the amount you have paid to FestNest in the 3 months preceding the claim, or <strong>₹1,000</strong>, whichever is lower.</p>
+            <p class="ls-p">Our maximum aggregate liability to you for any claim shall not exceed the amount you have paid to FestNest in the 3 months preceding the claim, or <strong>₹1,000 (Indian Rupees One Thousand)</strong>, whichever is lower.</p>
           </div>
 
           <!-- T10 -->
-          <div class="legal-section" id="t10">
-            <h2 class="legal-h2"><span class="legal-num">10</span> Indemnification</h2>
-            <p class="legal-p">You agree to indemnify, defend, and hold harmless <strong>FestNest Technologies Pvt. Ltd.</strong>, its directors, officers, employees, and agents from and against any claims, damages, losses, costs, and expenses (including reasonable legal fees) arising out of or relating to:</p>
-            <ul class="legal-ul">
+          <div class="ls" id="t10">
+            <h2 class="ls-h2"><span class="ls-num">10</span> Indemnification</h2>
+            <p class="ls-p">You agree to indemnify, defend, and hold harmless <strong>FestNest Technologies Pvt. Ltd.</strong>, its directors, officers, employees, and agents from and against any claims, damages, losses, costs, and expenses (including reasonable legal fees) arising out of or relating to:</p>
+            <ul class="ls-ul">
               <li>Your use of FestNest in violation of these Terms.</li>
               <li>Any content you submit, post, or transmit through FestNest.</li>
               <li>Your violation of any applicable law or third-party rights.</li>
@@ -421,23 +358,23 @@
           </div>
 
           <!-- T11 -->
-          <div class="legal-section" id="t11">
-            <h2 class="legal-h2"><span class="legal-num">11</span> Termination &amp; Suspension</h2>
-            <h3 class="legal-h3">Termination by You</h3>
-            <p class="legal-p">You may close your account at any time by emailing <a href="mailto:support@festnest.in">support@festnest.in</a>. We will process it within 30 days and delete your personal data per our <a href="/pages/privacy.html">Privacy Policy</a>.</p>
-            <h3 class="legal-h3">Suspension or Termination by FestNest</h3>
-            <p class="legal-p">We reserve the right to suspend or permanently terminate your account — with or without notice — if we reasonably believe you have violated these Terms, submitted fraudulent content, engaged in abusive behavior, or used FestNest for unauthorized purposes.</p>
-            <div class="callout callout-red">
+          <div class="ls" id="t11">
+            <h2 class="ls-h2"><span class="ls-num">11</span> Termination &amp; Suspension</h2>
+            <h3 class="ls-h3">Termination by You</h3>
+            <p class="ls-p">You may close your account at any time by emailing <a href="mailto:support@festnest.in" style="color:var(--color-primary);">support@festnest.in</a>. We will process it within 30 days and delete your personal data per our <a href="privacy.html" style="color:var(--color-primary);">Privacy Policy</a>.</p>
+            <h3 class="ls-h3">Suspension or Termination by FestNest</h3>
+            <p class="ls-p">We reserve the right to suspend or permanently terminate your account — with or without notice — if we reasonably believe you have violated these Terms, submitted fraudulent content, engaged in abusive behavior, or used FestNest for unauthorized purposes.</p>
+            <div class="callout callout-pink">
               <div class="callout-label">🚫 Effect of Termination</div>
-              <p>On termination, your right to use FestNest ceases immediately. Provisions that by their nature should survive — including intellectual property, indemnification, and dispute resolution — will continue to apply.</p>
+              <p>On termination, your right to use FestNest ceases immediately. Provisions that by their nature should survive — intellectual property, indemnification, and dispute resolution — will continue to apply.</p>
             </div>
           </div>
 
           <!-- T12 -->
-          <div class="legal-section" id="t12">
-            <h2 class="legal-h2"><span class="legal-num">12</span> Dispute Resolution</h2>
-            <p class="legal-p">We prefer to resolve disputes informally. Contact us first at <a href="mailto:support@festnest.in">support@festnest.in</a>. We will make a good-faith effort to resolve the issue within 30 days.</p>
-            <p class="legal-p">If informal resolution fails, disputes shall be referred to binding arbitration under the <strong>Arbitration and Conciliation Act, 1996</strong>. The seat of arbitration shall be in India. The language of arbitration shall be English.</p>
+          <div class="ls" id="t12">
+            <h2 class="ls-h2"><span class="ls-num">12</span> Dispute Resolution</h2>
+            <p class="ls-p">We prefer to resolve disputes informally. Contact us first at <a href="mailto:support@festnest.in" style="color:var(--color-primary);">support@festnest.in</a> — we will make a good-faith effort to resolve the issue within 30 days.</p>
+            <p class="ls-p">If informal resolution fails, disputes shall be referred to binding arbitration under the <strong>Arbitration and Conciliation Act, 1996</strong>. The seat of arbitration shall be in India. The language shall be English.</p>
             <div class="callout callout-blue">
               <div class="callout-label">⚖️ Consumer Rights</div>
               <p>Nothing in this clause limits your rights under the Consumer Protection Act, 2019 or the Information Technology Act, 2000. You retain the right to approach appropriate consumer or legal forums under Indian law.</p>
@@ -445,10 +382,10 @@
           </div>
 
           <!-- T13 -->
-          <div class="legal-section" id="t13">
-            <h2 class="legal-h2"><span class="legal-num">13</span> Governing Law</h2>
-            <p class="legal-p">These Terms are governed exclusively by the laws of India, including:</p>
-            <ul class="legal-ul">
+          <div class="ls" id="t13">
+            <h2 class="ls-h2"><span class="ls-num">13</span> Governing Law</h2>
+            <p class="ls-p">These Terms are governed exclusively by the laws of India, including:</p>
+            <ul class="ls-ul">
               <li>Indian Contract Act, 1872</li>
               <li>Information Technology Act, 2000 and its amendments</li>
               <li>Digital Personal Data Protection Act, 2023</li>
@@ -456,44 +393,44 @@
               <li>Copyright Act, 1957</li>
               <li>Bharatiya Nyaya Sanhita (as applicable)</li>
             </ul>
-            <p class="legal-p">For matters not resolved through arbitration, the parties submit to the exclusive jurisdiction of the competent courts in India.</p>
+            <p class="ls-p">For matters not resolved through arbitration, the parties submit to the exclusive jurisdiction of the competent courts in India.</p>
           </div>
 
           <!-- T14 -->
-          <div class="legal-section" id="t14">
-            <h2 class="legal-h2"><span class="legal-num">14</span> Modifications to These Terms</h2>
-            <ul class="legal-ul">
+          <div class="ls" id="t14">
+            <h2 class="ls-h2"><span class="ls-num">14</span> Modifications to These Terms</h2>
+            <ul class="ls-ul">
               <li>The "Last Updated" date at the top reflects the most recent version.</li>
-              <li>For material changes that affect your rights, we will notify you via email at least 14 days before they take effect.</li>
+              <li>For material changes that affect your rights, we will notify you via email at least <strong>14 days</strong> before they take effect.</li>
               <li>For non-material changes, we will update the page and notify you on your next login.</li>
-              <li>Continued use of FestNest after updated Terms take effect constitutes acceptance.</li>
+              <li>Continued use of FestNest after updated Terms take effect constitutes acceptance. If you disagree, you may close your account before the effective date.</li>
             </ul>
           </div>
 
           <!-- T15 -->
-          <div class="legal-section" id="t15">
-            <h2 class="legal-h2"><span class="legal-num">15</span> Contact Information</h2>
-            <div class="contact-grid">
+          <div class="ls" id="t15">
+            <h2 class="ls-h2"><span class="ls-num">15</span> Contact Information</h2>
+            <div class="contact-row">
               <div class="contact-card">
-                <div class="contact-card-role" style="color:#b45309;">General Support</div>
-                <a class="contact-card-email" href="mailto:support@festnest.in">support@festnest.in</a>
-                <div class="contact-card-note">Questions about your account, event listings, or platform usage.</div>
+                <div class="contact-role">General Support</div>
+                <a class="contact-email" href="mailto:support@festnest.in">support@festnest.in</a>
+                <div class="contact-note">Questions about your account, event listings, or platform usage.</div>
               </div>
               <div class="contact-card">
-                <div class="contact-card-role" style="color:var(--color-primary);">Legal & IP Queries</div>
-                <a class="contact-card-email" href="mailto:legal@festnest.in">legal@festnest.in</a>
-                <div class="contact-card-note">Intellectual property claims, legal notices, and compliance matters.</div>
+                <div class="contact-role" style="color:var(--color-primary);">Legal &amp; IP Queries</div>
+                <a class="contact-email" href="mailto:legal@festnest.in">legal@festnest.in</a>
+                <div class="contact-note">IP claims, legal notices, and compliance inquiries.</div>
               </div>
               <div class="contact-card">
-                <div class="contact-card-role" style="color:#7c3aed;">Grievance Officer</div>
-                <a class="contact-card-email" href="mailto:grievance@festnest.in">grievance@festnest.in</a>
-                <div class="contact-card-note">Formal complaints. Acknowledged within 48 hours, resolved within 30 days.</div>
+                <div class="contact-role" style="color:#7c3aed;">Grievance Officer</div>
+                <a class="contact-email" href="mailto:grievance@festnest.in">grievance@festnest.in</a>
+                <div class="contact-note">Formal complaints — acknowledged within 48 hours.</div>
               </div>
             </div>
-            <p class="legal-p"><strong>Company:</strong> FestNest Technologies Pvt. Ltd.<br><strong>Registered in:</strong> India<br><strong>Jurisdiction:</strong> Courts of India</p>
+            <p class="ls-p"><strong>Company:</strong> FestNest Technologies Pvt. Ltd.<br><strong>Registered in:</strong> India · <strong>Jurisdiction:</strong> Courts of India</p>
           </div>
 
-          <div class="legal-footer">
+          <div class="legal-footer-row">
             <span>🪺 FestNest · FestNest Technologies Pvt. Ltd.</span>
             <span>Last updated: 6 April 2026</span>
           </div>
@@ -503,54 +440,43 @@
     </div>
   </div>
 
-  <!-- Same footer and auth modal as all pages -->
   <footer class="footer">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <span class="footer-logo">🪺 FestNest</span>
-        <p class="footer-desc">India's centralized campus event discovery platform.</p>
-        <div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a></div>
-      </div>
-      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="/pages/events.html">Browse Events</a><a class="footer-link" href="/pages/post-event.html">Post an Event</a><a class="footer-link" href="/pages/saved.html">Saved Events</a></div>
-      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="/pages/about.html">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a></div>
-      <div class="footer-col"><h4>Legal</h4><a class="footer-link" href="/pages/privacy.html">Privacy Policy</a><a class="footer-link" href="/pages/terms.html">Terms &amp; Conditions</a><a class="footer-link" href="#">Help Center</a></div>
+      <div class="footer-brand"><span class="footer-logo">🪺 FestNest</span><p class="footer-desc">India's centralized campus event discovery platform. Helping students discover opportunities, connect with peers, and win at inter-college competitions.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a></div></div>
+      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="events.html">Browse Events</a><a class="footer-link" href="post-event.html">Post an Event</a><a class="footer-link" href="saved.html">Saved Events</a><a class="footer-link" href="search.html">Search</a></div>
+      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="about.html">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a></div>
+      <div class="footer-col"><h4>Legal</h4><a class="footer-link" href="privacy.html">Privacy Policy</a><a class="footer-link" href="terms.html">Terms &amp; Conditions</a><a class="footer-link" href="#">Help Center</a><a class="footer-link" href="#">Contact Us</a></div>
     </div>
-    <div class="footer-bottom">
-      <div class="footer-bottom-text">© 2026 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div>
-      <div class="footer-bottom-links">
-        <a class="footer-bottom-link" href="/pages/privacy.html">Privacy</a>
-        <a class="footer-bottom-link" href="/pages/terms.html">Terms</a>
-      </div>
-    </div>
+    <div class="footer-bottom"><div class="footer-bottom-text">© 2026 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div><div class="footer-bottom-links"><a class="footer-bottom-link" href="privacy.html">Privacy</a><a class="footer-bottom-link" href="terms.html">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div></div>
   </footer>
 
   <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
     <div class="modal-box modal-box--auth">
       <button class="modal-close" id="authModalClose">✕</button>
       <div class="auth-logo">🪺 FestNest</div>
-      <div class="auth-tabs">
-        <button class="auth-tab" id="tab-login">Log In</button>
-        <button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button>
-      </div>
+      <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
       <form class="auth-form" id="login-form" style="display:none;" novalidate>
         <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
         <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
         <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
         <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
       </form>
       <form class="auth-form" id="signup-form" novalidate>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Arjun" /></div>
-          <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Sharma" /></div>
-        </div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="you@college.edu" /></div>
-        <div class="form-group"><label class="form-label">College</label><input class="form-input" type="text" placeholder="e.g. IIT Bombay" /></div>
+        <div class="form-row"><div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Arjun" /></div><div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Sharma" /></div></div>
+        <div class="form-group"><label class="form-label">College Email</label><input class="form-input" type="email" placeholder="you@college.edu" /></div>
+        <div class="form-group"><label class="form-label">College Name</label><input class="form-input" type="text" placeholder="e.g. IIT Bombay" /></div>
+        <div class="form-group"><label class="form-label">Year &amp; Branch</label><input class="form-input" type="text" placeholder="e.g. 3rd Year CSE" /></div>
         <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min. 8 characters" /></div>
         <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-terms">By signing up you agree to our <a href="terms.html" target="_blank">Terms</a> &amp; <a href="privacy.html" target="_blank">Privacy Policy</a></p>
+        <p class="auth-footer-text">Have account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
       </form>
     </div>
   </div>
-
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
   <script src="../assets/js/api.js"></script>
@@ -559,29 +485,28 @@
   <script src="../assets/js/navbar.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script>
-    const tocLinks = document.querySelectorAll('.legal-toc-link');
-    const sections = document.querySelectorAll('.legal-section');
+    const tocLinks = document.querySelectorAll('.legal-toc a');
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           tocLinks.forEach(l => l.classList.remove('active'));
-          const a = document.querySelector(`.legal-toc-link[href="#${e.target.id}"]`);
+          const a = document.querySelector(`.legal-toc a[href="#${e.target.id}"]`);
           if (a) a.classList.add('active');
         }
       });
     }, { rootMargin: '-15% 0px -70% 0px' });
-    sections.forEach(s => obs.observe(s));
+    document.querySelectorAll('.ls').forEach(s => obs.observe(s));
 
-    const tocBtn  = document.getElementById('legalTocBtn');
-    const tocMenu = document.getElementById('legalTocMenu');
-    const tocArr  = document.getElementById('legalTocArrow');
-    tocBtn?.addEventListener('click', () => {
-      const open = tocMenu.style.display === 'block';
-      tocMenu.style.display = open ? 'none' : 'block';
-      tocArr.textContent    = open ? '▼' : '▲';
+    const mobBtn  = document.getElementById('mobTocBtn');
+    const mobMenu = document.getElementById('mobTocMenu');
+    const mobArr  = document.getElementById('mobTocArr');
+    mobBtn?.addEventListener('click', () => {
+      const open = mobMenu.style.display === 'block';
+      mobMenu.style.display = open ? 'none' : 'block';
+      mobArr.textContent    = open ? '▼' : '▲';
     });
-    tocMenu?.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => { tocMenu.style.display='none'; tocArr.textContent='▼'; });
+    mobMenu?.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => { mobMenu.style.display='none'; mobArr.textContent='▼'; });
     });
   </script>
 </body>

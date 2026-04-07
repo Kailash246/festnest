@@ -1,19 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="FestNest Privacy Policy — how we collect, use, and protect your personal data. DPDP Act 2023 compliant." />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FestNest Privacy Policy — DPDP Act 2023 compliant. How we collect, use and protect your personal data." />
   <title>Privacy Policy — FestNest</title>
-
-  <!-- Favicon logo -->
-  <link rel="icon" type="image/png" href="/assets/images/fn_logo2.png?v=1">
-  <link rel="shortcut icon" href="/assets/images/fn_logo2.png?v=1">
-  <link rel="apple-touch-icon" href="/assets/images/fn_logo2.png?v=1">
-
-  <!-- Same fonts + CSS as every other page -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/variables.css" />
   <link rel="stylesheet" href="../assets/css/reset.css" />
@@ -23,235 +14,111 @@
   <link rel="stylesheet" href="../assets/css/footer.css" />
   <link rel="stylesheet" href="../assets/css/animations.css" />
   <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
-
   <style>
-    /* ── Legal page layout — no new design, just structure ── */
+    /* ── Layout shell ── */
     .legal-page { padding-top: var(--nav-height); min-height: 100vh; background: var(--bg); }
+    .legal-body  { display: flex; gap: 28px; padding: 32px var(--page-padding) 80px; max-width: var(--container-max); margin: 0 auto; align-items: flex-start; }
 
-    .legal-hero {
-      background: linear-gradient(135deg, #042f2e 0%, #134e4a 50%, #0f172a 100%);
-      padding: 48px var(--page-padding) 40px;
-      text-align: center;
-    }
-    .legal-hero-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(13,148,136,.2); border: 1px solid rgba(13,148,136,.4);
-      border-radius: 20px; padding: 4px 14px; margin-bottom: 16px;
-      font-size: 12px; color: #5eead4; font-weight: 700; letter-spacing: .04em;
-    }
-    .legal-hero h1 {
-      font-family: 'Clash Display', sans-serif; font-size: clamp(1.8rem,4vw,2.6rem);
-      font-weight: 700; color: #fff; margin-bottom: 8px;
-    }
-    .legal-hero p { color: #94a3b8; font-size: 15px; margin-bottom: 20px; }
-    .legal-meta-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-    .legal-meta-chip {
-      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
-      border-radius: 6px; padding: 4px 12px; font-size: 12px; color: #94a3b8;
-    }
+    /* ── Sticky TOC — reuses .sidebar-card style ── */
+    .legal-toc { width: 230px; flex-shrink: 0; position: sticky; top: calc(var(--nav-height) + 20px); }
+    .legal-toc-inner { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--border); }
+    .legal-toc-heading { font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px; }
+    .legal-toc a { display: block; padding: 7px 10px; font-size: 13px; color: var(--text-2); text-decoration: none; border-left: 2px solid transparent; border-radius: 0 6px 6px 0; transition: var(--transition); line-height: 1.4; font-weight: 500; }
+    .legal-toc a:hover, .legal-toc a.active { color: var(--color-primary); background: var(--pastel-purple); border-left-color: var(--color-primary); font-weight: 700; }
 
-    /* ── Two-column layout ── */
-    .legal-layout {
-      display: flex; gap: 32px; padding: 32px var(--page-padding) 80px;
-      max-width: var(--container-max); margin: 0 auto; align-items: flex-start;
-    }
+    /* ── Main content ── */
+    .legal-main { flex: 1; min-width: 0; }
 
-    /* ── Sticky TOC sidebar ── */
-    .legal-toc {
-      width: 200px; flex-shrink: 0; position: sticky;
-      top: calc(var(--nav-height) + 24px);
+    /* ── Section ── */
+    .ls { scroll-margin-top: calc(var(--nav-height) + 24px); }
+    .ls-h2 {
+      font-family: 'Clash Display', sans-serif; font-size: 1.2rem; font-weight: 700;
+      color: var(--text-1); display: flex; align-items: center; gap: 10px;
+      margin: 40px 0 14px; padding-top: 24px; border-top: 2px solid var(--border);
     }
-    .legal-toc-label {
-      font-size: 10px; font-weight: 800; color: var(--text-3);
-      text-transform: uppercase; letter-spacing: .1em;
-      margin-bottom: 10px; padding-left: 8px;
+    .ls-h2:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
+    .ls-h2 .ls-num {
+      font-size: 11px; font-weight: 800; letter-spacing: .04em;
+      color: var(--color-primary); background: var(--pastel-purple);
+      border: 1px solid rgba(90,75,255,.2); padding: 3px 8px;
+      border-radius: 6px; flex-shrink: 0;
     }
-    .legal-toc-link {
-      display: block; padding: 7px 10px; font-size: 12.5px;
-      color: var(--text-3); text-decoration: none; font-weight: 500;
-      border-left: 2px solid transparent; border-radius: 0 6px 6px 0;
-      transition: var(--transition); line-height: 1.4;
-    }
-    .legal-toc-link:hover, .legal-toc-link.active {
-      color: #0d9488; background: #f0fdfa; border-left-color: #0d9488; font-weight: 700;
-    }
+    .ls-h3 { font-family: 'Clash Display', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-1); margin: 20px 0 8px; }
+    .ls-p { font-size: 15px; line-height: 1.85; color: var(--text-2); margin-bottom: 14px; }
+    .ls-ul { padding-left: 20px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 5px; }
+    .ls-ul li { font-size: 15px; line-height: 1.75; color: var(--text-2); }
 
-    /* ── Main content card ── */
-    .legal-card {
-      flex: 1; min-width: 0; background: var(--bg-card);
-      border-radius: var(--radius-xl); border: 1px solid var(--border);
-      padding: 40px 44px; box-shadow: var(--shadow-sm);
-    }
+    /* ── Callout boxes — use FestNest pastel colors ── */
+    .callout { padding: 14px 16px; border-radius: var(--radius); margin-bottom: 18px; }
+    .callout-purple { background: var(--pastel-purple); border-left: 3px solid var(--color-primary); }
+    .callout-yellow { background: var(--pastel-yellow); border-left: 3px solid var(--color-accent); }
+    .callout-pink   { background: var(--pastel-pink);   border-left: 3px solid #f5576c; }
+    .callout-label  { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+    .callout-purple .callout-label { color: var(--color-primary); }
+    .callout-yellow .callout-label { color: var(--color-accent); }
+    .callout-pink   .callout-label { color: #e53e3e; }
+    .callout p { font-size: 14px; line-height: 1.75; color: var(--text-2); margin: 0; }
 
-    /* ── Section headings ── */
-    .legal-section { scroll-margin-top: calc(var(--nav-height) + 24px); }
-    .legal-h2 {
-      font-family: 'Clash Display', sans-serif; font-size: 1.15rem; font-weight: 700;
-      color: var(--text-1); margin: 44px 0 14px; padding-top: 20px;
-      border-top: 2px solid var(--border);
-      display: flex; align-items: center; gap: 10px;
-    }
-    .legal-h2:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
-    .legal-num {
-      font-size: 10px; font-weight: 800; color: #0d9488;
-      background: #f0fdfa; border: 1px solid #0d948830;
-      padding: 3px 7px; border-radius: 5px; letter-spacing: .05em; flex-shrink: 0;
-    }
-    .legal-h3 {
-      font-family: 'Clash Display', sans-serif; font-size: 13px; font-weight: 700;
-      color: var(--text-1); margin: 20px 0 8px;
-      text-transform: uppercase; letter-spacing: .04em;
-    }
-
-    /* ── Text ── */
-    .legal-p {
-      font-size: 15px; line-height: 1.85; color: var(--text-2); margin-bottom: 14px;
-    }
-    .legal-ul {
-      padding-left: 20px; margin-bottom: 14px;
-      display: flex; flex-direction: column; gap: 6px;
-    }
-    .legal-ul li { font-size: 15px; line-height: 1.75; color: var(--text-2); }
-
-    /* ── Callout boxes — reuse existing pastel system ── */
-    .callout {
-      border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 18px;
-    }
-    .callout-teal  { background: #f0fdfa; border-left: 3px solid #0d9488; }
-    .callout-amber { background: var(--pastel-yellow); border-left: 3px solid var(--color-accent); }
-    .callout-red   { background: var(--pastel-pink); border-left: 3px solid #dc2626; }
-    .callout-label {
-      font-size: 11px; font-weight: 800; text-transform: uppercase;
-      letter-spacing: .06em; margin-bottom: 6px;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .callout-teal  .callout-label { color: #0d9488; }
-    .callout-amber .callout-label { color: var(--color-accent); }
-    .callout-red   .callout-label { color: #dc2626; }
-    .callout p { font-size: 14px; line-height: 1.7; color: var(--text-2); margin: 0; }
-    .callout a { color: #0d9488; }
-
-    /* ── Rights cards ── */
-    .right-card {
-      display: flex; gap: 14px; padding: 14px 16px;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius); margin-bottom: 10px;
-    }
-    .right-badge {
-      font-size: 11px; font-weight: 800; color: #0d9488;
-      background: #f0fdfa; border: 1px solid #0d948830;
-      border-radius: 6px; padding: 4px 8px; flex-shrink: 0;
-      align-self: flex-start; font-family: 'Clash Display', sans-serif;
-      white-space: nowrap;
-    }
-    .right-title {
-      font-family: 'Clash Display', sans-serif; font-size: 14px;
-      font-weight: 700; color: var(--text-1); margin-bottom: 4px;
-    }
+    /* ── Rights cards — same pattern as .team-card ── */
+    .right-card { display: flex; gap: 14px; padding: 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 10px; transition: var(--transition-md); }
+    .right-card:hover { box-shadow: var(--shadow-sm); border-color: rgba(90,75,255,.2); }
+    .right-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 52px; height: 28px; background: var(--pastel-purple); color: var(--color-primary); font-size: 10px; font-weight: 800; border-radius: 6px; flex-shrink: 0; border: 1px solid rgba(90,75,255,.15); white-space: nowrap; padding: 0 6px; align-self: flex-start; margin-top: 2px; }
+    .right-title { font-family: 'Clash Display', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-1); margin-bottom: 4px; }
     .right-desc { font-size: 13.5px; color: var(--text-2); line-height: 1.65; }
 
     /* ── Third-party table ── */
-    .legal-table {
-      border: 1px solid var(--border); border-radius: var(--radius-lg);
-      overflow: hidden; margin-bottom: 18px; width: 100%;
-    }
-    .legal-table-head {
-      display: grid; grid-template-columns: 150px 1fr 90px;
-      gap: 8px; padding: 10px 16px; background: var(--bg);
-      border-bottom: 1px solid var(--border);
-    }
-    .legal-table-head span {
-      font-size: 11px; font-weight: 800; color: var(--text-3); text-transform: uppercase;
-    }
-    .legal-table-row {
-      display: grid; grid-template-columns: 150px 1fr 90px;
-      gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border);
-      align-items: center;
-    }
-    .legal-table-row:last-child { border-bottom: none; }
-    .legal-table-row:nth-child(even) { background: var(--bg); }
-    .legal-table-name { font-size: 13.5px; font-weight: 700; color: var(--text-1); }
-    .legal-table-purpose { font-size: 13px; color: var(--text-2); line-height: 1.5; }
-    .legal-table-link { font-size: 12px; color: #0d9488; font-weight: 600; }
+    .tp-table { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 18px; }
+    .tp-head { display: grid; grid-template-columns: 160px 1fr 80px; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .tp-head span { font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; letter-spacing: .06em; }
+    .tp-row { display: grid; grid-template-columns: 160px 1fr 80px; padding: 12px 16px; border-bottom: 1px solid var(--border); align-items: center; gap: 8px; }
+    .tp-row:last-child { border-bottom: none; }
+    .tp-row:nth-child(even) { background: var(--bg); }
+    .tp-name { font-size: 13.5px; font-weight: 700; color: var(--text-1); }
+    .tp-purpose { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .tp-link { font-size: 12px; color: var(--color-primary); font-weight: 600; text-decoration: none; }
+    .tp-link:hover { text-decoration: underline; }
 
     /* ── Retention table ── */
-    .retention-row {
-      display: grid; grid-template-columns: 1fr 180px; gap: 8px 16px;
-      padding: 12px 16px; border-radius: var(--radius); margin-bottom: 5px;
-    }
-    .retention-row:nth-child(odd) { background: var(--bg); }
-    .retention-type { font-size: 13.5px; font-weight: 700; color: var(--text-1); }
-    .retention-note { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-    .retention-period {
-      display: inline-flex; align-self: center; background: #f0fdfa; color: #0d9488;
-      border: 1px solid #0d948830; border-radius: 20px;
-      padding: 3px 10px; font-size: 11.5px; font-weight: 700; white-space: nowrap;
-    }
+    .ret-row { display: grid; grid-template-columns: 1fr auto; gap: 8px 14px; padding: 11px 14px; border-radius: var(--radius); margin-bottom: 4px; align-items: center; }
+    .ret-row:nth-child(odd) { background: var(--bg); }
+    .ret-type { font-size: 13.5px; font-weight: 700; color: var(--text-1); }
+    .ret-note { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+    .ret-period { background: var(--pastel-purple); color: var(--color-primary); border: 1px solid rgba(90,75,255,.15); border-radius: 20px; padding: 3px 10px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
 
     /* ── Contact cards ── */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
-    .contact-card {
-      border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; background: var(--bg);
-    }
-    .contact-card-role { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-    .contact-card-email { font-size: 14px; font-weight: 700; color: var(--text-1); display: block; margin-bottom: 6px; }
-    .contact-card-note { font-size: 12px; color: var(--text-3); line-height: 1.5; }
+    .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .contact-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; }
+    .contact-role { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--color-primary); margin-bottom: 6px; }
+    .contact-email { display: block; font-size: 14px; font-weight: 700; color: var(--text-1); margin-bottom: 5px; text-decoration: none; }
+    .contact-email:hover { color: var(--color-primary); }
+    .contact-note { font-size: 12px; color: var(--text-3); line-height: 1.5; }
 
-    /* ── Legal footer ── */
-    .legal-footer {
-      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 8px;
-    }
-    .legal-footer span { font-size: 12px; color: var(--text-3); }
+    /* ── Legal metadata row ── */
+    .legal-footer-row { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .legal-footer-row span { font-size: 12px; color: var(--text-3); }
 
     /* ── Mobile TOC toggle ── */
-    .legal-toc-mobile-btn {
-      display: none; width: 100%; padding: 12px 16px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); font-size: 14px; font-weight: 700;
-      color: var(--text-2); cursor: pointer; margin-bottom: 16px;
-      font-family: inherit; text-align: left;
-      justify-content: space-between; align-items: center;
-    }
-    .legal-toc-mobile-menu {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 8px; margin-bottom: 16px; display: none;
-    }
-    .legal-toc-mobile-menu a {
-      display: block; padding: 8px 12px; font-size: 14px;
-      color: var(--text-2); text-decoration: none; border-radius: 6px;
-    }
-    .legal-toc-mobile-menu a:hover { background: var(--bg); color: #0d9488; }
+    .mob-toc-btn { display: none; width: 100%; margin-bottom: 14px; text-align: left; justify-content: space-between; }
+    .mob-toc-menu { display: none; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 8px; margin-bottom: 14px; }
+    .mob-toc-menu a { display: block; padding: 8px 12px; font-size: 14px; color: var(--text-2); text-decoration: none; border-radius: 6px; }
+    .mob-toc-menu a:hover { background: var(--pastel-purple); color: var(--color-primary); }
 
-    @media (max-width: 900px) {
-      .legal-toc { display: none; }
-      .legal-toc-mobile-btn { display: flex; }
-      .legal-card { padding: 24px 22px; }
-    }
-    @media (max-width: 640px) {
-      .legal-layout { padding: 20px var(--page-padding) 60px; }
-      .legal-table-head, .legal-table-row { grid-template-columns: 120px 1fr; }
-      .legal-table-link { display: none; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .retention-row { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 960px) { .legal-toc { display: none; } .mob-toc-btn { display: flex; } }
+    @media (max-width: 640px) { .legal-body { padding: 20px var(--page-padding) 60px; } .contact-row { grid-template-columns: 1fr; } .tp-head, .tp-row { grid-template-columns: 130px 1fr; } .tp-link { display: none; } }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR — identical to all other pages -->
+  <!-- NAVBAR — exact copy from about.html -->
   <nav class="navbar" id="navbar">
-    <a class="nav-logo" href="/index.html">
-      <img src="../fn_logo2.png" alt="FestNest" class="logo-img" onerror="this.style.display='none'" />
-      <span class="logo-text">FestNest</span>
-    </a>
+    <a class="nav-logo" href="../index.html"><span class="nest-icon">🪺</span> FestNest</a>
     <div class="nav-links">
-      <a class="nav-link" href="/index.html">Home</a>
-      <a class="nav-link" href="/pages/events.html">Events</a>
-      <a class="nav-link" href="/pages/post-event.html">Post Event</a>
-      <a class="nav-link" href="/pages/saved.html">Saved</a>
-      <a class="nav-link" href="/pages/about.html">Why FestNest</a>
+      <a class="nav-link" href="../index.html">Home</a>
+      <a class="nav-link" href="events.html">Events</a>
+      <a class="nav-link" href="post-event.html">Post Event</a>
+      <a class="nav-link" href="saved.html">Saved</a>
+      <a class="nav-link" href="search.html">Search</a>
+      <a class="nav-link" href="about.html">Why FestNest</a>
     </div>
     <div class="nav-actions">
       <button class="btn btn-outline" id="navLoginBtn">Log In</button>
@@ -261,11 +128,13 @@
   </nav>
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <a class="drawer-link" href="/index.html">🏠 Home</a>
-    <a class="drawer-link" href="/pages/events.html">🎉 Events</a>
-    <a class="drawer-link" href="/pages/post-event.html">➕ Post Event</a>
-    <a class="drawer-link" href="/pages/saved.html">🔖 Saved</a>
-    <a class="drawer-link" href="/pages/about.html">💡 Why FestNest</a>
+    <a class="drawer-link" href="../index.html">🏠 Home</a>
+    <a class="drawer-link" href="events.html">🎉 Events</a>
+    <a class="drawer-link" href="post-event.html">➕ Post Event</a>
+    <a class="drawer-link" href="saved.html">🔖 Saved Events</a>
+    <a class="drawer-link" href="search.html">🔍 Search</a>
+    <a class="drawer-link" href="about.html">💡 Why FestNest</a>
+    <a class="drawer-link" href="profile.html">👤 Profile</a>
     <div class="drawer-auth">
       <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
       <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
@@ -274,330 +143,304 @@
 
   <div class="legal-page">
 
-    <!-- HERO BANNER -->
-    <div class="legal-hero">
-      <div class="legal-hero-badge">🛡️ DPDP Act 2023 Compliant</div>
-      <h1>Privacy Policy</h1>
-      <p>🪺 FestNest · India's Campus Event Discovery Platform</p>
-      <div class="legal-meta-chips">
-        <span class="legal-meta-chip">Last Updated: 6 April 2026</span>
-        <span class="legal-meta-chip">Effective: 6 April 2026</span>
-        <span class="legal-meta-chip">Jurisdiction: India</span>
+    <!-- HERO — same class + gradient as about-hero-section -->
+    <div class="about-hero-section">
+      <span class="section-eyebrow">🛡️ DPDP Act 2023 Compliant</span>
+      <h1 class="about-hero-title">Privacy Policy</h1>
+      <p class="about-hero-desc">How FestNest collects, uses, and protects your personal data — written clearly for students and organizers across India.</p>
+      <div class="about-hero-chips">
+        <div class="about-chip">📅 Last Updated: 6 April 2026</div>
+        <div class="about-chip">⚖️ Jurisdiction: India</div>
+        <div class="about-chip">🇮🇳 DPDP Act 2023</div>
+        <div class="about-chip">🔒 Your Data is Safe</div>
       </div>
     </div>
 
-    <div class="legal-layout">
+    <div class="legal-body">
 
-      <!-- SIDEBAR TOC (desktop) -->
+      <!-- SIDEBAR TOC -->
       <aside class="legal-toc">
-        <div class="legal-toc-label">On this page</div>
-        <a class="legal-toc-link" href="#s1">01 Introduction</a>
-        <a class="legal-toc-link" href="#s2">02 What We Collect</a>
-        <a class="legal-toc-link" href="#s3">03 How We Use Data</a>
-        <a class="legal-toc-link" href="#s4">04 Legal Basis</a>
-        <a class="legal-toc-link" href="#s5">05 Consent</a>
-        <a class="legal-toc-link" href="#s6">06 Third Parties</a>
-        <a class="legal-toc-link" href="#s7">07 Data Retention</a>
-        <a class="legal-toc-link" href="#s8">08 Your Rights</a>
-        <a class="legal-toc-link" href="#s9">09 Security</a>
-        <a class="legal-toc-link" href="#s10">10 Children</a>
-        <a class="legal-toc-link" href="#s11">11 Policy Updates</a>
-        <a class="legal-toc-link" href="#s12">12 Contact</a>
+        <div class="legal-toc-inner">
+          <div class="legal-toc-heading">On This Page</div>
+          <a href="#s1">01 · Introduction</a>
+          <a href="#s2">02 · What We Collect</a>
+          <a href="#s3">03 · How We Use Data</a>
+          <a href="#s4">04 · Legal Basis</a>
+          <a href="#s5">05 · Consent</a>
+          <a href="#s6">06 · Third Parties</a>
+          <a href="#s7">07 · Data Retention</a>
+          <a href="#s8">08 · Your Rights</a>
+          <a href="#s9">09 · Security</a>
+          <a href="#s10">10 · Children</a>
+          <a href="#s11">11 · Policy Updates</a>
+          <a href="#s12">12 · Contact</a>
+        </div>
       </aside>
 
-      <main style="flex:1;min-width:0;">
+      <!-- MAIN -->
+      <main class="legal-main">
+
         <!-- Mobile TOC -->
-        <button class="legal-toc-mobile-btn" id="legalTocBtn">
-          <span>📋 Jump to section</span><span id="legalTocArrow">▼</span>
+        <button class="btn btn-ghost mob-toc-btn" id="mobTocBtn">
+          📋 Jump to a section <span id="mobTocArr">▼</span>
         </button>
-        <div class="legal-toc-mobile-menu" id="legalTocMenu">
-          <a href="#s1">01 Introduction</a>
-          <a href="#s2">02 What We Collect</a>
-          <a href="#s3">03 How We Use Data</a>
-          <a href="#s4">04 Legal Basis</a>
-          <a href="#s5">05 Consent</a>
-          <a href="#s6">06 Third Parties</a>
-          <a href="#s7">07 Data Retention</a>
-          <a href="#s8">08 Your Rights</a>
-          <a href="#s9">09 Security</a>
-          <a href="#s10">10 Children</a>
-          <a href="#s11">11 Policy Updates</a>
-          <a href="#s12">12 Contact</a>
+        <div class="mob-toc-menu" id="mobTocMenu">
+          <a href="#s1">01 · Introduction</a><a href="#s2">02 · What We Collect</a>
+          <a href="#s3">03 · How We Use Data</a><a href="#s4">04 · Legal Basis</a>
+          <a href="#s5">05 · Consent</a><a href="#s6">06 · Third Parties</a>
+          <a href="#s7">07 · Data Retention</a><a href="#s8">08 · Your Rights</a>
+          <a href="#s9">09 · Security</a><a href="#s10">10 · Children</a>
+          <a href="#s11">11 · Policy Updates</a><a href="#s12">12 · Contact</a>
         </div>
 
-        <div class="legal-card">
+        <!-- Content card — same as .sidebar-card feel -->
+        <div class="sidebar-card" style="padding:36px 40px;">
 
           <!-- S1 -->
-          <div class="legal-section" id="s1">
-            <h2 class="legal-h2"><span class="legal-num">01</span> Introduction</h2>
-            <p class="legal-p">Welcome to <strong>FestNest</strong>, operated by <strong>FestNest Technologies Pvt. Ltd.</strong> ("we", "us", "our"). FestNest connects college students across India with hackathons, cultural fests, workshops, sports events, and more — and gives organizers tools to reach and manage student participants at scale.</p>
-            <p class="legal-p">This Privacy Policy explains what personal data we collect when you use FestNest, why we collect it, how we use and protect it, and what rights you hold under the <strong>Digital Personal Data Protection Act, 2023 (DPDP Act)</strong> and other applicable Indian laws.</p>
-            <div class="callout callout-teal">
-              <div class="callout-label">ℹ️ Who this applies to</div>
-              <p>This Policy applies to all visitors and registered users of FestNest — including students, event organizers, and administrators — whether you access it via our website or any future mobile application.</p>
+          <div class="ls" id="s1">
+            <h2 class="ls-h2"><span class="ls-num">01</span> Introduction</h2>
+            <p class="ls-p">Welcome to <strong>FestNest</strong>, operated by <strong>FestNest Technologies Pvt. Ltd.</strong> ("we", "us", "our"). FestNest is India's centralized campus event discovery platform, connecting students with hackathons, cultural fests, workshops, sports events, and more — and giving organizers powerful tools to reach participants at scale.</p>
+            <p class="ls-p">This Privacy Policy explains what personal data we collect, why we collect it, how we use and protect it, and what rights you hold under the <strong>Digital Personal Data Protection Act, 2023 (DPDP Act)</strong> and other applicable Indian laws.</p>
+            <div class="callout callout-purple">
+              <div class="callout-label">ℹ️ Who This Applies To</div>
+              <p>This Policy applies to all visitors and registered users of FestNest — including students, event organizers, and administrators — whether you access the platform via our website or any future mobile application.</p>
             </div>
-            <p class="legal-p">By creating an account or using FestNest, you confirm that you have read this Policy and consent to our data practices as described here. If you disagree, please do not create an account.</p>
+            <p class="ls-p">By creating an account or using FestNest in any way, you confirm that you have read this Policy and consent to the data practices described here. If you disagree, please do not create an account.</p>
           </div>
 
           <!-- S2 -->
-          <div class="legal-section" id="s2">
-            <h2 class="legal-h2"><span class="legal-num">02</span> Information We Collect</h2>
-            <p class="legal-p">We apply strict data minimization — we collect only what is genuinely needed to provide FestNest's services.</p>
+          <div class="ls" id="s2">
+            <h2 class="ls-h2"><span class="ls-num">02</span> Information We Collect</h2>
+            <p class="ls-p">We apply strict data minimization — we only collect what is genuinely needed to provide FestNest's services.</p>
 
-            <h3 class="legal-h3">2.1 Account & Profile Data</h3>
-            <p class="legal-p"><strong>Students</strong> provide: full name, email address, college/university name, course/branch, year of study, and optionally a phone number and profile photo.</p>
-            <p class="legal-p"><strong>Organizers</strong> provide: organization or college name, department/branch, city, contact email, contact phone number, and optionally an organization photo.</p>
+            <h3 class="ls-h3">2.1 Account & Profile Data</h3>
+            <p class="ls-p"><strong>Students</strong> provide: full name, email address, college/university name, course/branch, year of study, and optionally a phone number and profile photo.</p>
+            <p class="ls-p"><strong>Organizers</strong> provide: organization or college name, department/branch, city, contact email, contact phone number, and optionally an organization photo.</p>
 
-            <h3 class="legal-h3">2.2 Event & Content Data</h3>
-            <ul class="legal-ul">
-              <li>Event details submitted by organizers: title, description, category, date, venue, prize information, registration fee, contact details.</li>
+            <h3 class="ls-h3">2.2 Event & Content Data</h3>
+            <ul class="ls-ul">
+              <li>Event details submitted by organizers: title, description, category, date, venue, prize information, registration fee, and contact details.</li>
               <li>Event poster images and brochure PDFs uploaded via Cloudinary.</li>
               <li>Events you save (bookmark) as a student.</li>
               <li>Registration interest actions you take on the platform.</li>
             </ul>
 
-            <h3 class="legal-h3">2.3 Technical & Usage Data (Auto-collected)</h3>
-            <ul class="legal-ul">
+            <h3 class="ls-h3">2.3 Technical & Usage Data (Auto-collected)</h3>
+            <ul class="ls-ul">
               <li>IP address and approximate location (city/region level only).</li>
               <li>Browser type, device type, and operating system.</li>
-              <li>Pages visited, features accessed, search queries entered.</li>
-              <li>Session duration and navigation patterns.</li>
-              <li>Error logs and diagnostic data for platform stability.</li>
+              <li>Pages visited, features accessed, and search queries entered.</li>
+              <li>Session duration and error logs for platform stability.</li>
             </ul>
 
-            <h3 class="legal-h3">2.4 Authentication Data</h3>
-            <p class="legal-p">Authentication is handled by <strong>Firebase Authentication (Google LLC)</strong>. We receive a Firebase user ID, email address, and session tokens. We never store your raw password. JWT tokens generated by our backend are stored in your browser's <code>localStorage</code> for session management.</p>
+            <h3 class="ls-h3">2.4 Authentication Data</h3>
+            <p class="ls-p">Authentication is handled by <strong>Firebase Authentication (Google LLC)</strong>. We receive a Firebase user ID, email address, and session tokens. We never store your raw password. JWT tokens generated by our backend are stored in your browser's <code>localStorage</code> for session management.</p>
 
-            <h3 class="legal-h3">2.5 Cookies & Local Storage</h3>
-            <p class="legal-p">FestNest uses browser <code>localStorage</code> to maintain your login session and preferences. We do not use third-party advertising cookies. You may clear local storage through your browser settings, which will log you out.</p>
+            <h3 class="ls-h3">2.5 Cookies & Local Storage</h3>
+            <p class="ls-p">FestNest uses browser <code>localStorage</code> to maintain your login session and preferences. We do not use third-party advertising cookies or tracking pixels. You may clear local storage through your browser settings, which will log you out.</p>
           </div>
 
           <!-- S3 -->
-          <div class="legal-section" id="s3">
-            <h2 class="legal-h2"><span class="legal-num">03</span> How We Use Your Data</h2>
-            <div class="callout callout-teal"><div class="callout-label">🔐 Authentication</div><p>Creating and securing your account, managing login sessions, and enabling account recovery.</p></div>
-            <div class="callout callout-teal"><div class="callout-label">🎉 Event Operations</div><p>Receiving organizer event submissions, routing them through the admin review workflow, publishing approved events, and enabling student discovery and registration.</p></div>
-            <div class="callout callout-teal"><div class="callout-label">📁 File Management</div><p>Storing and serving event poster images and brochures uploaded by organizers via Cloudinary.</p></div>
-            <div class="callout callout-teal"><div class="callout-label">📧 Platform Communications</div><p>Sending transactional emails (account confirmation, event approval status, password reset) and important platform announcements.</p></div>
-            <div class="callout callout-teal"><div class="callout-label">🛡️ Safety & Trust</div><p>Reviewing flagged content, preventing fraudulent activity, and maintaining community trust and platform integrity.</p></div>
-            <div class="callout callout-teal"><div class="callout-label">📊 Analytics</div><p>Understanding aggregate usage patterns to improve features and fix issues. We use anonymized, aggregated data — not individual profiles — for this purpose.</p></div>
-            <div class="callout callout-red"><div class="callout-label">🚫 What we never do</div><p>We do not sell your personal data. We do not share it with advertisers. We do not use it for automated profiling unrelated to FestNest's core features. We do not transfer it outside India without adequate safeguards.</p></div>
+          <div class="ls" id="s3">
+            <h2 class="ls-h2"><span class="ls-num">03</span> How We Use Your Data</h2>
+            <div class="callout callout-purple"><div class="callout-label">🔐 Authentication & Accounts</div><p>Creating and securing your account, managing login sessions, verifying your identity, and enabling account recovery.</p></div>
+            <div class="callout callout-purple"><div class="callout-label">🎉 Event Operations</div><p>Processing organizer event submissions, routing them through admin review, publishing approved events to the public feed, and enabling student discovery and registration.</p></div>
+            <div class="callout callout-purple"><div class="callout-label">📁 File Management</div><p>Storing and serving event poster images and brochures uploaded by organizers via Cloudinary.</p></div>
+            <div class="callout callout-purple"><div class="callout-label">📧 Platform Communications</div><p>Sending transactional emails (account confirmation, event approval status, password reset) and important platform announcements relevant to your use of FestNest.</p></div>
+            <div class="callout callout-purple"><div class="callout-label">🛡️ Safety & Trust</div><p>Reviewing flagged content, preventing fraudulent or abusive activity, and maintaining a safe, trustworthy community for students across India.</p></div>
+            <div class="callout callout-purple"><div class="callout-label">📊 Analytics & Improvement</div><p>Understanding aggregate usage patterns to improve features and fix issues. We use anonymized, aggregated data — never individual profiles — for this purpose.</p></div>
+            <div class="callout callout-pink"><div class="callout-label">🚫 What We Never Do</div><p>We do not sell your personal data. We do not share it with advertisers. We do not use it for profiling unrelated to FestNest's core features. We do not transfer it outside India without adequate safeguards.</p></div>
           </div>
 
           <!-- S4 -->
-          <div class="legal-section" id="s4">
-            <h2 class="legal-h2"><span class="legal-num">04</span> Legal Basis for Processing (DPDP Act)</h2>
-            <p class="legal-p">Under the <strong>Digital Personal Data Protection Act, 2023</strong>, we process your personal data on the following lawful grounds:</p>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <div style="display:flex;gap:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);">
-                <span style="font-weight:800;font-size:12px;color:#0d9488;min-width:160px;padding-top:2px;">Consent (§ 6)</span>
-                <span class="legal-p" style="margin:0;">Your explicit, informed consent provided when you register on FestNest. You may withdraw this at any time.</span>
+          <div class="ls" id="s4">
+            <h2 class="ls-h2"><span class="ls-num">04</span> Legal Basis for Processing (DPDP Act)</h2>
+            <p class="ls-p">Under the <strong>Digital Personal Data Protection Act, 2023</strong>, we process your personal data on the following lawful grounds:</p>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+              <div style="display:flex;gap:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);align-items:flex-start;">
+                <span style="font-family:'Clash Display',sans-serif;font-weight:700;color:var(--color-primary);font-size:12px;min-width:170px;padding-top:2px;flex-shrink:0;">Consent (§ 6)</span>
+                <span class="ls-p" style="margin:0;">Your explicit, informed consent given at registration when you accept this Policy. You may withdraw at any time.</span>
               </div>
-              <div style="display:flex;gap:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);">
-                <span style="font-weight:800;font-size:12px;color:#0d9488;min-width:160px;padding-top:2px;">Contractual Necessity</span>
-                <span class="legal-p" style="margin:0;">Processing necessary to deliver the service you signed up for — account creation, event publishing, registration workflows.</span>
+              <div style="display:flex;gap:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);align-items:flex-start;">
+                <span style="font-family:'Clash Display',sans-serif;font-weight:700;color:var(--color-primary);font-size:12px;min-width:170px;padding-top:2px;flex-shrink:0;">Contractual Necessity</span>
+                <span class="ls-p" style="margin:0;">Processing necessary to deliver the service you signed up for — account creation, event publishing, and registration workflows.</span>
               </div>
-              <div style="display:flex;gap:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);">
-                <span style="font-weight:800;font-size:12px;color:#0d9488;min-width:160px;padding-top:2px;">Legitimate Interests</span>
-                <span class="legal-p" style="margin:0;">Limited processing of usage and security data to prevent abuse, maintain platform stability, and improve the service.</span>
+              <div style="display:flex;gap:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);align-items:flex-start;">
+                <span style="font-family:'Clash Display',sans-serif;font-weight:700;color:var(--color-primary);font-size:12px;min-width:170px;padding-top:2px;flex-shrink:0;">Legitimate Interests</span>
+                <span class="ls-p" style="margin:0;">Limited usage and security data processing to prevent abuse and maintain platform stability, balanced against your privacy rights.</span>
               </div>
-              <div style="display:flex;gap:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);">
-                <span style="font-weight:800;font-size:12px;color:#0d9488;min-width:160px;padding-top:2px;">Legal Obligation (§ 7(b))</span>
-                <span class="legal-p" style="margin:0;">We may retain or disclose data when required by applicable Indian law, court orders, or competent regulatory authorities.</span>
+              <div style="display:flex;gap:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);align-items:flex-start;">
+                <span style="font-family:'Clash Display',sans-serif;font-weight:700;color:var(--color-primary);font-size:12px;min-width:170px;padding-top:2px;flex-shrink:0;">Legal Obligation (§ 7(b))</span>
+                <span class="ls-p" style="margin:0;">We may retain or disclose data when required by applicable Indian law, court orders, or competent regulatory authorities.</span>
               </div>
             </div>
           </div>
 
           <!-- S5 -->
-          <div class="legal-section" id="s5">
-            <h2 class="legal-h2"><span class="legal-num">05</span> Consent & Withdrawal</h2>
-            <p class="legal-p">Consent on FestNest is free, specific, informed, and unambiguous — as required by Section 6 of the DPDP Act.</p>
-            <ul class="legal-ul">
+          <div class="ls" id="s5">
+            <h2 class="ls-h2"><span class="ls-num">05</span> Consent & Withdrawal</h2>
+            <p class="ls-p">Consent on FestNest is free, specific, informed, and unambiguous — as required by Section 6 of the DPDP Act.</p>
+            <ul class="ls-ul">
               <li>At registration, you are presented with this Privacy Policy and must affirmatively accept it. This constitutes your explicit consent.</li>
               <li>If we introduce new data uses not covered here, we will seek fresh consent before proceeding.</li>
-              <li>You may withdraw consent at any time by submitting an account deletion request to <a href="mailto:support@festnest.in">support@festnest.in</a>. We will action it within 30 days.</li>
+              <li>You may withdraw consent at any time by submitting an account deletion request to <a href="mailto:support@festnest.in" style="color:var(--color-primary);">support@festnest.in</a>. We will action it within 30 days.</li>
               <li>Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</li>
-              <li>Upon deletion, your personal data will be permanently purged from our systems within 30 days, except where legally required to retain it.</li>
+              <li>Upon deletion, your personal data will be permanently purged from our systems within 30 days, except where retention is required by law.</li>
             </ul>
           </div>
 
           <!-- S6 -->
-          <div class="legal-section" id="s6">
-            <h2 class="legal-h2"><span class="legal-num">06</span> Third-Party Services & Data Sharing</h2>
-            <p class="legal-p">We share personal data only with the following service providers, strictly for the purposes stated, under data processing agreements:</p>
-            <div class="legal-table">
-              <div class="legal-table-head">
-                <span>Service</span><span>Purpose</span><span>Policy</span>
-              </div>
-              <div class="legal-table-row">
-                <span class="legal-table-name">Firebase Auth (Google)</span>
-                <span class="legal-table-purpose">User authentication, session management, sign-in flows</span>
-                <a class="legal-table-link" href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">View ↗</a>
-              </div>
-              <div class="legal-table-row">
-                <span class="legal-table-name">Cloudinary</span>
-                <span class="legal-table-purpose">Hosting and serving event poster images and PDF brochures</span>
-                <a class="legal-table-link" href="https://cloudinary.com/privacy" target="_blank" rel="noopener">View ↗</a>
-              </div>
-              <div class="legal-table-row">
-                <span class="legal-table-name">MongoDB Atlas</span>
-                <span class="legal-table-purpose">Cloud database for user profiles, events, saved lists</span>
-                <a class="legal-table-link" href="https://www.mongodb.com/legal/privacy-policy" target="_blank" rel="noopener">View ↗</a>
-              </div>
-              <div class="legal-table-row">
-                <span class="legal-table-name">Email (SMTP)</span>
-                <span class="legal-table-purpose">Transactional emails — account confirmation, event status</span>
-                <span class="legal-table-link">—</span>
-              </div>
+          <div class="ls" id="s6">
+            <h2 class="ls-h2"><span class="ls-num">06</span> Third-Party Services & Data Sharing</h2>
+            <p class="ls-p">We share personal data only with the following service providers, strictly for the purposes stated, under contractual data processing agreements:</p>
+            <div class="tp-table">
+              <div class="tp-head"><span>Service</span><span>Purpose</span><span>Policy</span></div>
+              <div class="tp-row"><span class="tp-name">Firebase (Google)</span><span class="tp-purpose">User authentication, session management, sign-in flows</span><a class="tp-link" href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">View ↗</a></div>
+              <div class="tp-row"><span class="tp-name">Cloudinary</span><span class="tp-purpose">Hosting and serving event poster images and PDF brochures</span><a class="tp-link" href="https://cloudinary.com/privacy" target="_blank" rel="noopener">View ↗</a></div>
+              <div class="tp-row"><span class="tp-name">MongoDB Atlas</span><span class="tp-purpose">Cloud database for user profiles, events, saved lists</span><a class="tp-link" href="https://www.mongodb.com/legal/privacy-policy" target="_blank" rel="noopener">View ↗</a></div>
+              <div class="tp-row"><span class="tp-name">Email (SMTP)</span><span class="tp-purpose">Transactional emails — account confirmation, event status</span><span class="tp-link" style="color:var(--text-3);">—</span></div>
             </div>
-            <div class="callout callout-amber">
+            <div class="callout callout-yellow">
               <div class="callout-label">⚖️ Government & Legal Disclosures</div>
               <p>We may disclose personal data to Indian government authorities or courts when legally required. Where legally permitted, we will notify you of such disclosures.</p>
             </div>
           </div>
 
           <!-- S7 -->
-          <div class="legal-section" id="s7">
-            <h2 class="legal-h2"><span class="legal-num">07</span> Data Retention</h2>
-            <p class="legal-p">We retain personal data only as long as necessary. Our retention schedule:</p>
-            <div class="retention-row"><div><div class="retention-type">Active account data</div><div class="retention-note">Deleted on account deletion request.</div></div><span class="retention-period">Lifetime of account</span></div>
-            <div class="retention-row"><div><div class="retention-type">Event submission data</div><div class="retention-note">For dispute resolution and historical integrity.</div></div><span class="retention-period">2 years post event</span></div>
-            <div class="retention-row"><div><div class="retention-type">Authentication logs</div><div class="retention-note">Security monitoring and abuse detection.</div></div><span class="retention-period">90 days</span></div>
-            <div class="retention-row"><div><div class="retention-type">Data after deletion request</div><div class="retention-note">Then permanently and irreversibly purged.</div></div><span class="retention-period">30 days</span></div>
-            <div class="retention-row"><div><div class="retention-type">Anonymized analytics</div><div class="retention-note">Contains no personal identifiers.</div></div><span class="retention-period">Indefinite</span></div>
-            <div class="retention-row"><div><div class="retention-type">Legally mandated data</div><div class="retention-note">Minimum data necessary for compliance.</div></div><span class="retention-period">As required by law</span></div>
+          <div class="ls" id="s7">
+            <h2 class="ls-h2"><span class="ls-num">07</span> Data Retention</h2>
+            <p class="ls-p">We retain personal data only as long as necessary to provide the service and meet our legal obligations:</p>
+            <div style="margin-bottom:14px;">
+              <div class="ret-row"><div><div class="ret-type">Active account data</div><div class="ret-note">Deleted on account deletion request.</div></div><span class="ret-period">Lifetime of account</span></div>
+              <div class="ret-row"><div><div class="ret-type">Event submission data</div><div class="ret-note">For dispute resolution and historical integrity.</div></div><span class="ret-period">2 years post event</span></div>
+              <div class="ret-row"><div><div class="ret-type">Authentication & session logs</div><div class="ret-note">Security monitoring and abuse detection.</div></div><span class="ret-period">90 days</span></div>
+              <div class="ret-row"><div><div class="ret-type">Data after deletion request</div><div class="ret-note">Then permanently and irreversibly purged.</div></div><span class="ret-period">30 days</span></div>
+              <div class="ret-row"><div><div class="ret-type">Anonymized analytics</div><div class="ret-note">Contains no personal identifiers whatsoever.</div></div><span class="ret-period">Indefinite</span></div>
+              <div class="ret-row"><div><div class="ret-type">Legally mandated data</div><div class="ret-note">Minimum data necessary for statutory compliance.</div></div><span class="ret-period">As required by law</span></div>
+            </div>
           </div>
 
           <!-- S8 -->
-          <div class="legal-section" id="s8">
-            <h2 class="legal-h2"><span class="legal-num">08</span> Your Rights Under the DPDP Act 2023</h2>
-            <p class="legal-p">As a Data Principal under the DPDP Act, 2023, you hold the following enforceable rights:</p>
-            <div class="callout callout-teal">
-              <div class="callout-label">📬 How to exercise any right</div>
-              <p>Email <a href="mailto:support@festnest.in">support@festnest.in</a> with subject <strong>"Data Rights Request — [Right Type]"</strong>. We respond within <strong>30 days</strong>. We may ask you to verify your identity first.</p>
+          <div class="ls" id="s8">
+            <h2 class="ls-h2"><span class="ls-num">08</span> Your Rights Under the DPDP Act 2023</h2>
+            <p class="ls-p">As a Data Principal under the Digital Personal Data Protection Act, 2023, you hold the following enforceable rights. We are committed to honoring them within legally mandated timeframes.</p>
+            <div class="callout callout-purple">
+              <div class="callout-label">📬 How to Exercise Any Right</div>
+              <p>Email <a href="mailto:support@festnest.in" style="color:var(--color-primary);font-weight:700;">support@festnest.in</a> with subject <strong>"Data Rights Request — [Right Type]"</strong>. We respond within <strong>30 days</strong>. We may verify your identity first.</p>
             </div>
-            <div class="right-card"><span class="right-badge">§ 12(a)</span><div><div class="right-title">Right to Access</div><div class="right-desc">Request a copy of all personal data we hold — profile information, saved events, authentication records, and any other data linked to your account.</div></div></div>
+            <div class="right-card"><span class="right-badge">§ 12(a)</span><div><div class="right-title">Right to Access</div><div class="right-desc">Request a copy of all personal data we hold — your profile, saved events, authentication records, and any other data linked to your account.</div></div></div>
             <div class="right-card"><span class="right-badge">§ 12(b)</span><div><div class="right-title">Right to Correction</div><div class="right-desc">If any data we hold is inaccurate, outdated, or incomplete, you can request correction. Most profile fields are directly editable in your account settings.</div></div></div>
-            <div class="right-card"><span class="right-badge">§ 13</span><div><div class="right-title">Right to Erasure</div><div class="right-desc">Request permanent deletion of your personal data and account. We process this within 30 days. Publicly listed event data may be anonymized rather than deleted where required for platform integrity.</div></div></div>
-            <div class="right-card"><span class="right-badge">§ 6(4)</span><div><div class="right-title">Right to Withdraw Consent</div><div class="right-desc">Withdraw your consent at any time without penalty. Withdrawal does not affect prior processing. Request via account deletion or direct email.</div></div></div>
+            <div class="right-card"><span class="right-badge">§ 13</span><div><div class="right-title">Right to Erasure</div><div class="right-desc">Request permanent deletion of your personal data and account. We process this within 30 days. Publicly listed event data may be anonymized where required for platform integrity.</div></div></div>
+            <div class="right-card"><span class="right-badge">§ 6(4)</span><div><div class="right-title">Right to Withdraw Consent</div><div class="right-desc">Withdraw the consent you gave at registration, at any time without penalty. Withdrawal does not affect prior processing. Request via account deletion or direct email.</div></div></div>
             <div class="right-card"><span class="right-badge">§ 23</span><div><div class="right-title">Right to Grievance Redressal</div><div class="right-desc">Raise a formal complaint with our Grievance Officer if you believe your rights have been violated. If unresolved, you may escalate to the Data Protection Board of India.</div></div></div>
-            <div class="right-card"><span class="right-badge">§ 14</span><div><div class="right-title">Right to Nominate</div><div class="right-desc">Nominate a trusted individual to exercise your data rights on your behalf in the event of your death or legal incapacity, under Section 14 of the DPDP Act.</div></div></div>
+            <div class="right-card"><span class="right-badge">§ 14</span><div><div class="right-title">Right to Nominate</div><div class="right-desc">Nominate a trusted individual to exercise your data rights on your behalf in the event of your death or legal incapacity, as provided under Section 14 of the DPDP Act.</div></div></div>
           </div>
 
           <!-- S9 -->
-          <div class="legal-section" id="s9">
-            <h2 class="legal-h2"><span class="legal-num">09</span> Data Security</h2>
-            <ul class="legal-ul">
-              <li>All data in transit is encrypted via TLS 1.2+ (HTTPS).</li>
+          <div class="ls" id="s9">
+            <h2 class="ls-h2"><span class="ls-num">09</span> Data Security</h2>
+            <ul class="ls-ul">
+              <li>All data in transit is encrypted via TLS 1.2+ (HTTPS). Never transmitted over plain HTTP.</li>
               <li>Passwords are hashed with bcrypt using a high cost factor. We never store plain-text passwords.</li>
-              <li>Session authentication uses signed JWT tokens with defined expiry, stored in browser localStorage.</li>
+              <li>Authentication uses signed JWT tokens with defined expiry, stored in browser <code>localStorage</code>.</li>
               <li>Firebase Authentication handles sign-in sessions using Google's hardened security infrastructure.</li>
               <li>Production database access is restricted to authorized personnel with role-based access control.</li>
-              <li>File uploads (images, PDFs) are stored in Cloudinary with signed access controls.</li>
+              <li>File uploads are stored in Cloudinary with signed access controls preventing unauthorized retrieval.</li>
               <li>Admin accounts have separate role-based access — admin capabilities cannot be accessed by student or organizer accounts.</li>
             </ul>
-            <div class="callout callout-amber">
+            <div class="callout callout-yellow">
               <div class="callout-label">🔔 Breach Notification</div>
               <p>If we become aware of a security breach that materially compromises your personal data, we will notify affected users promptly via registered email and take immediate containment steps, per DPDP Act obligations.</p>
             </div>
           </div>
 
           <!-- S10 -->
-          <div class="legal-section" id="s10">
-            <h2 class="legal-h2"><span class="legal-num">10</span> Children's Privacy</h2>
-            <p class="legal-p">FestNest is designed exclusively for college students and event organizers. <strong>Our platform is not intended for anyone under the age of 18.</strong></p>
-            <p class="legal-p">Under Section 9 of the DPDP Act, processing children's personal data requires verifiable parental consent. We do not knowingly collect data from persons under 18. If we discover a minor has registered without parental consent, we will immediately delete that account and all associated data.</p>
-            <p class="legal-p">Parents who believe a minor has created a FestNest account should contact <a href="mailto:support@festnest.in">support@festnest.in</a> for prompt resolution.</p>
+          <div class="ls" id="s10">
+            <h2 class="ls-h2"><span class="ls-num">10</span> Children's Privacy</h2>
+            <p class="ls-p">FestNest is designed exclusively for college students and event organizers. <strong>Our platform is not intended for anyone under the age of 18.</strong></p>
+            <p class="ls-p">Under Section 9 of the DPDP Act, processing children's personal data requires verifiable parental consent. We do not knowingly collect data from persons under 18. If we discover a minor has registered without parental consent, we will immediately delete that account and all associated data.</p>
+            <p class="ls-p">Parents or guardians who believe a minor has created a FestNest account should contact <a href="mailto:support@festnest.in" style="color:var(--color-primary);">support@festnest.in</a> for prompt resolution.</p>
           </div>
 
           <!-- S11 -->
-          <div class="legal-section" id="s11">
-            <h2 class="legal-h2"><span class="legal-num">11</span> Policy Updates</h2>
-            <ul class="legal-ul">
-              <li>The "Last Updated" date at the top reflects the most recent revision.</li>
-              <li>For material changes that affect how we process your data or your rights, we will notify you via email at least 14 days before they take effect.</li>
-              <li>For minor changes (clarifications, typographical corrections), we will update the page and you will be notified on your next login.</li>
+          <div class="ls" id="s11">
+            <h2 class="ls-h2"><span class="ls-num">11</span> Policy Updates</h2>
+            <ul class="ls-ul">
+              <li>The "Last Updated" date at the top of this page reflects the most recent revision.</li>
+              <li>For material changes that affect how we process your data or your rights, we will notify you via email at least <strong>14 days</strong> before they take effect.</li>
+              <li>For minor changes (clarifications, typographical corrections), we will update the page and notify you on your next login.</li>
               <li>Continued use of FestNest after an updated Policy takes effect constitutes acceptance. If you disagree, you may request account deletion before the effective date.</li>
             </ul>
           </div>
 
           <!-- S12 -->
-          <div class="legal-section" id="s12">
-            <h2 class="legal-h2"><span class="legal-num">12</span> Contact & Grievance Redressal</h2>
-            <div class="contact-grid">
+          <div class="ls" id="s12">
+            <h2 class="ls-h2"><span class="ls-num">12</span> Contact & Grievance Redressal</h2>
+            <div class="contact-row">
               <div class="contact-card">
-                <div class="contact-card-role" style="color:#0d9488;">General Privacy Queries</div>
-                <a class="contact-card-email" href="mailto:support@festnest.in">support@festnest.in</a>
-                <div class="contact-card-note">Questions about this Policy, your data, or how we handle information.</div>
+                <div class="contact-role">General Privacy Queries</div>
+                <a class="contact-email" href="mailto:support@festnest.in">support@festnest.in</a>
+                <div class="contact-note">Questions about this Policy, your data, or how we handle information.</div>
               </div>
               <div class="contact-card">
-                <div class="contact-card-role" style="color:#7c3aed;">Grievance Officer</div>
-                <a class="contact-card-email" href="mailto:grievance@festnest.in">grievance@festnest.in</a>
-                <div class="contact-card-note">Formal complaints under the DPDP Act. We acknowledge within 48 hours and resolve within 30 days.</div>
+                <div class="contact-role" style="color:#7c3aed;">Grievance Officer</div>
+                <a class="contact-email" href="mailto:grievance@festnest.in">grievance@festnest.in</a>
+                <div class="contact-note">Formal complaints under the DPDP Act. We acknowledge within 48 hours and resolve within 30 days.</div>
               </div>
             </div>
-            <p class="legal-p"><strong>Company:</strong> FestNest Technologies Pvt. Ltd.<br><strong>Governing Law:</strong> Laws of India<br><strong>Jurisdiction:</strong> Courts of India</p>
-            <p class="legal-p">If you remain unsatisfied after engaging our Grievance Officer, you may escalate your complaint to the <strong>Data Protection Board of India</strong> once constituted under the DPDP Act, 2023.</p>
+            <p class="ls-p"><strong>Company:</strong> FestNest Technologies Pvt. Ltd.<br><strong>Governing Law:</strong> Laws of India · <strong>Jurisdiction:</strong> Courts of India</p>
+            <p class="ls-p">If you remain unsatisfied after engaging our Grievance Officer, you may escalate your complaint to the <strong>Data Protection Board of India</strong> once constituted under the DPDP Act, 2023.</p>
           </div>
 
-          <div class="legal-footer">
+          <div class="legal-footer-row">
             <span>🪺 FestNest · FestNest Technologies Pvt. Ltd.</span>
             <span>Last updated: 6 April 2026</span>
           </div>
 
-        </div>
+        </div><!-- /sidebar-card -->
       </main>
     </div>
   </div>
 
-  <!-- FOOTER — identical to all other pages -->
+  <!-- FOOTER — exact copy from about.html -->
   <footer class="footer">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <span class="footer-logo">🪺 FestNest</span>
-        <p class="footer-desc">India's centralized campus event discovery platform.</p>
-        <div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a></div>
-      </div>
-      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="/pages/events.html">Browse Events</a><a class="footer-link" href="/pages/post-event.html">Post an Event</a><a class="footer-link" href="/pages/saved.html">Saved Events</a></div>
-      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="/pages/about.html">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a></div>
-      <div class="footer-col"><h4>Legal</h4><a class="footer-link" href="/pages/privacy.html">Privacy Policy</a><a class="footer-link" href="/pages/terms.html">Terms &amp; Conditions</a><a class="footer-link" href="#">Help Center</a></div>
+      <div class="footer-brand"><span class="footer-logo">🪺 FestNest</span><p class="footer-desc">India's centralized campus event discovery platform. Helping students discover opportunities, connect with peers, and win at inter-college competitions.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a></div></div>
+      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="events.html">Browse Events</a><a class="footer-link" href="post-event.html">Post an Event</a><a class="footer-link" href="saved.html">Saved Events</a><a class="footer-link" href="search.html">Search</a></div>
+      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="about.html">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a></div>
+      <div class="footer-col"><h4>Legal</h4><a class="footer-link" href="privacy.html">Privacy Policy</a><a class="footer-link" href="terms.html">Terms &amp; Conditions</a><a class="footer-link" href="#">Help Center</a><a class="footer-link" href="#">Contact Us</a></div>
     </div>
-    <div class="footer-bottom">
-      <div class="footer-bottom-text">© 2026 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div>
-      <div class="footer-bottom-links">
-        <a class="footer-bottom-link" href="/pages/privacy.html">Privacy</a>
-        <a class="footer-bottom-link" href="/pages/terms.html">Terms</a>
-      </div>
-    </div>
+    <div class="footer-bottom"><div class="footer-bottom-text">© 2026 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div><div class="footer-bottom-links"><a class="footer-bottom-link" href="privacy.html">Privacy</a><a class="footer-bottom-link" href="terms.html">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div></div>
   </footer>
 
+  <!-- AUTH MODAL — exact copy from about.html -->
   <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
     <div class="modal-box modal-box--auth">
       <button class="modal-close" id="authModalClose">✕</button>
       <div class="auth-logo">🪺 FestNest</div>
-      <div class="auth-tabs">
-        <button class="auth-tab" id="tab-login">Log In</button>
-        <button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button>
-      </div>
+      <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
       <form class="auth-form" id="login-form" style="display:none;" novalidate>
         <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
         <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
         <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
         <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
       </form>
       <form class="auth-form" id="signup-form" novalidate>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Arjun" /></div>
-          <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Sharma" /></div>
-        </div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="you@college.edu" /></div>
-        <div class="form-group"><label class="form-label">College</label><input class="form-input" type="text" placeholder="e.g. IIT Bombay" /></div>
+        <div class="form-row"><div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Arjun" /></div><div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Sharma" /></div></div>
+        <div class="form-group"><label class="form-label">College Email</label><input class="form-input" type="email" placeholder="you@college.edu" /></div>
+        <div class="form-group"><label class="form-label">College Name</label><input class="form-input" type="text" placeholder="e.g. IIT Bombay" /></div>
+        <div class="form-group"><label class="form-label">Year &amp; Branch</label><input class="form-input" type="text" placeholder="e.g. 3rd Year CSE" /></div>
         <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min. 8 characters" /></div>
         <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-terms">By signing up you agree to our <a href="terms.html" target="_blank">Terms</a> &amp; <a href="privacy.html" target="_blank">Privacy Policy</a></p>
+        <p class="auth-footer-text">Have account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
       </form>
     </div>
   </div>
-
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
   <script src="../assets/js/api.js"></script>
@@ -606,31 +449,30 @@
   <script src="../assets/js/navbar.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script>
-    /* ── TOC scroll-spy ── */
-    const tocLinks = document.querySelectorAll('.legal-toc-link');
-    const sections = document.querySelectorAll('.legal-section');
+    /* TOC scroll-spy */
+    const tocLinks = document.querySelectorAll('.legal-toc a');
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           tocLinks.forEach(l => l.classList.remove('active'));
-          const active = document.querySelector(`.legal-toc-link[href="#${e.target.id}"]`);
-          if (active) active.classList.add('active');
+          const a = document.querySelector(`.legal-toc a[href="#${e.target.id}"]`);
+          if (a) a.classList.add('active');
         }
       });
     }, { rootMargin: '-15% 0px -70% 0px' });
-    sections.forEach(s => obs.observe(s));
+    document.querySelectorAll('.ls').forEach(s => obs.observe(s));
 
-    /* ── Mobile TOC toggle ── */
-    const tocBtn  = document.getElementById('legalTocBtn');
-    const tocMenu = document.getElementById('legalTocMenu');
-    const tocArr  = document.getElementById('legalTocArrow');
-    tocBtn?.addEventListener('click', () => {
-      const open = tocMenu.style.display === 'block';
-      tocMenu.style.display = open ? 'none' : 'block';
-      tocArr.textContent    = open ? '▼' : '▲';
+    /* Mobile TOC */
+    const mobBtn  = document.getElementById('mobTocBtn');
+    const mobMenu = document.getElementById('mobTocMenu');
+    const mobArr  = document.getElementById('mobTocArr');
+    mobBtn?.addEventListener('click', () => {
+      const open = mobMenu.style.display === 'block';
+      mobMenu.style.display = open ? 'none' : 'block';
+      mobArr.textContent    = open ? '▼' : '▲';
     });
-    tocMenu?.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => { tocMenu.style.display = 'none'; tocArr.textContent = '▼'; });
+    mobMenu?.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => { mobMenu.style.display='none'; mobArr.textContent='▼'; });
     });
   </script>
 </body>
