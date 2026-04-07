@@ -138,36 +138,39 @@
 <body>
 
   <!-- ═══════════════════════════════════
-       NAVBAR — exact copy from about.html
+       NAVBAR — production-style routes
   ═══════════════════════════════════ -->
   <nav class="navbar" id="navbar">
-    <a class="nav-logo" href="../index.html"><span class="nest-icon">🪺</span> FestNest</a>
+    <a class="nav-logo" href="/">
+      <img src="/assets/images/fn_logo2.png" alt="FestNest Logo" class="logo-img" />
+      <span class="logo-text">FestNest</span>
+    </a>
     <div class="nav-links">
-      <a class="nav-link" href="../index.html">Home</a>
-      <a class="nav-link" href="events.html">Events</a>
-      <a class="nav-link" href="post-event.html">Post Event</a>
-      <a class="nav-link" href="saved.html">Saved</a>
-      <a class="nav-link" href="search.html">Search</a>
-      <a class="nav-link" href="about.html">Why FestNest</a>
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link" href="/events">Events</a>
+      <a class="nav-link" href="/post">Post Event</a>
+      <a class="nav-link" href="/saved">Saved</a>
+      <a class="nav-link" href="/search">Search</a>
+      <a class="nav-link" href="/why">Why FestNest</a>
     </div>
     <div class="nav-actions">
       <button class="btn btn-outline" id="navLoginBtn">Log In</button>
-      <button class="btn btn-primary"  id="navSignupBtn">Sign Up Free</button>
+      <button class="btn btn-primary" id="navSignupBtn">Sign Up Free</button>
     </div>
     <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
   </nav>
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <a class="drawer-link" href="../index.html">🏠 Home</a>
-    <a class="drawer-link" href="events.html">🎉 Events</a>
-    <a class="drawer-link" href="post-event.html">➕ Post Event</a>
-    <a class="drawer-link" href="saved.html">🔖 Saved Events</a>
-    <a class="drawer-link" href="search.html">🔍 Search</a>
-    <a class="drawer-link" href="about.html">💡 Why FestNest</a>
-    <a class="drawer-link" href="profile.html">👤 Profile</a>
+    <a class="drawer-link" href="/">🏠 Home</a>
+    <a class="drawer-link" href="/events">🎉 Events</a>
+    <a class="drawer-link" href="/post">➕ Post Event</a>
+    <a class="drawer-link" href="/saved">🔖 Saved Events</a>
+    <a class="drawer-link" href="/search">🔍 Search</a>
+    <a class="drawer-link" href="/why">💡 Why FestNest</a>
+    <a class="drawer-link" href="/profile">👤 Profile</a>
     <div class="drawer-auth">
       <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
-      <button class="btn btn-primary  w-full" id="drawerSignupBtn">Sign Up Free</button>
+      <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
     </div>
   </div>
 
@@ -493,16 +496,16 @@
   </div><!-- /help-page -->
 
   <!-- ═══════════════════════════════════
-       FOOTER — exact copy from about.html
+       FOOTER — production-ready links
   ═══════════════════════════════════ -->
   <footer class="footer">
     <div class="footer-grid">
       <div class="footer-brand"><span class="footer-logo">🪺 FestNest</span><p class="footer-desc">India's centralized campus event discovery platform. Helping students discover opportunities, connect with peers, and win at inter-college competitions.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a></div></div>
-      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="events.html">Browse Events</a><a class="footer-link" href="post-event.html">Post an Event</a><a class="footer-link" href="saved.html">Saved Events</a><a class="footer-link" href="search.html">Search</a></div>
-      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="about.html">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a></div>
-      <div class="footer-col"><h4>Support</h4><a class="footer-link" href="help-center.html">Help Center</a><a class="footer-link" href="contact-us.html">Contact Us</a><a class="footer-link" href="privacy.html">Privacy Policy</a><a class="footer-link" href="terms.html">Terms of Service</a></div>
+      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="/events">Browse Events</a><a class="footer-link" href="/post">Post an Event</a><a class="footer-link" href="/saved">Saved Events</a><a class="footer-link" href="/search">Search</a></div>
+      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="/why">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a></div>
+      <div class="footer-col"><h4>Support</h4><a class="footer-link" href="/pages/help-center.html">Help Center</a><a class="footer-link" href="/pages/contact-us.html">Contact Us</a><a class="footer-link" href="/pages/privacy.html">Privacy Policy</a><a class="footer-link" href="/pages/terms.html">Terms & Conditions</a></div>
     </div>
-    <div class="footer-bottom"><div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div><div class="footer-bottom-links"><a class="footer-bottom-link" href="privacy.html">Privacy</a><a class="footer-bottom-link" href="terms.html">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div></div>
+    <div class="footer-bottom"><div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div><div class="footer-bottom-links"><a class="footer-bottom-link" href="/pages/privacy.html">Privacy</a><a class="footer-bottom-link" href="/pages/terms.html">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div></div>
   </footer>
 
   <!-- AUTH MODAL — exact copy -->
@@ -545,13 +548,15 @@
 
   <script>
     /* ═══════════════════════════════════════════════════
-       FAQ ACCORDION
+       FAQ ACCORDION - with null-safety
     ═══════════════════════════════════════════════════ */
     const faqItems = document.querySelectorAll('.faq-item');
 
     faqItems.forEach(item => {
-      const trigger = item.querySelector('.faq-trigger');
-      const body    = item.querySelector('.faq-body');
+      const trigger = item?.querySelector('.faq-trigger');
+      const body    = item?.querySelector('.faq-body');
+
+      if (!trigger || !body) return; /* Skip if elements not found */
 
       trigger.addEventListener('click', () => {
         const isOpen = item.classList.contains('open');
@@ -559,11 +564,13 @@
         /* Close all others */
         faqItems.forEach(other => {
           other.classList.remove('open');
-          const otherBody    = other.querySelector('.faq-body');
-          const otherTrigger = other.querySelector('.faq-trigger');
-          otherBody.classList.remove('open');
-          otherBody.style.maxHeight = '0';
-          otherTrigger.setAttribute('aria-expanded', 'false');
+          const otherBody    = other?.querySelector('.faq-body');
+          const otherTrigger = other?.querySelector('.faq-trigger');
+          if (otherBody && otherTrigger) {
+            otherBody.classList.remove('open');
+            otherBody.style.maxHeight = '0';
+            otherTrigger.setAttribute('aria-expanded', 'false');
+          }
         });
 
         /* Toggle clicked */
@@ -577,21 +584,28 @@
     });
 
     /* ═══════════════════════════════════════════════════
-       FAQ SEARCH FILTER
+       FAQ SEARCH FILTER - with null-safety
     ═══════════════════════════════════════════════════ */
     const faqSearch      = document.getElementById('faqSearch');
     const faqNoResults   = document.getElementById('faqNoResults');
     const faqNoResultsQ  = document.getElementById('faqNoResultsQuery');
 
     function runSearch(query) {
+      if (!faqSearch || !faqNoResults || !faqNoResultsQ) return;
+      
       const q = query.toLowerCase().trim();
       let visible = 0;
 
       faqItems.forEach(item => {
+        const qEl = item?.querySelector('.faq-q');
+        const aEl = item?.querySelector('.faq-a');
+        
+        if (!qEl || !aEl) return;
+        
         const text = (
-          item.dataset.q + ' ' +
-          item.querySelector('.faq-q').textContent + ' ' +
-          item.querySelector('.faq-a').textContent
+          (item.dataset.q ?? '') + ' ' +
+          qEl.textContent + ' ' +
+          aEl.textContent
         ).toLowerCase();
 
         const show = !q || text.includes(q);
@@ -601,18 +615,20 @@
 
       /* Show / hide no-results state */
       faqNoResults.classList.toggle('show', visible === 0 && q !== '');
-      if (visible === 0) faqNoResultsQ.textContent = query;
+      if (visible === 0 && faqNoResultsQ) faqNoResultsQ.textContent = query;
     }
 
-    faqSearch.addEventListener('input', e => runSearch(e.target.value));
+    if (faqSearch) {
+      faqSearch.addEventListener('input', e => runSearch(e.target.value));
+    }
 
     /* ═══════════════════════════════════════════════════
-       CATEGORY FILTER (from category cards)
+       CATEGORY FILTER - with null-safety
     ═══════════════════════════════════════════════════ */
     function filterCategory(cat) {
       /* Reset search */
-      faqSearch.value = '';
-      faqNoResults.classList.remove('show');
+      if (faqSearch) faqSearch.value = '';
+      if (faqNoResults) faqNoResults.classList.remove('show');
 
       const labels = {
         all:       '❓ Frequently Asked Questions',
@@ -623,16 +639,22 @@
         privacy:   '🔒 Privacy & Safety',
       };
 
-      document.getElementById('faqCategoryLabel').textContent = labels[cat] || labels.all;
+      const labelEl = document.getElementById('faqCategoryLabel');
+      if (labelEl) {
+        labelEl.textContent = labels[cat] || labels.all;
+      }
 
       faqItems.forEach(item => {
         item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
       });
 
       /* Scroll to FAQ section */
-      setTimeout(() => {
-        document.getElementById('faq-all').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 80);
+      const faqSection = document.getElementById('faq-all');
+      if (faqSection) {
+        setTimeout(() => {
+          faqSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      }
     }
 
     window.filterCategory = filterCategory; /* expose for inline onclick */
