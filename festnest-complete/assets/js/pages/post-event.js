@@ -78,13 +78,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const file = input.files[0];
       if (!file) return;
 
+      console.log('[DEBUG] File selected:', file.name, '(' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
+
       /* ── File size validation ── */
       if (file.size > maxSize) {
+        console.warn('[DEBUG] File size exceeds limit:', maxSize / 1024 / 1024, 'MB');
         alert(`${zoneId === 'posterUpload' ? 'Poster' : 'Brochure'} must be less than ${maxSizeLabel}.`);
         input.value = '';
         return;
       }
 
+      console.log('[DEBUG] File validation passed, opening cropper (NO UPLOAD YET)...');
       onFile(file);
       zone.querySelector('.upload-zone-title').textContent = '✅ ' + file.name;
       zone.querySelector('.upload-zone-sub').textContent   = (file.size / 1024 / 1024).toFixed(2) + ' MB';
@@ -126,6 +130,8 @@ document.addEventListener('DOMContentLoaded', function () {
    * Open crop modal for uploaded image
    */
   function openCropModal(file) {
+    console.log('[DEBUG] openCropModal() called with file:', file.name);
+    
     if (!file) return;
     selectedFile = file;
 
@@ -135,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Read file and display
     const reader = new FileReader();
     reader.onload = (e) => {
+      console.log('[DEBUG] Image file read, opening cropper...');
       image.src = e.target.result;
 
       // Show modal
@@ -143,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Wait for image to load to get dimensions
       image.onload = () => {
+        console.log('[DEBUG] Image loaded in DOM, initializing cropper...');
         initializeCropper();
       };
     };
@@ -278,6 +286,9 @@ document.addEventListener('DOMContentLoaded', function () {
    * - Clears selected file
    */
   function closeCrop() {
+    console.log('[DEBUG] CANCEL CLICKED - closeCrop() called');
+    console.log('[DEBUG] Upload will NOT be triggered');
+    
     const modal = document.getElementById('cropModal');
     const doneBtn = document.querySelector('.crop-actions .btn-done');
     
@@ -311,6 +322,8 @@ document.addEventListener('DOMContentLoaded', function () {
       image.style.height = '';
       image.style.transform = '';
     }
+
+    console.log('[DEBUG] Crop modal closed, all state reset');
   }
 
   /**
@@ -328,16 +341,21 @@ document.addEventListener('DOMContentLoaded', function () {
    * 8. Reset processing flag on error
    */
   function cropAndUpload() {
+    console.log('[DEBUG] ========== DONE CLICKED ==========');
+    console.log('[DEBUG] cropAndUpload() called');
+    
     const frame = document.querySelector('.crop-frame');
     const image = document.querySelector('.crop-image');
 
     if (!frame || !image || !selectedFile) {
+      console.warn('[DEBUG] Image not loaded - returning early');
       showToast('Image not loaded', 'error');
       return;
     }
 
     // Prevent multiple uploads
     if (isProcessing) {
+      console.warn('[DEBUG] Already processing - blocking double-click');
       showToast('Processing... please wait', 'info');
       return;
     }
@@ -363,8 +381,18 @@ document.addEventListener('DOMContentLoaded', function () {
       const originalWidth = cropState.originalWidth;
       const originalHeight = cropState.originalHeight;
 
+      console.log('[DEBUG] Crop state:', {
+        translateX,
+        translateY,
+        imageDisplayWidth,
+        imageDisplayHeight,
+        originalWidth,
+        originalHeight,
+      });
+
       // Validate dimensions
       if (!imageDisplayWidth || !imageDisplayHeight || !originalWidth || !originalHeight) {
+        console.error('[DEBUG] Image dimensions invalid');
         showToast('Image dimensions invalid', 'error');
         isProcessing = false;
         if (btn) {
@@ -373,6 +401,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return;
       }
+
+      console.log('[DEBUG] Creating canvas 1280x720...');
 
       // Create canvas with 16:9 at high resolution
       const canvas = document.createElement('canvas');
@@ -387,6 +417,8 @@ document.addEventListener('DOMContentLoaded', function () {
       imgElement.crossOrigin = 'anonymous';
 
       imgElement.onload = () => {
+        console.log('[DEBUG] Image loaded for canvas drawing...');
+        
         try {
           // CRITICAL FORMULA: Map visible frame to source image region
           // The translate offset tells us how much of the display image is off-screen
@@ -397,6 +429,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
           const visibleWidth = (frameWidth / imageDisplayWidth) * originalWidth;
           const visibleHeight = (frameHeight / imageDisplayHeight) * originalHeight;
+
+          console.log('[DEBUG] Drawing canvas with visible region:', {
+            visibleX: visibleX.toFixed(2),
+            visibleY: visibleY.toFixed(2),
+            visibleWidth: visibleWidth.toFixed(2),
+            visibleHeight: visibleHeight.toFixed(2),
+          });
 
           // Draw the exact visible portion of the original image onto canvas
           ctx.drawImage(
@@ -411,31 +450,36 @@ document.addEventListener('DOMContentLoaded', function () {
             canvas.height       // destination height
           );
 
+          console.log('[DEBUG] Canvas drawn successfully, converting to blob...');
+
           // Convert canvas to blob and upload
           canvas.toBlob((blob) => {
             if (!blob) {
+              console.error('[DEBUG] Failed to create blob');
               showToast('Failed to generate image', 'error');
               resetProcessing();
               return;
             }
 
+            console.log('[DEBUG] Blob created:', blob.size, 'bytes');
             uploadPosterBlob(blob);
           }, 'image/jpeg', 0.95);
         } catch (err) {
-          console.error('[FestNest] Canvas drawing error:', err);
+          console.error('[DEBUG] Canvas drawing error:', err);
           showToast('Error: ' + err.message, 'error');
           resetProcessing();
         }
       };
 
       imgElement.onerror = () => {
+        console.error('[DEBUG] Image load error in canvas processing');
         showToast('Failed to load image for processing', 'error');
         resetProcessing();
       };
 
       imgElement.src = image.src;
     } catch (err) {
-      console.error('[FestNest] Crop error:', err);
+      console.error('[DEBUG] Crop error:', err);
       showToast('Error: ' + err.message, 'error');
       resetProcessing();
     }
@@ -451,12 +495,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /**
    * Upload cropped poster blob to server
+   * CRITICAL: This function is ONLY called from stripAndUpload() on Done click
    */
   function uploadPosterBlob(blob) {
+    console.log('[DEBUG] ========== UPLOAD TRIGGERED ==========');
+    console.log('[DEBUG] uploadPosterBlob() called with blob:', blob.size, 'bytes');
+    
     const btn = document.querySelector('.crop-actions .btn-done');
 
     const fd = new FormData();
     fd.append('poster', blob, 'poster.jpg');
+
+    console.log('[DEBUG] Sending POST to /api/upload/poster...');
 
     fetch('/api/upload/poster', {
       method: 'POST',
@@ -466,11 +516,12 @@ document.addEventListener('DOMContentLoaded', function () {
       body: fd,
     })
     .then(res => {
+      console.log('[DEBUG] Upload response status:', res.status);
       if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
       return res.json();
     })
     .then(data => {
-      console.log('[FestNest] Poster uploaded:', data);
+      console.log('[DEBUG] Upload success:', data);
 
       // Store the cropped file
       selectedFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
@@ -495,9 +546,11 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.textContent = 'Done';
       }
       closeCrop();
+      
+      console.log('[DEBUG] Upload complete, cropper closed');
     })
     .catch(err => {
-      console.error('[FestNest] Poster upload error:', err);
+      console.error('[DEBUG] Poster upload error:', err);
       showToast('Upload failed: ' + err.message, 'error');
       isProcessing = false;
       if (btn) {
@@ -513,6 +566,8 @@ document.addEventListener('DOMContentLoaded', function () {
    * - Done: Generate, crop, and upload poster
    */
   (function attachCropHandlers() {
+    console.log('[DEBUG] Setting up crop modal event handlers...');
+    
     const modal = document.getElementById('cropModal');
     const closeBtn = document.querySelector('.crop-header-close');
     const cancelBtn = document.querySelector('.crop-actions .btn-cancel');
@@ -525,6 +580,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        console.log('[DEBUG] CLOSE BUTTON CLICKED (X)');
         closeCrop();
       });
     }
@@ -536,6 +592,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (cancelBtn) {
       cancelBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        console.log('[DEBUG] CANCEL BUTTON CLICKED');
         closeCrop();
       });
     }
@@ -547,6 +604,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (doneBtn) {
       doneBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        console.log('[DEBUG] DONE BUTTON CLICKED');
         cropAndUpload();
       });
     }
@@ -559,10 +617,13 @@ document.addEventListener('DOMContentLoaded', function () {
       modal.addEventListener('click', (e) => {
         // Close only if clicking on modal background, not the container
         if (e.target === modal) {
+          console.log('[DEBUG] OVERLAY CLICKED (outside frame)');
           closeCrop();
         }
       });
     }
+    
+    console.log('[DEBUG] Crop handlers attached successfully');
   })();
 
   document.getElementById('featureEventBtn')?.addEventListener('click', () => {
