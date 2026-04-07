@@ -28,9 +28,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     </div>`;
 
   try {
+    console.log('[Saved Events] Fetching saved events...');
     const data = await FN_EVENTS_API.getSavedEvents();
+    console.log('[Saved Events] Loaded:', { count: data.count, events: data.events });
     renderSaved(data.events);
   } catch (err) {
+    console.error('[Saved Events] Error loading saved events:', err);
     container.innerHTML = `
       <div class="saved-empty">
         <div class="saved-empty-icon">⚠️</div>

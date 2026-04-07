@@ -77,6 +77,9 @@ const OrganizerSchema = new mongoose.Schema(
     /* ── Events ── */
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
 
+    /* ── Saved Events (for bookmarking) ── */
+    savedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+
     /* ── Account Status ── */
     isActive:           { type: Boolean, default: true },
     isVerified:         { type: Boolean, default: false },

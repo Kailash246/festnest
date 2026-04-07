@@ -32,10 +32,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   try {
     const event = await FN_EVENTS_API.getEvent(id);
+    console.log('[Event Detail] Event loaded:', { id: event._id, title: event.title, organizer: event.organizer });
     document.title = `${event.title} — FestNest`;
     detailPage.innerHTML = buildDetailHTML(event);
     wireDetailButtons(event);
   } catch (err) {
+    console.error('[Event Detail] Error loading event:', err);
     if (err.statusCode === 404) {
       showNotFound(detailPage);
     } else {

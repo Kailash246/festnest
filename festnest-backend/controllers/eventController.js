@@ -97,29 +97,23 @@ exports.getEvent = async (req, res, next) => {
     // Non-approved events only visible to owner or admin
     if (event.status !== 'approved') {
       const uid     = req.user?.id;
-      const isOwner = uid && event.organizer && event.organizer._id.toString() === uid;
+      const isOwner = uid && event.organizer && event.organizer._id && event.organizer._id.toString() === uid;
       const isAdmin = req.user?.role === 'admin';
-      
-      // Debug logging
-      console.log('[getEvent] Checking access for pending event:', {
-        eventId: req.params.id,
-        eventStatus: event.status,
-        uid,
-        organizerId: event.organizer?._id.toString(),
-        isOwner,
-        userRole: req.user?.role,
-        isAdmin,
-        userExists: !!req.user
-      });
       
       if (!isOwner && !isAdmin) {
         return res.status(404).json({ success: false, message: 'Event not found or access denied.' });
       }
     }
 
-    // Ensure organizer exists and has _id
-    if (!event.organizer || !event.organizer._id) {
-      return res.status(500).json({ success: false, message: 'Event data error: missing organizer information.' });
+    /* Organizer is optional (admin-posted events may not have organizer reference) */
+    if (!event.organizer) {
+      event.organizer = {
+        firstName: 'Admin',
+        lastName: '',
+        email: '',
+        organizationName: 'FestNest Admin',
+        isVerified: true,
+      };
     }
 
     /* Ensure event has _id (defensive check) */
@@ -310,23 +304,25 @@ exports.saveEvent = async (req, res, next) => {
     if (!event) return res.status(404).json({ success: false, message: 'Event not found.' });
 
     /* Use req.user from middleware (already populated from correct collection) */
-    const user     = req.user;
+    const user = req.user;
     if (!user) return res.status(401).json({ success: false, message: 'User not found. Please log in.' });
     
-    const isSaved  = user.savedEvents && user.savedEvents.some(id => id.toString() === req.params.id);
+    /* Check if savedEvents field exists (all models should have it, but be defensive) */
+    if (!user.savedEvents) user.savedEvents = [];
+    
+    const isSaved = user.savedEvents.some(id => id.toString() === req.params.id);
 
     if (isSaved) {
       user.savedEvents = user.savedEvents.filter(id => id.toString() !== req.params.id);
       await user.save();
-      await Event.findByIdAndUpdate(req.params.id, { $inc: { saves: -1 } });
+      await Event.findByIdAndUpdate(req.params.id, { $inc: { saves: -1 } }).exec();
       return res.json({ success: true, saved: false, message: 'Removed from saved.' });
     }
 
-    /* Initialize savedEvents array if it doesn't exist */
-    if (!user.savedEvents) user.savedEvents = [];
+    /* Add event to savedEvents */
     user.savedEvents.push(req.params.id);
     await user.save();
-    await Event.findByIdAndUpdate(req.params.id, { $inc: { saves: 1 } });
+    await Event.findByIdAndUpdate(req.params.id, { $inc: { saves: 1 } }).exec();
     res.json({ success: true, saved: true, message: 'Event saved!' });
   } catch (err) { next(err); }
 };
@@ -337,11 +333,22 @@ exports.getSavedEvents = async (req, res, next) => {
     const user = req.user;
     if (!user) return res.status(401).json({ success: false, message: 'User not found. Please log in.' });
     
+    /* Determine correct model based on role */
+    let UserModel;
+    if (user.role === 'student') {
+      UserModel = require('../models/Student');
+    } else if (user.role === 'organizer') {
+      UserModel = require('../models/Organizer');
+    } else if (user.role === 'admin') {
+      UserModel = require('../models/Admin');
+    } else {
+      return res.status(400).json({ success: false, message: 'Invalid user role.' });
+    }
+    
     /* Re-fetch to populate savedEvents with full event details */
-    const UserModel = user.role === 'student' ? require('../models/Student') : require('../models/Organizer');
     const updatedUser = await UserModel.findById(user.id).populate({
       path   : 'savedEvents',
-      match  : { status: 'approved' },
+      match  : { status: 'approved', isActive: true },
       select : 'title college category mode startDate location prizes registrationFee posterUrl badge',
     }).select('savedEvents');
     

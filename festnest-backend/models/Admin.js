@@ -56,6 +56,9 @@ const AdminSchema = new mongoose.Schema(
       default: ['manage-events', 'manage-users', 'manage-reports', 'view-analytics'],
     },
 
+    /* ── Saved Events (for bookmarking) ── */
+    savedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+
     /* ── Account Status ── */
     isActive:           { type: Boolean, default: true },
     isVerified:         { type: Boolean, default: true },

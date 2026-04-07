@@ -64,7 +64,7 @@ const EventSchema = new mongoose.Schema(
     organizer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Organizer',
-      required: [true, 'Organizer is required'],
+      required: false,  /* Optional: admin-posted events may not have organizer */
     },
     organizerName:  { type: String, trim: true },   /* cached for fast display */
     college:        { type: String, trim: true, required: [true, 'College name is required'] },
