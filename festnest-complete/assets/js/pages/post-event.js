@@ -151,6 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
      ────────────────────────────────────────────────────────────────────────── */
 
   let selectedFile = null;
+  let uploadedPosterUrl = null;  // CRITICAL: Store uploaded poster URL from /api/upload/poster
   let isCropping = false;      // CRITICAL: Controls modal visibility
   let isProcessing = false;    // Prevents double uploads
   
@@ -794,6 +795,10 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('[FLOW] ========== UPLOAD SUCCESS ==========');
       console.log('[FLOW] Response data:', data);
 
+      // CRITICAL: Capture the uploaded poster URL from the response
+      uploadedPosterUrl = data.url || data.secure_url;
+      console.log('[FLOW] Saved uploadedPosterUrl:', uploadedPosterUrl);
+
       // Store the cropped file
       selectedFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
 
@@ -1089,15 +1094,28 @@ document.addEventListener('DOMContentLoaded', function () {
     if (elig)    fd.append('eligibility', elig);
     if (rules)   fd.append('rules',       rules);
 
-    /* Attach files if selected */
+    /* Attach files if selected, OR send uploaded poster URL */
     if (posterFile)   fd.append('poster',   posterFile);
     if (brochureFile) fd.append('brochure', brochureFile);
+    
+    /* CRITICAL: If poster was uploaded via cropper, send the URL */
+    if (uploadedPosterUrl) {
+      console.log('[FLOW] Appending posterUrl:', uploadedPosterUrl);
+      fd.append('posterUrl', uploadedPosterUrl);
+    }
 
     /* ── Loading state ── */
     if (submitBtn) {
       submitBtn.disabled   = true;
       submitBtn.innerHTML  = '<span class="spinner"></span> Submitting...';
     }
+
+    /* ── DEBUG: Log FormData contents before API call ── */
+    console.log('[FORM_SUBMIT] ========== CREATING EVENT ==========');
+    console.log('[FORM_SUBMIT] Title:', title);
+    console.log('[FORM_SUBMIT] Uploaded Poster URL:', uploadedPosterUrl || '(none)');
+    console.log('[FORM_SUBMIT] Poster File:', posterFile ? `File(${posterFile.name})` : '(none)');
+    console.log('[FORM_SUBMIT] Brochure File:', brochureFile ? `File(${brochureFile.name})` : '(none)');
 
     /* ── API call ── */
     try {
@@ -1112,6 +1130,19 @@ document.addEventListener('DOMContentLoaded', function () {
       form.reset();
       posterFile   = null;
       brochureFile = null;
+      uploadedPosterUrl = null;  // Reset uploaded URL
+      
+      /* Reset upload zone UI */
+      const posterZone = document.getElementById('posterUpload');
+      if (posterZone) {
+        posterZone.style.borderColor = '';
+        posterZone.classList.remove('upload-zone--uploaded');
+        const titleEl = posterZone.querySelector('.upload-zone-title');
+        const subEl = posterZone.querySelector('.upload-zone-sub');
+        if (titleEl) titleEl.textContent = 'Upload Poster';
+        if (subEl) subEl.textContent = 'PNG, JPG, WebP - Max 2MB';
+      }
+      
       updatePreview();
 
     } catch (err) {

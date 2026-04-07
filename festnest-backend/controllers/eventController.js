@@ -142,15 +142,24 @@ exports.getEvent = async (req, res, next) => {
  * POST /api/events
  * Body: multipart/form-data
  *   — All text fields + optional files: poster (image), brochure (pdf)
+ *   — OR posterUrl field if poster was pre-uploaded via /api/upload/poster
  *   — Nested objects (location, prizes, contact) sent as JSON strings
  */
 exports.createEvent = async (req, res, next) => {
   try {
     const b = req.body;
 
-    /* ── 1. Upload poster to Cloudinary ──────────────────── */
+    /* ── 1. Get poster URL ────────────────────────────────── */
     let posterUrl = '', posterPublicId = '';
-    if (req.files?.poster?.[0]) {
+    
+    /* First check if posterUrl was sent as a field (from /api/upload/poster) */
+    if (b.posterUrl) {
+      console.log('[Event] Using pre-uploaded posterUrl:', b.posterUrl);
+      posterUrl = b.posterUrl;
+      /* posterPublicId will be empty since it was uploaded separately */
+    }
+    /* Otherwise check if poster file was sent with the form */
+    else if (req.files?.poster?.[0]) {
       try {
         const result    = await uploadToCloudinary(
           req.files.poster[0].buffer,
