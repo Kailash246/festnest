@@ -78,17 +78,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const file = input.files[0];
       if (!file) return;
 
-      console.log('[DEBUG] File selected:', file.name, '(' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
+      console.log('[FLOW] File selected:', file.name, '(' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
 
       /* ── File size validation ── */
       if (file.size > maxSize) {
-        console.warn('[DEBUG] File size exceeds limit:', maxSize / 1024 / 1024, 'MB');
+        console.warn('[FLOW] File size exceeds limit:', maxSize / 1024 / 1024, 'MB');
         alert(`${zoneId === 'posterUpload' ? 'Poster' : 'Brochure'} must be less than ${maxSizeLabel}.`);
         input.value = '';
         return;
       }
 
-      console.log('[DEBUG] File validation passed, opening cropper (NO UPLOAD YET)...');
+      console.log('[FLOW] File validation passed, opening cropper (NO UPLOAD YET)...');
       onFile(file);
       zone.querySelector('.upload-zone-title').textContent = '✅ ' + file.name;
       zone.querySelector('.upload-zone-sub').textContent   = (file.size / 1024 / 1024).toFixed(2) + ' MB';
@@ -116,44 +116,69 @@ document.addEventListener('DOMContentLoaded', function () {
      ────────────────────────────────────────────────────────────────────────── */
 
   let selectedFile = null;
-  let isProcessing = false;  // Prevent multiple uploads
+  let isCropping = false;      // CRITICAL: Controls modal visibility
+  let isProcessing = false;    // Prevents double uploads
+  
   let cropState = {
-    offsetX: 0,           // Current translate X
-    offsetY: 0,           // Current translate Y
-    imageWidth: 0,        // Display width of image in frame
-    imageHeight: 0,       // Display height of image in frame
-    originalWidth: 0,     // Original image dimensions
+    offsetX: 0,
+    offsetY: 0,
+    imageWidth: 0,
+    imageHeight: 0,
+    originalWidth: 0,
     originalHeight: 0,
   };
 
   /**
-   * Open crop modal for uploaded image
+   * STEP 1: FILE SELECT - ONLY OPEN CROPPER (NO UPLOAD)
    */
   function openCropModal(file) {
-    console.log('[DEBUG] openCropModal() called with file:', file.name);
+    console.log('[FLOW] FILE SELECTED - Opening cropper');
     
     if (!file) return;
+    
+    // GUARD: Prevent accidental re-entry
+    if (isCropping) {
+      console.warn('[FLOW] Cropper already open');
+      return;
+    }
+
     selectedFile = file;
+    isCropping = true;  // CRITICAL STATE
 
     const modal = document.getElementById('cropModal');
     const image = document.querySelector('.crop-image');
+    
+    if (!modal || !image) {
+      console.error('[FLOW] Cropper modal/image not found');
+      return;
+    }
 
     // Read file and display
     const reader = new FileReader();
     reader.onload = (e) => {
-      console.log('[DEBUG] Image file read, opening cropper...');
+      console.log('[FLOW] Image file read, showing modal');
       image.src = e.target.result;
 
-      // Show modal
-      modal.classList.add('show');
-      document.body.style.overflow = 'hidden';
+      // Show modal based on state
+      if (isCropping) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
 
       // Wait for image to load to get dimensions
       image.onload = () => {
-        console.log('[DEBUG] Image loaded in DOM, initializing cropper...');
+        console.log('[FLOW] Image loaded, initializing cropper');
         initializeCropper();
       };
     };
+    
+    reader.onerror = () => {
+      console.error('[FLOW] File read error');
+      isCropping = false;
+      selectedFile = null;
+      showToast('Failed to load image', 'error');
+    };
+    
     reader.readAsDataURL(file);
   }
 
@@ -284,10 +309,13 @@ document.addEventListener('DOMContentLoaded', function () {
    * - Discards cropped image
    * - Resets all crop state
    * - Clears selected file
+   * - CRITICAL: Sets isCropping = false to block upload
    */
   function closeCrop() {
-    console.log('[DEBUG] CANCEL CLICKED - closeCrop() called');
-    console.log('[DEBUG] Upload will NOT be triggered');
+    console.log('[FLOW] CANCEL - isCropping now = false, blocking upload');
+    
+    // CRITICAL: Must disable cropping first
+    isCropping = false;
     
     const modal = document.getElementById('cropModal');
     const doneBtn = document.querySelector('.crop-actions .btn-done');
@@ -323,39 +351,48 @@ document.addEventListener('DOMContentLoaded', function () {
       image.style.transform = '';
     }
 
-    console.log('[DEBUG] Crop modal closed, all state reset');
+    console.log('[FLOW] Crop modal closed completely, cannot upload');
   }
 
   /**
    * Export cropped canvas and upload
    * CRITICAL: Map visual frame to original image using correct formulas
+   * CRITICAL: This ONLY runs if isCropping = true (Done button only)
    * 
    * Flow:
-   * 1. Validate state
-   * 2. Set processing flag (prevent double-click)
-   * 3. Generate canvas from visible frame
-   * 4. Convert to Blob
-   * 5. Upload to server
-   * 6. Update UI
-   * 7. Close modal on success
-   * 8. Reset processing flag on error
+   * 1. Validate isCropping state
+   * 2. Validate image loaded
+   * 3. Set processing flag (prevent double-click)
+   * 4. Generate canvas from visible frame
+   * 5. Convert to Blob
+   * 6. Upload to server
+   * 7. Update UI
+   * 8. Close modal on success
+   * 9. Reset processing flag on error
    */
   function cropAndUpload() {
-    console.log('[DEBUG] ========== DONE CLICKED ==========');
-    console.log('[DEBUG] cropAndUpload() called');
+    // CRITICAL GUARD: Only allow if in active cropping state
+    if (!isCropping) {
+      console.error('[FLOW] GUARD REJECTED: cropAndUpload called but isCropping=false');
+      console.error('[FLOW] This should NEVER happen - indicates serious control flow error');
+      return;
+    }
+
+    console.log('[FLOW] ========== DONE CLICKED ==========');
+    console.log('[FLOW] cropAndUpload() executing with isCropping=true');
     
     const frame = document.querySelector('.crop-frame');
     const image = document.querySelector('.crop-image');
 
     if (!frame || !image || !selectedFile) {
-      console.warn('[DEBUG] Image not loaded - returning early');
+      console.warn('[FLOW] Image not loaded - returning early');
       showToast('Image not loaded', 'error');
       return;
     }
 
     // Prevent multiple uploads
     if (isProcessing) {
-      console.warn('[DEBUG] Already processing - blocking double-click');
+      console.warn('[FLOW] Already processing - blocking double-click');
       showToast('Processing... please wait', 'info');
       return;
     }
@@ -381,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const originalWidth = cropState.originalWidth;
       const originalHeight = cropState.originalHeight;
 
-      console.log('[DEBUG] Crop state:', {
+      console.log('[FLOW] Crop state:', {
         translateX,
         translateY,
         imageDisplayWidth,
@@ -392,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Validate dimensions
       if (!imageDisplayWidth || !imageDisplayHeight || !originalWidth || !originalHeight) {
-        console.error('[DEBUG] Image dimensions invalid');
+        console.error('[FLOW] Image dimensions invalid');
         showToast('Image dimensions invalid', 'error');
         isProcessing = false;
         if (btn) {
@@ -402,7 +439,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      console.log('[DEBUG] Creating canvas 1280x720...');
+      console.log('[FLOW] Creating canvas 1280x720...');
 
       // Create canvas with 16:9 at high resolution
       const canvas = document.createElement('canvas');
@@ -417,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function () {
       imgElement.crossOrigin = 'anonymous';
 
       imgElement.onload = () => {
-        console.log('[DEBUG] Image loaded for canvas drawing...');
+        console.log('[FLOW] Image loaded for canvas drawing...');
         
         try {
           // CRITICAL FORMULA: Map visible frame to source image region
@@ -430,7 +467,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const visibleWidth = (frameWidth / imageDisplayWidth) * originalWidth;
           const visibleHeight = (frameHeight / imageDisplayHeight) * originalHeight;
 
-          console.log('[DEBUG] Drawing canvas with visible region:', {
+          console.log('[FLOW] Drawing canvas with visible region:', {
             visibleX: visibleX.toFixed(2),
             visibleY: visibleY.toFixed(2),
             visibleWidth: visibleWidth.toFixed(2),
@@ -450,36 +487,36 @@ document.addEventListener('DOMContentLoaded', function () {
             canvas.height       // destination height
           );
 
-          console.log('[DEBUG] Canvas drawn successfully, converting to blob...');
+          console.log('[FLOW] Canvas drawn successfully, converting to blob...');
 
           // Convert canvas to blob and upload
           canvas.toBlob((blob) => {
             if (!blob) {
-              console.error('[DEBUG] Failed to create blob');
+              console.error('[FLOW] Failed to create blob');
               showToast('Failed to generate image', 'error');
               resetProcessing();
               return;
             }
 
-            console.log('[DEBUG] Blob created:', blob.size, 'bytes');
+            console.log('[FLOW] Blob created:', blob.size, 'bytes');
             uploadPosterBlob(blob);
           }, 'image/jpeg', 0.95);
         } catch (err) {
-          console.error('[DEBUG] Canvas drawing error:', err);
+          console.error('[FLOW] Canvas drawing error:', err);
           showToast('Error: ' + err.message, 'error');
           resetProcessing();
         }
       };
 
       imgElement.onerror = () => {
-        console.error('[DEBUG] Image load error in canvas processing');
+        console.error('[FLOW] Image load error in canvas processing');
         showToast('Failed to load image for processing', 'error');
         resetProcessing();
       };
 
       imgElement.src = image.src;
     } catch (err) {
-      console.error('[DEBUG] Crop error:', err);
+      console.error('[FLOW] Crop error:', err);
       showToast('Error: ' + err.message, 'error');
       resetProcessing();
     }
@@ -495,18 +532,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /**
    * Upload cropped poster blob to server
-   * CRITICAL: This function is ONLY called from stripAndUpload() on Done click
+   * CRITICAL: Only runs if isCropping = true (called from cropAndUpload on Done click)
    */
   function uploadPosterBlob(blob) {
-    console.log('[DEBUG] ========== UPLOAD TRIGGERED ==========');
-    console.log('[DEBUG] uploadPosterBlob() called with blob:', blob.size, 'bytes');
+    // CRITICAL GUARD: Verify we're in active cropping context
+    console.log('[FLOW] uploadPosterBlob guard check - isCropping=' + isCropping);
+    if (!isCropping) {
+      console.error('[FLOW] BLOCKED: Upload attempted outside cropping context');
+      console.error('[FLOW] This indicates a serious control flow violation');
+      showToast('Upload error: Invalid state', 'error');
+      isProcessing = false;
+      const btn = document.querySelector('.crop-actions .btn-done');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Done';
+      }
+      return;
+    }
+
+    console.log('[FLOW] ========== UPLOAD TRIGGERED ==========');
+    console.log('[FLOW] uploadPosterBlob() executing with blob:', blob.size, 'bytes');
     
     const btn = document.querySelector('.crop-actions .btn-done');
 
     const fd = new FormData();
     fd.append('poster', blob, 'poster.jpg');
 
-    console.log('[DEBUG] Sending POST to /api/upload/poster...');
+    console.log('[FLOW] Sending POST to /api/upload/poster...');
 
     fetch('/api/upload/poster', {
       method: 'POST',
@@ -516,12 +568,12 @@ document.addEventListener('DOMContentLoaded', function () {
       body: fd,
     })
     .then(res => {
-      console.log('[DEBUG] Upload response status:', res.status);
+      console.log('[FLOW] Upload response status:', res.status);
       if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
       return res.json();
     })
     .then(data => {
-      console.log('[DEBUG] Upload success:', data);
+      console.log('[FLOW] Upload success:', data);
 
       // Store the cropped file
       selectedFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
@@ -539,18 +591,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
       showToast('🖼️ Poster ready!', 'success');
 
-      // Close cropper after successful upload
+      // Close cropper after successful upload and reset isCropping state
       isProcessing = false;
+      isCropping = false;  // CRITICAL: Reset after successful upload
       if (btn) {
         btn.disabled = false;
         btn.textContent = 'Done';
       }
       closeCrop();
       
-      console.log('[DEBUG] Upload complete, cropper closed');
+      console.log('[FLOW] Upload complete, isCropping reset to false');
     })
     .catch(err => {
-      console.error('[DEBUG] Poster upload error:', err);
+      console.error('[FLOW] Poster upload error:', err);
       showToast('Upload failed: ' + err.message, 'error');
       isProcessing = false;
       if (btn) {
@@ -562,11 +615,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /**
    * Attach crop modal event handlers
-   * - Close/Cancel: Discard changes, reset state
-   * - Done: Generate, crop, and upload poster
+   * - Close/Cancel: Discard changes, reset state, set isCropping=false
+   * - Done: Generate, crop, and upload poster (ONLY if isCropping=true)
    */
   (function attachCropHandlers() {
-    console.log('[DEBUG] Setting up crop modal event handlers...');
+    console.log('[FLOW] Setting up crop modal event handlers...');
     
     const modal = document.getElementById('cropModal');
     const closeBtn = document.querySelector('.crop-header-close');
@@ -575,36 +628,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * CLOSE BUTTON (X)
-     * Action: Cancel cropping, discard changes
+     * Action: Cancel cropping, discard changes, set isCropping=false
      */
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('[DEBUG] CLOSE BUTTON CLICKED (X)');
+        console.log('[FLOW] CLOSE BUTTON (X) CLICKED');
         closeCrop();
       });
     }
 
     /**
      * CANCEL BUTTON
-     * Action: Cancel cropping, discard changes
+     * Action: Cancel cropping, discard changes, set isCropping=false
      */
     if (cancelBtn) {
       cancelBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('[DEBUG] CANCEL BUTTON CLICKED');
+        console.log('[FLOW] CANCEL BUTTON CLICKED');
         closeCrop();
       });
     }
 
     /**
      * DONE BUTTON
-     * Action: Generate cropped image, upload, and close
+     * Action: Crop image and upload (ONLY if isCropping=true)
      */
     if (doneBtn) {
       doneBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('[DEBUG] DONE BUTTON CLICKED');
+        console.log('[FLOW] DONE BUTTON CLICKED - uploading image');
         cropAndUpload();
       });
     }
@@ -617,13 +670,13 @@ document.addEventListener('DOMContentLoaded', function () {
       modal.addEventListener('click', (e) => {
         // Close only if clicking on modal background, not the container
         if (e.target === modal) {
-          console.log('[DEBUG] OVERLAY CLICKED (outside frame)');
+          console.log('[FLOW] OVERLAY CLICKED (outside frame) - closing');
           closeCrop();
         }
       });
     }
     
-    console.log('[DEBUG] Crop handlers attached successfully');
+    console.log('[FLOW] Crop handlers attached successfully');
   })();
 
   document.getElementById('featureEventBtn')?.addEventListener('click', () => {
