@@ -96,19 +96,29 @@ document.addEventListener('DOMContentLoaded', function () {
   setupUploadZone('posterUpload',   'image/jpeg,image/jpg,image/png,image/webp', MAX_POSTER_SIZE,   '2 MB', f => { openCropModal(f); });
   setupUploadZone('brochureUpload', 'application/pdf',                           MAX_BROCHURE_SIZE, '20 MB', f => { brochureFile = f; });
 
-  /* ── Image Crop Modal ────────────────────────────────── */
-  /**
-   * CUSTOM IMAGE CROPPER (16:9 FIXED FRAME)
-   * - Fixed aspect ratio (no resizing)
-   * - Draggable image inside frame
-   * - Mouse & touch support
-   * - Canvas export on Done
-   */
+  /* ── CUSTOM IMAGE CROPPER (16:9 FIXED FRAME) ────────────────────────────────
+     
+     CORE LOGIC:
+     - Track image translate(x, y) and display dimensions
+     - On export: Calculate exact visible region of original image
+     - Use canvas.drawImage() with source region to crop accurately
+     
+     VISUAL-TO-OUTPUT MAPPING:
+     visibleX = (-translateX / imageDisplayWidth) * originalImageWidth
+     visibleY = (-translateY / imageDisplayHeight) * originalImageHeight
+     visibleWidth = (frameWidth / imageDisplayWidth) * originalImageWidth
+     visibleHeight = (frameHeight / imageDisplayHeight) * originalImageHeight
+     
+     ────────────────────────────────────────────────────────────────────────── */
 
   let selectedFile = null;
   let cropState = {
-    offsetX: 0,
-    offsetY: 0,
+    offsetX: 0,           // Current translate X
+    offsetY: 0,           // Current translate Y
+    imageWidth: 0,        // Display width of image in frame
+    imageHeight: 0,       // Display height of image in frame
+    originalWidth: 0,     // Original image dimensions
+    originalHeight: 0,
   };
 
   /**
@@ -130,15 +140,57 @@ document.addEventListener('DOMContentLoaded', function () {
       modal.classList.add('show');
       document.body.style.overflow = 'hidden';
 
-      // Reset drag state
-      cropState.offsetX = 0;
-      cropState.offsetY = 0;
-      updateImageTransform();
-
-      // Initialize drag handlers
-      initializeDragHandlers();
+      // Wait for image to load to get dimensions
+      image.onload = () => {
+        initializeCropper();
+      };
     };
     reader.readAsDataURL(file);
+  }
+
+  /**
+   * Initialize cropper after image loads
+   */
+  function initializeCropper() {
+    const frame = document.querySelector('.crop-frame');
+    const image = document.querySelector('.crop-image');
+
+    if (!frame || !image) return;
+
+    // Store original image dimensions
+    cropState.originalWidth = image.naturalWidth;
+    cropState.originalHeight = image.naturalHeight;
+
+    // Get frame dimensions
+    const frameRect = frame.getBoundingClientRect();
+    const frameWidth = frameRect.width;
+    const frameHeight = frameRect.height;
+
+    // Calculate image display size (cover behavior)
+    // Image must cover frame while maintaining aspect ratio
+    const imageAspect = cropState.originalWidth / cropState.originalHeight;
+    const frameAspect = frameWidth / frameHeight;
+
+    if (imageAspect > frameAspect) {
+      // Image is wider: fit by height
+      cropState.imageHeight = frameHeight;
+      cropState.imageWidth = frameHeight * imageAspect;
+    } else {
+      // Image is taller: fit by width
+      cropState.imageWidth = frameWidth;
+      cropState.imageHeight = frameWidth / imageAspect;
+    }
+
+    // Apply calculated dimensions to image element
+    image.style.width = cropState.imageWidth + 'px';
+    image.style.height = cropState.imageHeight + 'px';
+
+    // Reset position and center image
+    cropState.offsetX = (frameWidth - cropState.imageWidth) / 2;
+    cropState.offsetY = (frameHeight - cropState.imageHeight) / 2;
+
+    updateImageTransform();
+    initializeDragHandlers();
   }
 
   /**
@@ -146,8 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
    */
   function initializeDragHandlers() {
     const frame = document.querySelector('.crop-frame');
-    const image = document.querySelector('.crop-image');
-    if (!frame || !image) return;
+    if (!frame) return;
 
     let isDragging = false;
     let startX = 0;
@@ -155,12 +206,19 @@ document.addEventListener('DOMContentLoaded', function () {
     let startOffsetX = 0;
     let startOffsetY = 0;
 
-    /* ── Mouse handlers ── */
+    // Remove old listeners (if re-initializing)
+    frame.removeEventListener('mousedown', onDragStart);
+    document.removeEventListener('mousemove', onDragMove);
+    document.removeEventListener('mouseup', onDragEnd);
+    frame.removeEventListener('touchstart', onDragStart);
+    document.removeEventListener('touchmove', onDragMove);
+    document.removeEventListener('touchend', onDragEnd);
+
+    // Add new listeners
     frame.addEventListener('mousedown', onDragStart);
     document.addEventListener('mousemove', onDragMove);
     document.addEventListener('mouseup', onDragEnd);
 
-    /* ── Touch handlers ── */
     frame.addEventListener('touchstart', onDragStart);
     document.addEventListener('touchmove', onDragMove);
     document.addEventListener('touchend', onDragEnd);
@@ -196,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getTouchOrMousePos(e) {
-      if (e.touches) {
+      if (e.touches && e.touches.length > 0) {
         return { x: e.touches[0].clientX, y: e.touches[0].clientY };
       }
       return { x: e.clientX, y: e.clientY };
@@ -220,11 +278,19 @@ document.addEventListener('DOMContentLoaded', function () {
     modal.classList.remove('show');
     document.body.style.overflow = '';
     selectedFile = null;
-    cropState = { offsetX: 0, offsetY: 0 };
+    cropState = {
+      offsetX: 0,
+      offsetY: 0,
+      imageWidth: 0,
+      imageHeight: 0,
+      originalWidth: 0,
+      originalHeight: 0,
+    };
   }
 
   /**
    * Export cropped canvas and upload
+   * CRITICAL: Map visual frame to original image using correct formulas
    */
   function cropAndUpload() {
     const frame = document.querySelector('.crop-frame');
@@ -242,15 +308,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     try {
-      // Get frame dimensions
       const frameRect = frame.getBoundingClientRect();
       const frameWidth = frameRect.width;
       const frameHeight = frameRect.height;
 
+      // Get current state
+      const translateX = cropState.offsetX;
+      const translateY = cropState.offsetY;
+      const imageDisplayWidth = cropState.imageWidth;
+      const imageDisplayHeight = cropState.imageHeight;
+      const originalWidth = cropState.originalWidth;
+      const originalHeight = cropState.originalHeight;
+
       // Create canvas with 16:9 at high resolution
       const canvas = document.createElement('canvas');
-      canvas.width = 800;   // 16:9 ratio
-      canvas.height = 450;
+      canvas.width = 1280;   // 16:9 ratio
+      canvas.height = 720;
 
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('Failed to get canvas context');
@@ -258,17 +331,30 @@ document.addEventListener('DOMContentLoaded', function () {
       // Create image element to draw from
       const imgElement = new Image();
       imgElement.crossOrigin = 'anonymous';
+
       imgElement.onload = () => {
-        // Draw the image with the current offset
-        // Calculate the scaling factor
-        const scale = imgElement.width / frameWidth;
+        // CRITICAL FORMULA: Map visible frame to source image region
+        // The translate offset tells us how much of the display image is off-screen
+        // We need to map this back to the original image coordinates
 
-        // Calculate scaled offset
-        const scaledOffsetX = cropState.offsetX * scale;
-        const scaledOffsetY = cropState.offsetY * scale;
+        const visibleX = (-translateX / imageDisplayWidth) * originalWidth;
+        const visibleY = (-translateY / imageDisplayHeight) * originalHeight;
 
-        // Draw image on canvas
-        ctx.drawImage(imgElement, scaledOffsetX, scaledOffsetY);
+        const visibleWidth = (frameWidth / imageDisplayWidth) * originalWidth;
+        const visibleHeight = (frameHeight / imageDisplayHeight) * originalHeight;
+
+        // Draw the exact visible portion of the original image onto canvas
+        ctx.drawImage(
+          imgElement,
+          visibleX,           // source X
+          visibleY,           // source Y
+          visibleWidth,       // source width
+          visibleHeight,      // source height
+          0,                  // destination X
+          0,                  // destination Y
+          canvas.width,       // destination width
+          canvas.height       // destination height
+        );
 
         // Convert canvas to blob
         canvas.toBlob((blob) => {
