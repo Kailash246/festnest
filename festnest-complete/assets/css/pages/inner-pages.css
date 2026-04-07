@@ -203,7 +203,7 @@
   .team-grid{grid-template-columns:repeat(2,1fr)}
   .why-grid{grid-template-columns:repeat(2,1fr)}
 }
-}
+
 @media(max-width:900px){
   .events-layout{flex-direction:column;padding:20px}
   .events-sidebar{width:100%;position:static;max-height:none}
@@ -596,8 +596,22 @@
 }
 
 .filter-modal-btn.btn-primary:hover{
+  background:var(--grad);
+  box-shadow:0 8px 20px rgba(90,75,255,0.4);
   transform:translateY(-2px);
-  box-shadow:0 6px 16px rgba(90,75,255,0.4);
+}
+
+/* Events Blog CTA */
+.events-blog-cta{background:var(--grad);padding:40px var(--page-padding);margin:40px 0;text-align:center;border-radius:var(--radius-lg)}
+.events-blog-cta-content{max-width:var(--container-max);margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px}
+.events-blog-cta-text h2{font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:8px}
+.events-blog-cta-text p{color:rgba(255,255,255,.85);font-size:15px;line-height:1.6;max-width:500px}
+.events-blog-cta .btn-hero{display:inline-block}
+
+@media(max-width:768px){
+  .events-blog-cta{padding:32px var(--page-padding)}
+  .events-blog-cta-text h2{font-size:20px}
+  .events-blog-cta-text p{font-size:14px}
 }
 
 @keyframes fadeIn{

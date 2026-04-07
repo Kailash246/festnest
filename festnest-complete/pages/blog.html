@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — College Events, Hackathons &amp; Student Competitions | FestNest</title>
+  <meta name="description" content="Discover the best college fests in India, top hackathons for students, how to win competitions, and event guides. Updated 2026 — FestNest Blog." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://festnest.in/blog" />
+
+  <!-- Open Graph (WhatsApp, LinkedIn, Twitter sharing) -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="FestNest Blog — College Events, Hackathons &amp; Student Competitions" />
+  <meta property="og:description" content="Guides, lists, and strategies for Indian students — college fests, hackathons, competitions, and career events." />
+  <meta property="og:url"         content="https://festnest.in/blog" />
+  <meta property="og:image"       content="https://festnest.in/assets/images/og-blog.jpg" />
+  <meta property="og:site_name"   content="FestNest" />
+  <meta name="twitter:card"       content="summary_large_image" />
+  <meta name="twitter:title"      content="FestNest Blog — College Events &amp; Hackathons India" />
+  <meta name="twitter:description" content="Discover top college fests, hackathons, and competition guides for students across India." />
+
+  <!-- Structured Data: Blog -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "FestNest Blog",
+    "url": "https://festnest.in/blog",
+    "description": "College event guides, hackathon lists, and competition strategies for students across India.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "FestNest",
+      "url": "https://festnest.in",
+      "logo": { "@type": "ImageObject", "url": "https://festnest.in/assets/images/logo.png" }
+    }
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- FestNest CSS system -->
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/typography.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/navbar.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
+
+  <style>
+    .blog-page { padding-top: var(--nav-height); min-height: 100vh; }
+
+    /* ── Category filter pills ── */
+    .blog-filters {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      margin-top: 28px; position: relative;
+    }
+    .blog-filter-pill {
+      padding: 8px 20px; border-radius: 30px; font-size: 13px; font-weight: 700;
+      cursor: pointer; border: 2px solid rgba(255,255,255,.3); background: rgba(255,255,255,.12);
+      color: #fff; transition: var(--transition); font-family: inherit;
+    }
+    .blog-filter-pill:hover, .blog-filter-pill.active {
+      background: #fff; color: var(--color-primary); border-color: #fff;
+    }
+
+    /* ── Blog grid ── */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    /* ── Blog card ── */
+    .blog-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: var(--transition-md);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+    }
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(90,75,255,.2);
+    }
+
+    /* Featured card spans 2 columns */
+    .blog-card--featured {
+      grid-column: span 2;
+      flex-direction: row;
+    }
+    .blog-card--featured .blog-card-img { flex: 1; min-height: 280px; }
+    .blog-card--featured .blog-card-body { flex: 1; padding: 36px 32px; justify-content: center; }
+    .blog-card--featured .blog-card-title { font-size: 22px; }
+
+    .blog-card-img {
+      position: relative; height: 200px; overflow: hidden; flex-shrink: 0;
+    }
+    .blog-card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s ease; display: block;
+      background: var(--bg);
+    }
+    .blog-card:hover .blog-card-img img { transform: scale(1.04); }
+
+    /* Gradient placeholder when no image */
+    .blog-card-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px;
+    }
+
+    .blog-card-cat {
+      position: absolute; top: 14px; left: 14px;
+      background: var(--grad); color: #fff; font-size: 10px; font-weight: 800;
+      padding: 4px 12px; border-radius: 20px; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .blog-card-read-time {
+      position: absolute; top: 14px; right: 14px;
+      background: rgba(0,0,0,.55); color: #fff; font-size: 10px; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px; backdrop-filter: blur(4px);
+    }
+
+    .blog-card-body {
+      padding: 22px 24px; display: flex; flex-direction: column; flex: 1;
+    }
+    .blog-card-meta {
+      font-size: 11px; font-weight: 700; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: .06em;
+      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .blog-card-meta-dot { width: 3px; height: 3px; background: var(--text-3); border-radius: 50%; }
+    .blog-card-title {
+      font-family: 'Clash Display', sans-serif; font-size: 17px; font-weight: 700;
+      color: var(--text-1); margin-bottom: 10px; line-height: 1.35;
+    }
+    .blog-card:hover .blog-card-title { color: var(--color-primary); }
+    .blog-card-excerpt {
+      font-size: 13.5px; color: var(--text-2); line-height: 1.7;
+      flex: 1; margin-bottom: 16px;
+    }
+    .blog-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 14px; border-top: 1px solid var(--border);
+    }
+    .blog-card-author {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .blog-card-author-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .blog-card-author-name { font-size: 12px; font-weight: 700; color: var(--text-2); }
+    .blog-card-cta {
+      font-size: 12px; font-weight: 800; color: var(--color-primary);
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ── Newsletter strip ── */
+    .blog-newsletter {
+      background: var(--pastel-purple);
+      border: 1px solid rgba(90,75,255,.15);
+      border-radius: var(--radius-xl);
+      padding: 40px 48px;
+      display: flex; align-items: center; gap: 40px;
+      margin: 0 var(--page-padding) 0;
+      max-width: var(--container-max);
+      margin-left: auto; margin-right: auto;
+    }
+    .blog-newsletter-text { flex: 1; }
+    .blog-newsletter-title {
+      font-family: 'Clash Display', sans-serif; font-size: 22px; font-weight: 700;
+      color: var(--text-1); margin-bottom: 6px;
+    }
+    .blog-newsletter-desc { font-size: 14px; color: var(--text-2); }
+    .blog-newsletter-form { display: flex; gap: 10px; flex-shrink: 0; }
+    .blog-newsletter-form input {
+      padding: 12px 18px; border-radius: var(--radius); border: 1.5px solid var(--border);
+      font-size: 14px; font-family: inherit; outline: none; width: 240px;
+      background: var(--bg-card); color: var(--text-1); transition: var(--transition);
+    }
+    .blog-newsletter-form input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(90,75,255,.08); }
+    .blog-newsletter-form input::placeholder { color: var(--text-3); }
+
+    /* Topics grid */
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+    .topic-pill {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 20px 12px; background: var(--bg-card); border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg); text-decoration: none;
+      text-align: center; transition: var(--transition-md); cursor: pointer;
+    }
+    .topic-pill:hover { border-color: var(--color-primary); background: var(--pastel-purple); transform: translateY(-3px); }
+    .topic-pill-icon { font-size: 28px; }
+    .topic-pill-label { font-size: 12px; font-weight: 700; color: var(--text-2); }
+    .topic-pill:hover .topic-pill-label { color: var(--color-primary); }
+
+    @media (max-width: 1024px) {
+      .blog-grid { grid-template-columns: 1fr 1fr; }
+      .blog-card--featured { grid-column: span 2; }
+      .topics-grid { grid-template-columns: repeat(3,1fr); }
+      .blog-newsletter { flex-direction: column; gap: 24px; padding: 32px 28px; }
+      .blog-newsletter-form input { width: 200px; }
+    }
+    @media (max-width: 768px) {
+      .blog-grid { grid-template-columns: 1fr; }
+      .blog-card--featured { grid-column: span 1; flex-direction: column; }
+      .blog-card--featured .blog-card-img { min-height: 200px; }
+      .topics-grid { grid-template-columns: repeat(2,1fr); }
+      .blog-newsletter-form { flex-direction: column; width: 100%; }
+      .blog-newsletter-form input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a class="nav-logo" href="/"><span class="nest-icon">🪺</span> FestNest</a>
+    <div class="nav-links">
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link" href="/events">Events</a>
+      <a class="nav-link" href="/post">Post Event</a>
+      <a class="nav-link" href="/saved">Saved</a>
+      <a class="nav-link active" href="/blog">Blog</a>
+      <a class="nav-link" href="/why">Why FestNest</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" id="navLoginBtn">Log In</button>
+      <button class="btn btn-primary" id="navSignupBtn">Sign Up Free</button>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a class="drawer-link" href="/">🏠 Home</a>
+    <a class="drawer-link" href="/events">🎉 Events</a>
+    <a class="drawer-link" href="/post">➕ Post Event</a>
+    <a class="drawer-link" href="/saved">🔖 Saved Events</a>
+    <a class="drawer-link active" href="/blog">📝 Blog</a>
+    <a class="drawer-link" href="/why">💡 Why FestNest</a>
+    <div class="drawer-auth">
+      <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
+      <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
+    </div>
+  </div>
+
+  <div class="blog-page">
+
+    <!-- HERO -->
+    <div class="about-hero-section">
+      <span class="section-eyebrow">📝 Student Guides &amp; Event News</span>
+      <h1 class="about-hero-title">The FestNest Blog</h1>
+      <p class="about-hero-desc">Hackathon guides, college fest lists, competition strategies — everything a student needs to discover, prepare, and win.</p>
+      <div class="blog-filters" role="group" aria-label="Filter by category">
+        <button class="blog-filter-pill active" data-cat="all">All Posts</button>
+        <button class="blog-filter-pill" data-cat="fests">College Fests</button>
+        <button class="blog-filter-pill" data-cat="hackathons">Hackathons</button>
+        <button class="blog-filter-pill" data-cat="competitions">Competitions</button>
+        <button class="blog-filter-pill" data-cat="guides">Career Guides</button>
+        <button class="blog-filter-pill" data-cat="tips">Tips &amp; Tricks</button>
+      </div>
+    </div>
+
+    <!-- BLOG GRID -->
+    <section class="section section--bg" aria-label="Blog articles">
+      <div style="max-width:var(--container-max);margin:0 auto;">
+
+        <div class="blog-grid" id="blogGrid">
+
+          <!-- FEATURED: Article 1 -->
+          <article class="blog-card blog-card--featured" data-cat="fests" itemscope itemtype="https://schema.org/BlogPosting">
+            <div class="blog-card-img">
+              <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80"
+                   alt="Students at a college fest in Bangalore with stage lights"
+                   loading="lazy" width="800" height="400"
+                   itemprop="image" />
+              <span class="blog-card-cat">⭐ Featured</span>
+              <span class="blog-card-read-time">📖 8 min read</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span>College Fests</span>
+                <span class="blog-card-meta-dot"></span>
+                <time datetime="2026-01-15" itemprop="datePublished">Jan 15, 2026</time>
+              </div>
+              <h2 class="blog-card-title" itemprop="headline">
+                Top 10 College Fests in Bangalore 2026 — The Ultimate Student Guide
+              </h2>
+              <p class="blog-card-excerpt" itemprop="description">
+                From IISc's technical symposiums to Christ University's cultural marathons — we rank every major college fest in Bangalore by footfall, prize pool, and student experience. Your complete 2026 calendar.
+              </p>
+              <div class="blog-card-footer">
+                <div class="blog-card-author">
+                  <div class="blog-card-author-avatar" style="background:var(--pastel-purple);">👩‍💻</div>
+                  <span class="blog-card-author-name" itemprop="author">Priya Reddy</span>
+                </div>
+                <a href="/blog/top-10-college-fests-bangalore-2026" class="blog-card-cta" aria-label="Read Top 10 College Fests in Bangalore">Read Article →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="blog-card" data-cat="hackathons" itemscope itemtype="https://schema.org/BlogPosting">
+            <div class="blog-card-img">
+              <div class="blog-card-img-placeholder" style="background:var(--grad-card-1);">💻</div>
+              <span class="blog-card-cat">Hackathons</span>
+              <span class="blog-card-read-time">📖 10 min read</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span>Hackathons</span>
+                <span class="blog-card-meta-dot"></span>
+                <time datetime="2026-01-20" itemprop="datePublished">Jan 20, 2026</time>
+              </div>
+              <h2 class="blog-card-title" itemprop="headline">Best Hackathons for Students in India 2026 — Prizes, Dates &amp; How to Register</h2>
+              <p class="blog-card-excerpt" itemprop="description">
+                From Smart India Hackathon to IIT Bombay's Techfest — here are India's top hackathons with prize pools exceeding ₹50 lakh, eligibility criteria, and registration tips.
+              </p>
+              <div class="blog-card-footer">
+                <div class="blog-card-author">
+                  <div class="blog-card-author-avatar" style="background:var(--pastel-blue);">👨‍💻</div>
+                  <span class="blog-card-author-name" itemprop="author">Arjun Sharma</span>
+                </div>
+                <a href="/blog/best-hackathons-students-india-2026" class="blog-card-cta" aria-label="Read Best Hackathons for Students in India">Read Article →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="blog-card" data-cat="guides" itemscope itemtype="https://schema.org/BlogPosting">
+            <div class="blog-card-img">
+              <div class="blog-card-img-placeholder" style="background:var(--grad-card-4);">🏆</div>
+              <span class="blog-card-cat">Competition Guide</span>
+              <span class="blog-card-read-time">📖 12 min read</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span>Career Guides</span>
+                <span class="blog-card-meta-dot"></span>
+                <time datetime="2026-01-25" itemprop="datePublished">Jan 25, 2026</time>
+              </div>
+              <h2 class="blog-card-title" itemprop="headline">How to Win College Competitions — The Complete Student Strategy Guide</h2>
+              <p class="blog-card-excerpt" itemprop="description">
+                A practical, step-by-step guide to selecting the right competitions, building a winning team, creating standout submissions, and turning competition wins into internship offers.
+              </p>
+              <div class="blog-card-footer">
+                <div class="blog-card-author">
+                  <div class="blog-card-author-avatar" style="background:var(--pastel-green);">👩‍🎓</div>
+                  <span class="blog-card-author-name" itemprop="author">Sneha Iyer</span>
+                </div>
+                <a href="/blog/how-to-win-college-competitions-guide" class="blog-card-cta" aria-label="Read How to Win College Competitions">Read Article →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="blog-card" data-cat="fests" itemscope itemtype="https://schema.org/BlogPosting">
+            <div class="blog-card-img">
+              <div class="blog-card-img-placeholder" style="background:var(--grad-card-2);">🎭</div>
+              <span class="blog-card-cat">Cultural Fests</span>
+              <span class="blog-card-read-time">📖 6 min read</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span>Cultural</span>
+                <span class="blog-card-meta-dot"></span>
+                <time datetime="2026-01-28" itemprop="datePublished">Jan 28, 2026</time>
+              </div>
+              <h2 class="blog-card-title" itemprop="headline">Top 5 Cultural Fests in India That Every Student Must Attend in 2026</h2>
+              <p class="blog-card-excerpt">From Mood Indigo at IIT Bombay to Jashn at BITS Pilani — cultural fests where talent, networking, and massive prizes meet.</p>
+              <div class="blog-card-footer">
+                <div class="blog-card-author">
+                  <div class="blog-card-author-avatar" style="background:var(--pastel-pink);">🎨</div>
+                  <span class="blog-card-author-name" itemprop="author">Karan Mehta</span>
+                </div>
+                <a href="#" class="blog-card-cta">Read Article →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 5 -->
+          <article class="blog-card" data-cat="competitions" itemscope itemtype="https://schema.org/BlogPosting">
+            <div class="blog-card-img">
+              <div class="blog-card-img-placeholder" style="background:var(--grad-card-3);">🔬</div>
+              <span class="blog-card-cat">Technical</span>
+              <span class="blog-card-read-time">📖 7 min read</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span>Competitions</span>
+                <span class="blog-card-meta-dot"></span>
+                <time datetime="2026-02-01" itemprop="datePublished">Feb 1, 2026</time>
+              </div>
+              <h2 class="blog-card-title" itemprop="headline">Best Technical Competitions for CSE Students India — 2026 Ranked List</h2>
+              <p class="blog-card-excerpt">Competitive programming, robotics, AI challenges — a ranked list of technical competitions where CSE students can prove their skills nationally.</p>
+              <div class="blog-card-footer">
+                <div class="blog-card-author">
+                  <div class="blog-card-author-avatar" style="background:var(--pastel-teal);">🤖</div>
+                  <span class="blog-card-author-name" itemprop="author">Arjun Sharma</span>
+                </div>
+                <a href="#" class="blog-card-cta">Read Article →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 6 -->
+          <article class="blog-card" data-cat="tips" itemscope itemtype="https://schema.org/BlogPosting">
+            <div class="blog-card-img">
+              <div class="blog-card-img-placeholder" style="background:var(--grad-card-5);">📱</div>
+              <span class="blog-card-cat">Tips</span>
+              <span class="blog-card-read-time">📖 5 min read</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span>Tips &amp; Tricks</span>
+                <span class="blog-card-meta-dot"></span>
+                <time datetime="2026-02-05" itemprop="datePublished">Feb 5, 2026</time>
+              </div>
+              <h2 class="blog-card-title" itemprop="headline">How to Never Miss a College Event Again — 7 Proven Strategies for Students</h2>
+              <p class="blog-card-excerpt">Event calendars, WhatsApp alerts, FestNest bookmarks — a practical system so you hear about every hackathon, workshop, and fest before registrations close.</p>
+              <div class="blog-card-footer">
+                <div class="blog-card-author">
+                  <div class="blog-card-author-avatar" style="background:var(--pastel-yellow);">💡</div>
+                  <span class="blog-card-author-name" itemprop="author">Sneha Iyer</span>
+                </div>
+                <a href="#" class="blog-card-cta">Read Article →</a>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /blog-grid -->
+
+        <!-- Load More -->
+        <div style="text-align:center;margin-top:40px;">
+          <button class="btn btn-outline btn-lg" id="loadMoreBtn">Load More Articles ↓</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TOPICS -->
+    <section class="section section--white">
+      <div style="max-width:var(--container-max);margin:0 auto;">
+        <div class="section-header">
+          <span class="section-eyebrow">🗂️ Browse by Topic</span>
+          <h2 class="section-title">Find what you're <span class="grad-text">looking for</span></h2>
+        </div>
+        <div class="topics-grid">
+          <a class="topic-pill" href="#" onclick="filterCat('hackathons')"><span class="topic-pill-icon">💻</span><span class="topic-pill-label">Hackathons</span></a>
+          <a class="topic-pill" href="#" onclick="filterCat('fests')"><span class="topic-pill-icon">🎭</span><span class="topic-pill-label">Cultural Fests</span></a>
+          <a class="topic-pill" href="#" onclick="filterCat('competitions')"><span class="topic-pill-icon">🏆</span><span class="topic-pill-label">Competitions</span></a>
+          <a class="topic-pill" href="#" onclick="filterCat('guides')"><span class="topic-pill-icon">📚</span><span class="topic-pill-label">Career Guides</span></a>
+          <a class="topic-pill" href="#" onclick="filterCat('tips')"><span class="topic-pill-icon">💡</span><span class="topic-pill-label">Tips &amp; Tricks</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section section--bg">
+      <div class="blog-newsletter">
+        <div class="blog-newsletter-text">
+          <div class="blog-newsletter-title">🔔 Get event alerts in your inbox</div>
+          <div class="blog-newsletter-desc">New college fests, hackathons, and competition guides — delivered weekly. 12,000+ students subscribed.</div>
+        </div>
+        <form class="blog-newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+          <input type="email" placeholder="your@college.edu" aria-label="Your email address" required />
+          <button type="submit" class="btn btn-primary">Subscribe Free</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <div class="cta-banner">
+      <div class="cta-banner-bg"></div>
+      <h2 class="cta-banner-title">Ready to discover live events? 🪺</h2>
+      <p class="cta-banner-desc">Browse 2,400+ approved events from 850+ colleges — hackathons, fests, workshops, and competitions happening now.</p>
+      <div class="cta-banner-actions">
+        <a class="btn btn-cta-white" href="events.html">Browse All Events →</a>
+        <button class="btn btn-cta-outline" id="ctaSignupBtn">Sign Up Free</button>
+      </div>
+    </div>
+
+  </div><!-- /blog-page -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><span class="footer-logo">🪺 FestNest</span><p class="footer-desc">India's centralized campus event discovery platform. Helping students discover opportunities, connect with peers, and win at inter-college competitions.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a></div></div>
+      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="events.html">Browse Events</a><a class="footer-link" href="post-event.html">Post an Event</a><a class="footer-link" href="saved.html">Saved Events</a><a class="footer-link" href="search.html">Search</a></div>
+      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="about.html">Why FestNest</a><a class="footer-link" href="blog.html">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a></div>
+      <div class="footer-col"><h4>Support</h4><a class="footer-link" href="help-center.html">Help Center</a><a class="footer-link" href="contact-us.html">Contact Us</a><a class="footer-link" href="privacy.html">Privacy Policy</a><a class="footer-link" href="terms.html">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><div class="footer-bottom-text">© 2026 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div><div class="footer-bottom-links"><a class="footer-bottom-link" href="privacy.html">Privacy</a><a class="footer-bottom-link" href="terms.html">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div></div>
+  </footer>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose">✕</button>
+      <div class="auth-logo">🪺 FestNest</div>
+      <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
+      </form>
+      <form class="auth-form" id="signup-form" novalidate>
+        <div class="form-row"><div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Arjun" /></div><div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Sharma" /></div></div>
+        <div class="form-group"><label class="form-label">College Email</label><input class="form-input" type="email" placeholder="you@college.edu" /></div>
+        <div class="form-group"><label class="form-label">College Name</label><input class="form-input" type="text" placeholder="e.g. IIT Bombay" /></div>
+        <div class="form-group"><label class="form-label">Year &amp; Branch</label><input class="form-input" type="text" placeholder="e.g. 3rd Year CSE" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min. 8 characters" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-terms">By signing up you agree to our <a href="terms.html">Terms</a> &amp; <a href="privacy.html">Privacy Policy</a></p>
+        <p class="auth-footer-text">Have account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+      </form>
+    </div>
+  </div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/toast.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    /* Category filter */
+    const pills = document.querySelectorAll('.blog-filter-pill');
+    pills.forEach(p => p.addEventListener('click', () => {
+      pills.forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      filterCat(p.dataset.cat);
+    }));
+
+    function filterCat(cat) {
+      event?.preventDefault?.();
+      document.querySelectorAll('.blog-card').forEach(card => {
+        card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+      });
+    }
+    window.filterCat = filterCat;
+
+    /* Load more stub */
+    document.getElementById('loadMoreBtn').addEventListener('click', function () {
+      this.textContent = '✅ All articles loaded';
+      this.disabled = true;
+    });
+
+    /* Newsletter */
+    function handleNewsletterSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = '✅ Subscribed!';
+      btn.disabled = true;
+      if (typeof showToast === 'function') showToast('🎉 Subscribed! Great events incoming.', 'success');
+    }
+    window.handleNewsletterSubmit = handleNewsletterSubmit;
+  </script>
+</body>
+</html>
