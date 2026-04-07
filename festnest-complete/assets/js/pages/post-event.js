@@ -533,14 +533,30 @@ document.addEventListener('DOMContentLoaded', function () {
   /**
    * Upload cropped poster blob to server
    * CRITICAL: Only runs if isCropping = true (called from cropAndUpload on Done click)
+   * SAFETY LOCK: Verify modal is shown (defense in depth)
    */
   function uploadPosterBlob(blob) {
-    // CRITICAL GUARD: Verify we're in active cropping context
+    // CRITICAL GUARD 1: Verify we're in active cropping context
     console.log('[FLOW] uploadPosterBlob guard check - isCropping=' + isCropping);
     if (!isCropping) {
       console.error('[FLOW] BLOCKED: Upload attempted outside cropping context');
       console.error('[FLOW] This indicates a serious control flow violation');
       showToast('Upload error: Invalid state', 'error');
+      isProcessing = false;
+      const btn = document.querySelector('.crop-actions .btn-done');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Done';
+      }
+      return;
+    }
+
+    // SAFETY LOCK: Verify modal is visible
+    const modal = document.getElementById('cropModal');
+    if (!modal || !modal.classList.contains('show')) {
+      console.error('[FLOW] SAFETY LOCK TRIGGERED: Modal not visible, blocking upload');
+      console.error('[FLOW] This should never happen - indicates button not properly connected');
+      showToast('Upload error: Modal closed', 'error');
       isProcessing = false;
       const btn = document.querySelector('.crop-actions .btn-done');
       if (btn) {
@@ -614,6 +630,42 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /**
+   * EXPLICIT HANDLER: CANCEL / CLOSE
+   * - Clears selected file
+   * - Sets isCropping = false (blocks upload)
+   * - Closes modal
+   * - Resets all crop state
+   * - NEVER calls upload
+   */
+  function handleCancel() {
+    console.log('[FLOW] ========== CANCEL HANDLER INVOKED ==========');
+    console.log('[FLOW] User clicked Cancel/Close button');
+    console.log('[FLOW] Setting isCropping = false to BLOCK any uploads');
+    
+    closeCrop();
+    
+    console.log('[FLOW] Cancel complete - modal closed, upload blocked');
+  }
+
+  /**
+   * EXPLICIT HANDLER: DONE
+   * - Validates isCropping state
+   * - Generates canvas from visible frame
+   * - Converts to blob
+   * - ONLY then calls uploadPosterBlob()
+   * - Closes modal on success
+   */
+  function handleDone() {
+    console.log('[FLOW] ========== DONE HANDLER INVOKED ==========');
+    console.log('[FLOW] User clicked Done button');
+    console.log('[FLOW] This triggers image generation and UPLOAD');
+    
+    cropAndUpload();
+    
+    console.log('[FLOW] Done handler initiated upload process');
+  }
+
+  /**
    * Attach crop modal event handlers
    * - Close/Cancel: Discard changes, reset state, set isCropping=false
    * - Done: Generate, crop, and upload poster (ONLY if isCropping=true)
@@ -634,7 +686,7 @@ document.addEventListener('DOMContentLoaded', function () {
       closeBtn.addEventListener('click', (e) => {
         e.preventDefault();
         console.log('[FLOW] CLOSE BUTTON (X) CLICKED');
-        closeCrop();
+        handleCancel();
       });
     }
 
@@ -646,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function () {
       cancelBtn.addEventListener('click', (e) => {
         e.preventDefault();
         console.log('[FLOW] CANCEL BUTTON CLICKED');
-        closeCrop();
+        handleCancel();
       });
     }
 
@@ -658,7 +710,7 @@ document.addEventListener('DOMContentLoaded', function () {
       doneBtn.addEventListener('click', (e) => {
         e.preventDefault();
         console.log('[FLOW] DONE BUTTON CLICKED - uploading image');
-        cropAndUpload();
+        handleDone();
       });
     }
 
@@ -671,7 +723,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Close only if clicking on modal background, not the container
         if (e.target === modal) {
           console.log('[FLOW] OVERLAY CLICKED (outside frame) - closing');
-          closeCrop();
+          handleCancel();
         }
       });
     }
