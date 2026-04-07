@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FestNest Help Center — find answers to common questions about events, accounts, and more." />
+  <title>Help Center — FestNest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/typography.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/navbar.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
+
+  <style>
+    /* ── Help Center page shell ── */
+    .help-page { padding-top: var(--nav-height); min-height: 100vh; }
+
+    /* ── Hero search bar — embedded in the gradient hero ── */
+    .help-search-wrap {
+      position: relative; max-width: 540px; margin: 0 auto; margin-top: 32px;
+    }
+    .help-search-wrap .search-bar-events {
+      background: rgba(255,255,255,.96);
+      border-color: transparent;
+      box-shadow: 0 8px 32px rgba(0,0,0,.18);
+      padding: 14px 18px;
+    }
+    .help-search-wrap .search-bar-events:focus-within {
+      border-color: rgba(90,75,255,.4);
+      box-shadow: 0 8px 32px rgba(0,0,0,.18), 0 0 0 3px rgba(90,75,255,.15);
+    }
+    .help-search-wrap .search-bar-events input { font-size: 15px; }
+    .help-search-wrap .search-bar-events span { font-size: 18px; color: var(--color-primary); }
+
+    /* ── Category cards — same as why-card but compact ── */
+    .help-cats { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+
+    .help-cat-card {
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      border: 1px solid var(--border); padding: 28px 22px;
+      text-align: center; cursor: pointer;
+      transition: var(--transition-md); text-decoration: none;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .help-cat-card:hover {
+      transform: translateY(-4px); box-shadow: var(--shadow-md);
+      border-color: rgba(90,75,255,.25);
+    }
+    .help-cat-icon {
+      width: 56px; height: 56px; border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center; font-size: 26px;
+    }
+    .help-cat-title { font-family: 'Clash Display',sans-serif; font-size: 16px; font-weight: 700; color: var(--text-1); }
+    .help-cat-desc  { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .help-cat-count { font-size: 11px; font-weight: 700; color: var(--color-primary); background: var(--pastel-purple); padding: 3px 10px; border-radius: 20px; }
+
+    /* ── FAQ accordion ── */
+    .faq-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .faq-item {
+      background: var(--bg-card); border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .faq-item.open { border-color: rgba(90,75,255,.3); box-shadow: var(--shadow-sm); }
+
+    .faq-trigger {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; cursor: pointer; gap: 16px;
+      background: none; border: none; width: 100%; text-align: left;
+      font-family: inherit;
+    }
+    .faq-trigger:hover { background: var(--bg); }
+    .faq-item.open .faq-trigger { background: var(--bg); }
+
+    .faq-q {
+      font-family: 'Clash Display', sans-serif; font-size: 15px;
+      font-weight: 700; color: var(--text-1); flex: 1;
+    }
+    .faq-item.open .faq-q { color: var(--color-primary); }
+
+    .faq-chevron {
+      width: 28px; height: 28px; background: var(--pastel-purple);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 13px; color: var(--color-primary);
+      transition: transform .25s ease;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); background: var(--color-primary); color: #fff; }
+
+    .faq-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s cubic-bezier(.4,0,.2,1), padding .35s ease;
+      padding: 0 24px;
+    }
+    .faq-body.open { padding: 0 24px 20px; }
+
+    .faq-a {
+      font-size: 14.5px; line-height: 1.85; color: var(--text-2);
+      border-top: 1px solid var(--border); padding-top: 16px;
+    }
+    .faq-a a { color: var(--color-primary); font-weight: 700; }
+    .faq-a strong { color: var(--text-1); }
+
+    /* no-results state */
+    .faq-no-results {
+      text-align: center; padding: 48px 24px; display: none;
+      color: var(--text-3); font-size: 15px;
+    }
+    .faq-no-results.show { display: block; }
+
+    /* ── Contact prompt strip at bottom ── */
+    .help-contact-strip {
+      background: var(--bg-card); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); padding: 40px var(--page-padding);
+      text-align: center;
+    }
+    .help-contact-strip h3 {
+      font-family: 'Clash Display', sans-serif; font-size: 22px; font-weight: 700;
+      color: var(--text-1); margin-bottom: 8px;
+    }
+    .help-contact-strip p { font-size: 15px; color: var(--text-2); margin-bottom: 20px; }
+
+    @media (max-width: 768px) {
+      .help-cats { grid-template-columns: 1fr 1fr; }
+      .faq-trigger { padding: 16px 18px; }
+      .faq-body.open { padding: 0 18px 16px; }
+      .help-contact-strip { padding: 32px var(--page-padding); }
+    }
+    @media (max-width: 480px) {
+      .help-cats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       NAVBAR — exact copy from about.html
+  ═══════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <a class="nav-logo" href="../index.html"><span class="nest-icon">🪺</span> FestNest</a>
+    <div class="nav-links">
+      <a class="nav-link" href="../index.html">Home</a>
+      <a class="nav-link" href="events.html">Events</a>
+      <a class="nav-link" href="post-event.html">Post Event</a>
+      <a class="nav-link" href="saved.html">Saved</a>
+      <a class="nav-link" href="search.html">Search</a>
+      <a class="nav-link" href="about.html">Why FestNest</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" id="navLoginBtn">Log In</button>
+      <button class="btn btn-primary"  id="navSignupBtn">Sign Up Free</button>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a class="drawer-link" href="../index.html">🏠 Home</a>
+    <a class="drawer-link" href="events.html">🎉 Events</a>
+    <a class="drawer-link" href="post-event.html">➕ Post Event</a>
+    <a class="drawer-link" href="saved.html">🔖 Saved Events</a>
+    <a class="drawer-link" href="search.html">🔍 Search</a>
+    <a class="drawer-link" href="about.html">💡 Why FestNest</a>
+    <a class="drawer-link" href="profile.html">👤 Profile</a>
+    <div class="drawer-auth">
+      <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
+      <button class="btn btn-primary  w-full" id="drawerSignupBtn">Sign Up Free</button>
+    </div>
+  </div>
+
+  <div class="help-page">
+
+    <!-- ═══════════════════════════════════
+         HERO — uses .about-hero-section
+    ═══════════════════════════════════ -->
+    <div class="about-hero-section">
+      <span class="section-eyebrow">🙋 Support &amp; Guides</span>
+      <h1 class="about-hero-title">Help Center</h1>
+      <p class="about-hero-desc">Find answers to common questions about FestNest — events, accounts, organizer tools, and more.</p>
+
+      <!-- Search bar inside hero -->
+      <div class="help-search-wrap">
+        <div class="search-bar-events">
+          <span>🔍</span>
+          <input type="search" id="faqSearch" placeholder="Search for answers…" autocomplete="off" aria-label="Search help articles" />
+        </div>
+      </div>
+
+      <div class="about-hero-chips" style="margin-top:20px;">
+        <div class="about-chip">📚 20+ Articles</div>
+        <div class="about-chip">⚡ Instant Answers</div>
+        <div class="about-chip">💬 Live Support</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════
+         CATEGORIES — same style as why-grid
+    ═══════════════════════════════════ -->
+    <section class="section section--white">
+      <div class="section-header">
+        <span class="section-eyebrow">📂 Browse by Topic</span>
+        <h2 class="section-title">What can we <span class="grad-text">help you with?</span></h2>
+      </div>
+
+      <div class="help-cats">
+
+        <a class="help-cat-card" href="#faq-account" onclick="filterCategory('account'); return false;">
+          <div class="help-cat-icon" style="background:var(--pastel-blue);">👤</div>
+          <div class="help-cat-title">Account &amp; Profile</div>
+          <div class="help-cat-desc">Registration, login, profile settings, and role management.</div>
+          <span class="help-cat-count">5 articles</span>
+        </a>
+
+        <a class="help-cat-card" href="#faq-events" onclick="filterCategory('events'); return false;">
+          <div class="help-cat-icon" style="background:var(--pastel-purple);">🎉</div>
+          <div class="help-cat-title">Events</div>
+          <div class="help-cat-desc">How to find, save, register, and post events on FestNest.</div>
+          <span class="help-cat-count">8 articles</span>
+        </a>
+
+        <a class="help-cat-card" href="#faq-organizer" onclick="filterCategory('organizer'); return false;">
+          <div class="help-cat-icon" style="background:var(--pastel-green);">🏢</div>
+          <div class="help-cat-title">Organizers</div>
+          <div class="help-cat-desc">Posting events, managing listings, approval process, and dashboard.</div>
+          <span class="help-cat-count">6 articles</span>
+        </a>
+
+        <a class="help-cat-card" href="#faq-tech" onclick="filterCategory('tech'); return false;">
+          <div class="help-cat-icon" style="background:var(--pastel-pink);">🛠️</div>
+          <div class="help-cat-title">Technical Issues</div>
+          <div class="help-cat-desc">Troubleshooting errors, loading issues, and performance problems.</div>
+          <span class="help-cat-count">4 articles</span>
+        </a>
+
+        <a class="help-cat-card" href="#faq-account" onclick="filterCategory('privacy'); return false;">
+          <div class="help-cat-icon" style="background:var(--pastel-yellow);">🔒</div>
+          <div class="help-cat-title">Privacy &amp; Safety</div>
+          <div class="help-cat-desc">Data policies, account safety, reporting abuse, and blocking.</div>
+          <span class="help-cat-count">3 articles</span>
+        </a>
+
+        <a class="help-cat-card" href="#faq-all" onclick="filterCategory('all'); return false;">
+          <div class="help-cat-icon" style="background:var(--pastel-orange);">📋</div>
+          <div class="help-cat-title">All Topics</div>
+          <div class="help-cat-desc">Browse every help article across all categories in one place.</div>
+          <span class="help-cat-count">26 articles</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         FAQ ACCORDION
+    ═══════════════════════════════════ -->
+    <section class="section section--bg" id="faq-all">
+      <div style="max-width:var(--container-max);margin:0 auto;">
+
+        <div class="section-header">
+          <span class="section-eyebrow" id="faqCategoryLabel">❓ Frequently Asked Questions</span>
+          <h2 class="section-title">Common <span class="grad-text">Questions &amp; Answers</span></h2>
+          <p class="section-desc">Can't find what you're looking for? <a href="contact-us.html" style="color:var(--color-primary);font-weight:700;">Contact our support team →</a></p>
+        </div>
+
+        <!-- All FAQs filtered by search + category JS -->
+        <div class="faq-list" id="faqList">
+
+          <!-- ── ACCOUNT ── -->
+          <div class="faq-item" data-cat="account" data-q="how to register create account signup festnest">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">How do I create a FestNest account?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Click <strong>Sign Up Free</strong> in the top-right corner. Choose your role — <strong>Student</strong> or <strong>Organizer</strong>. Fill in your name, college email, college name, year and branch, and a secure password. Hit <strong>Create Free Account 🚀</strong> and you're in!<br><br>
+                Students get access to browse, save, and register for events. Organizers can also post and manage their own event listings after admin approval.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="account" data-q="login sign in forgot password reset account">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">I forgot my password. How do I reset it?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Click <strong>Log In</strong>, then look for the <strong>"Forgot password?"</strong> link below the password field. Enter your registered email address — we'll send you a reset link within a few minutes. Check your spam folder if you don't see it. The reset link expires after 30 minutes.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="account" data-q="change role student organizer profile edit update">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">Can I change my role from Student to Organizer?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Yes — email us at <a href="mailto:support@festnest.in">support@festnest.in</a> with your registered email and proof of your college/organization affiliation. Our team will upgrade your account within 2 business days. Role changes are reviewed manually to keep the platform safe.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── EVENTS ── -->
+          <div class="faq-item" data-cat="events" data-q="how to register for events participate join attend">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">How do I register for an event?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Open any event and click the <strong>Register Now →</strong> button on the right panel. If the organizer has set up a registration link, you'll be redirected there. If there's no link yet, it means the organizer is still setting it up — check back soon or contact the organizer directly using the contact details on the event page.<br><br>
+                You need to be <strong>logged in</strong> to register. Creating an account is free and takes 30 seconds.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="events" data-q="how to save bookmark favorite event save for later">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">How do I save or bookmark an event?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                On any event card, click the <strong>🤍 bookmark icon</strong> in the top-right corner. On the event detail page, click the <strong>🤍 Save Event</strong> button. Saved events appear in your <a href="saved.html"><strong>Saved Events</strong></a> page accessible from the navigation bar.<br><br>
+                You must be logged in to save events. If you're not logged in, the save will be stored temporarily in your browser session.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="events" data-q="how to contact organizer reach out event organizer poc">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">How do I contact the event organizer?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Open the event detail page and scroll to the <strong>📞 Contact &amp; POC</strong> section at the bottom. You'll find the point-of-contact name, phone number, and email address provided by the organizer.<br><br>
+                If contact details are missing, the organizer may not have filled them in. In that case, use the college name to find their official social media or website.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="events" data-q="filter search find events browse category technical hackathon">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">How do I filter events by category or mode?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Go to the <a href="events.html"><strong>Events</strong></a> page. On desktop, use the left sidebar to filter by <strong>Category</strong> (Hackathon, Cultural, Technical, etc.), <strong>Mode</strong> (Online / Offline / Hybrid), and <strong>Registration Fee</strong> (Free / Paid). You can also sort by newest, prize pool, or popularity.<br><br>
+                On mobile, tap the <strong>⚙️ Filter</strong> button inside the search bar to open the filter panel.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ORGANIZER ── -->
+          <div class="faq-item" data-cat="organizer" data-q="how to post event create listing submit organizer">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">How do I post an event on FestNest?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                You need an <strong>Organizer account</strong> to post events. Once logged in:<br><br>
+                1. Click <strong>Post Event</strong> in the navigation bar.<br>
+                2. Fill in the event details — title, description, category, date, venue, prizes, fee, and contact info.<br>
+                3. Upload your event poster (JPG/PNG, max 5MB) and optionally a brochure PDF.<br>
+                4. Submit for review. Our admin team will approve it within 24–48 hours.<br><br>
+                Once approved, your event goes live and becomes visible to 48,000+ students.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="organizer" data-q="event approval pending review rejected why">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">Why is my event still pending / not approved?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                All events go through a <strong>manual review</strong> by our admin team to ensure quality and authenticity. This typically takes <strong>24–48 hours</strong> on business days.<br><br>
+                Your event may be delayed if:<br>
+                • It's missing required details (venue, date, contact info).<br>
+                • The poster image is too small or low quality.<br>
+                • The event description is too short or generic.<br><br>
+                You'll receive an email notification when your event is approved or if changes are needed. You can check status in your <strong>My Events</strong> dashboard.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="organizer" data-q="delete edit update my event organizer dashboard">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">How do I edit or delete one of my events?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Go to <strong>My Events</strong> (available in the navbar when logged in as an Organizer). Each event card shows an <strong>Edit</strong> and <strong>🗑 Delete</strong> button. Deleting an event is permanent and removes all associated files from our servers.<br><br>
+                If your event was already approved and is live, please update it rather than deleting it — students may have already saved it.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── TECH ── -->
+          <div class="faq-item" data-cat="tech" data-q="event not loading blank page error broken not showing">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">Events are not loading or the page is blank. What do I do?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Try these steps in order:<br><br>
+                1. <strong>Hard refresh</strong> your browser — press <code>Ctrl+Shift+R</code> (Windows) or <code>Cmd+Shift+R</code> (Mac).<br>
+                2. <strong>Clear your cache</strong> — browser settings → clear browsing data → cached images and files.<br>
+                3. Check your internet connection — try opening another site.<br>
+                4. Try a <strong>different browser</strong> (Chrome, Firefox, Edge) or disable browser extensions.<br>
+                5. Log out and log back in — your session token may have expired.<br><br>
+                If none of these work, email us at <a href="mailto:support@festnest.in">support@festnest.in</a> with a screenshot.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="tech" data-q="login not working cant sign in wrong password error 401">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">I can't log in — it keeps saying "Invalid credentials".</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Double-check you're using the <strong>exact email and password</strong> you registered with. Passwords are case-sensitive.<br><br>
+                If you're still stuck: use the <strong>Forgot Password</strong> flow to reset your password. If your account was created via Google Sign-In, use the <strong>"Continue with Google"</strong> button instead of the email/password form.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" data-cat="tech" data-q="image not uploading poster error file too large cloudinary">
+            <button class="faq-trigger" aria-expanded="false">
+              <span class="faq-q">My event poster won't upload. What's the issue?</span>
+              <span class="faq-chevron">▾</span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-a">
+                Event poster uploads must meet these requirements:<br><br>
+                • <strong>Format:</strong> JPG, JPEG, or PNG only (no GIF, WEBP, HEIC).<br>
+                • <strong>File size:</strong> Maximum 5MB.<br>
+                • <strong>Recommended dimensions:</strong> 1200×630px (landscape) or 800×800px (square).<br><br>
+                If your file meets all of the above and still fails, try a different browser or compress the image using a tool like <a href="https://squoosh.app" target="_blank" rel="noopener">Squoosh.app</a> (free, no signup).
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /faq-list -->
+
+        <div class="faq-no-results" id="faqNoResults">
+          <div style="font-size:48px;margin-bottom:12px;">🤷</div>
+          <strong style="font-size:17px;color:var(--text-1);">No results for "<span id="faqNoResultsQuery"></span>"</strong>
+          <p style="margin-top:8px;">Try different keywords, or <a href="contact-us.html" style="color:var(--color-primary);font-weight:700;">contact us directly →</a></p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         CONTACT STRIP
+    ═══════════════════════════════════ -->
+    <div class="help-contact-strip">
+      <h3>Still need help? 💬</h3>
+      <p>Our support team responds within 24 hours on business days.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a class="btn btn-primary btn-lg" href="contact-us.html">Contact Support</a>
+        <a class="btn btn-outline btn-lg" href="mailto:support@festnest.in">Email Us Directly</a>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════
+         CTA BANNER — same as about.html
+    ═══════════════════════════════════ -->
+    <div class="cta-banner">
+      <div class="cta-banner-bg"></div>
+      <h2 class="cta-banner-title">Ready to Discover Events? 🪺</h2>
+      <p class="cta-banner-desc">Join 48,000+ students already using FestNest to find hackathons, fests, and competitions near them.</p>
+      <div class="cta-banner-actions">
+        <button class="btn btn-cta-white" id="ctaSignupBtn">Sign Up Free</button>
+        <a class="btn btn-cta-outline" href="events.html">Browse Events</a>
+      </div>
+    </div>
+
+  </div><!-- /help-page -->
+
+  <!-- ═══════════════════════════════════
+       FOOTER — exact copy from about.html
+  ═══════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><span class="footer-logo">🪺 FestNest</span><p class="footer-desc">India's centralized campus event discovery platform. Helping students discover opportunities, connect with peers, and win at inter-college competitions.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a></div></div>
+      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="events.html">Browse Events</a><a class="footer-link" href="post-event.html">Post an Event</a><a class="footer-link" href="saved.html">Saved Events</a><a class="footer-link" href="search.html">Search</a></div>
+      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="about.html">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a></div>
+      <div class="footer-col"><h4>Support</h4><a class="footer-link" href="help-center.html">Help Center</a><a class="footer-link" href="contact-us.html">Contact Us</a><a class="footer-link" href="privacy.html">Privacy Policy</a><a class="footer-link" href="terms.html">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div><div class="footer-bottom-links"><a class="footer-bottom-link" href="privacy.html">Privacy</a><a class="footer-bottom-link" href="terms.html">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div></div>
+  </footer>
+
+  <!-- AUTH MODAL — exact copy -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose">✕</button>
+      <div class="auth-logo">🪺 FestNest</div>
+      <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
+      </form>
+      <form class="auth-form" id="signup-form" novalidate>
+        <div class="form-row"><div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Arjun" /></div><div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Sharma" /></div></div>
+        <div class="form-group"><label class="form-label">College Email</label><input class="form-input" type="email" placeholder="you@college.edu" /></div>
+        <div class="form-group"><label class="form-label">College Name</label><input class="form-input" type="text" placeholder="e.g. IIT Bombay" /></div>
+        <div class="form-group"><label class="form-label">Year &amp; Branch</label><input class="form-input" type="text" placeholder="e.g. 3rd Year CSE" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min. 8 characters" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-terms">By signing up you agree to our <a href="terms.html">Terms</a> &amp; <a href="privacy.html">Privacy Policy</a></p>
+        <p class="auth-footer-text">Have account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- FestNest scripts -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/toast.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/auth.js"></script>
+
+  <script>
+    /* ═══════════════════════════════════════════════════
+       FAQ ACCORDION
+    ═══════════════════════════════════════════════════ */
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+      const trigger = item.querySelector('.faq-trigger');
+      const body    = item.querySelector('.faq-body');
+
+      trigger.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+
+        /* Close all others */
+        faqItems.forEach(other => {
+          other.classList.remove('open');
+          const otherBody    = other.querySelector('.faq-body');
+          const otherTrigger = other.querySelector('.faq-trigger');
+          otherBody.classList.remove('open');
+          otherBody.style.maxHeight = '0';
+          otherTrigger.setAttribute('aria-expanded', 'false');
+        });
+
+        /* Toggle clicked */
+        if (!isOpen) {
+          item.classList.add('open');
+          body.classList.add('open');
+          body.style.maxHeight = body.scrollHeight + 40 + 'px';
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    /* ═══════════════════════════════════════════════════
+       FAQ SEARCH FILTER
+    ═══════════════════════════════════════════════════ */
+    const faqSearch      = document.getElementById('faqSearch');
+    const faqNoResults   = document.getElementById('faqNoResults');
+    const faqNoResultsQ  = document.getElementById('faqNoResultsQuery');
+
+    function runSearch(query) {
+      const q = query.toLowerCase().trim();
+      let visible = 0;
+
+      faqItems.forEach(item => {
+        const text = (
+          item.dataset.q + ' ' +
+          item.querySelector('.faq-q').textContent + ' ' +
+          item.querySelector('.faq-a').textContent
+        ).toLowerCase();
+
+        const show = !q || text.includes(q);
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      /* Show / hide no-results state */
+      faqNoResults.classList.toggle('show', visible === 0 && q !== '');
+      if (visible === 0) faqNoResultsQ.textContent = query;
+    }
+
+    faqSearch.addEventListener('input', e => runSearch(e.target.value));
+
+    /* ═══════════════════════════════════════════════════
+       CATEGORY FILTER (from category cards)
+    ═══════════════════════════════════════════════════ */
+    function filterCategory(cat) {
+      /* Reset search */
+      faqSearch.value = '';
+      faqNoResults.classList.remove('show');
+
+      const labels = {
+        all:       '❓ Frequently Asked Questions',
+        account:   '👤 Account & Profile Questions',
+        events:    '🎉 Event Questions',
+        organizer: '🏢 Organizer Questions',
+        tech:      '🛠️ Technical Issues',
+        privacy:   '🔒 Privacy & Safety',
+      };
+
+      document.getElementById('faqCategoryLabel').textContent = labels[cat] || labels.all;
+
+      faqItems.forEach(item => {
+        item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
+      });
+
+      /* Scroll to FAQ section */
+      setTimeout(() => {
+        document.getElementById('faq-all').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
+
+    window.filterCategory = filterCategory; /* expose for inline onclick */
+  </script>
+</body>
+</html>

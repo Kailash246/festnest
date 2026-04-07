@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contact FestNest support — we'd love to hear from you. Questions, feedback, or partnership inquiries." />
+  <title>Contact Us — FestNest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/typography.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/navbar.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
+
+  <style>
+    /* ── Contact page shell ── */
+    .contact-page { padding-top: var(--nav-height); min-height: 100vh; }
+
+    /* ── Two-column layout for contact section ── */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 52px var(--page-padding) 80px;
+      align-items: flex-start;
+    }
+
+    /* ── Form card — same as .post-form-card style ── */
+    .contact-form-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+    .contact-form-title {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 22px; font-weight: 700; color: var(--text-1);
+      margin-bottom: 6px;
+    }
+    .contact-form-subtitle {
+      font-size: 14px; color: var(--text-2); margin-bottom: 28px; line-height: 1.6;
+    }
+
+    /* FestNest form classes are inherited from components.css:
+       .form-group, .form-label, .form-input, .form-textarea,
+       .form-select, .form-row, .form-error-msg — all pre-existing */
+
+    /* Subject select uses .form-select which inherits same styles as .form-input */
+
+    /* Submit button feedback */
+    .contact-submit-btn {
+      width: 100%;
+      padding: 15px;
+      font-size: 15px;
+      font-weight: 800;
+      border-radius: var(--radius-lg);
+      margin-top: 8px;
+      transition: var(--transition);
+    }
+    .contact-submit-btn:disabled {
+      opacity: .65; cursor: not-allowed; transform: none !important;
+    }
+
+    /* Success state */
+    .contact-success {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .contact-success.show { display: block; }
+    .contact-success-icon {
+      width: 72px; height: 72px; background: var(--pastel-green);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 32px; margin: 0 auto 20px;
+    }
+    .contact-success h3 {
+      font-family: 'Clash Display', sans-serif; font-size: 22px;
+      font-weight: 700; color: var(--text-1); margin-bottom: 8px;
+    }
+    .contact-success p { font-size: 15px; color: var(--text-2); line-height: 1.6; }
+
+    /* ── Info sidebar ── */
+    .contact-info-stack { display: flex; flex-direction: column; gap: 16px; }
+
+    .contact-info-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: var(--transition-md);
+    }
+    .contact-info-card:hover {
+      box-shadow: var(--shadow-sm);
+      border-color: rgba(90,75,255,.2);
+      transform: translateY(-2px);
+    }
+    .contact-info-icon {
+      width: 46px; height: 46px; border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .contact-info-label {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 13px; font-weight: 700; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: .04em;
+      margin-bottom: 4px;
+    }
+    .contact-info-value {
+      font-size: 15px; font-weight: 700; color: var(--text-1);
+      margin-bottom: 4px;
+    }
+    .contact-info-value a {
+      color: var(--color-primary); text-decoration: none;
+    }
+    .contact-info-value a:hover { text-decoration: underline; }
+    .contact-info-note { font-size: 12px; color: var(--text-3); line-height: 1.5; }
+
+    /* ── Response time badge ── */
+    .response-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--pastel-green); color: #2E7D32;
+      font-size: 11px; font-weight: 800; padding: 4px 10px;
+      border-radius: 20px; margin-top: 6px;
+    }
+
+    /* ── Social links ── */
+    .social-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 24px;
+    }
+    .social-section-title {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text-1);
+      margin-bottom: 14px;
+    }
+    .social-links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .social-link-btn {
+      display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: var(--radius); font-size: 13px; font-weight: 700;
+      color: var(--text-2); text-decoration: none;
+      transition: var(--transition); cursor: pointer;
+    }
+    .social-link-btn:hover {
+      border-color: var(--color-primary); color: var(--color-primary);
+      background: var(--pastel-purple);
+    }
+    .social-link-icon { font-size: 16px; }
+
+    /* Character counter */
+    .char-counter {
+      font-size: 11px; color: var(--text-3); text-align: right;
+      margin-top: 4px; transition: color .2s;
+    }
+    .char-counter.warn { color: var(--color-accent); }
+    .char-counter.danger { color: #e53e3e; }
+
+    @media (max-width: 1024px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .contact-layout { padding: 32px var(--page-padding) 60px; gap: 24px; }
+      .contact-form-card { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       NAVBAR — exact copy from about.html
+  ═══════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <a class="nav-logo" href="../index.html"><span class="nest-icon">🪺</span> FestNest</a>
+    <div class="nav-links">
+      <a class="nav-link" href="../index.html">Home</a>
+      <a class="nav-link" href="events.html">Events</a>
+      <a class="nav-link" href="post-event.html">Post Event</a>
+      <a class="nav-link" href="saved.html">Saved</a>
+      <a class="nav-link" href="search.html">Search</a>
+      <a class="nav-link" href="about.html">Why FestNest</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" id="navLoginBtn">Log In</button>
+      <button class="btn btn-primary"  id="navSignupBtn">Sign Up Free</button>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a class="drawer-link" href="../index.html">🏠 Home</a>
+    <a class="drawer-link" href="events.html">🎉 Events</a>
+    <a class="drawer-link" href="post-event.html">➕ Post Event</a>
+    <a class="drawer-link" href="saved.html">🔖 Saved Events</a>
+    <a class="drawer-link" href="search.html">🔍 Search</a>
+    <a class="drawer-link" href="about.html">💡 Why FestNest</a>
+    <a class="drawer-link" href="profile.html">👤 Profile</a>
+    <div class="drawer-auth">
+      <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
+      <button class="btn btn-primary  w-full" id="drawerSignupBtn">Sign Up Free</button>
+    </div>
+  </div>
+
+  <div class="contact-page">
+
+    <!-- ═══════════════════════════════════
+         HERO — uses .about-hero-section
+    ═══════════════════════════════════ -->
+    <div class="about-hero-section">
+      <span class="section-eyebrow">💬 Get In Touch</span>
+      <h1 class="about-hero-title">Contact Us</h1>
+      <p class="about-hero-desc">We'd love to hear from you — whether it's a question, feedback, bug report, or partnership inquiry.</p>
+      <div class="about-hero-chips">
+        <div class="about-chip">⚡ Reply within 24h</div>
+        <div class="about-chip">🙋 Human support</div>
+        <div class="about-chip">📧 support@festnest.in</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════
+         MAIN LAYOUT — form + sidebar
+    ═══════════════════════════════════ -->
+    <div class="contact-layout">
+
+      <!-- LEFT — Contact Form -->
+      <div>
+        <div class="contact-form-card">
+          <div class="contact-form-title">Send us a message ✉️</div>
+          <div class="contact-form-subtitle">Fill in the form below and we'll get back to you as soon as possible. All fields marked with * are required.</div>
+
+          <!-- Success state (shown after submit) -->
+          <div class="contact-success" id="contactSuccess">
+            <div class="contact-success-icon">✅</div>
+            <h3>Message sent!</h3>
+            <p>Thanks for reaching out. We've received your message and will reply to your email within 24 hours on business days.</p>
+            <button class="btn btn-outline" style="margin-top:20px;" onclick="resetContactForm()">Send another message</button>
+          </div>
+
+          <!-- Form (hidden after submit) -->
+          <form id="contactForm" novalidate>
+
+            <div class="form-row" style="margin-bottom:18px;">
+              <div class="form-group">
+                <label class="form-label" for="contactName">Full Name *</label>
+                <input class="form-input" type="text" id="contactName"
+                  placeholder="Arjun Sharma" autocomplete="name" />
+                <span class="form-error-msg" id="errName"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactEmail">Email Address *</label>
+                <input class="form-input" type="email" id="contactEmail"
+                  placeholder="arjun@college.edu" autocomplete="email" />
+                <span class="form-error-msg" id="errEmail"></span>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:18px;">
+              <label class="form-label" for="contactSubject">Subject *</label>
+              <select class="form-select" id="contactSubject">
+                <option value="">— Select a topic —</option>
+                <option value="general">General Question</option>
+                <option value="account">Account / Login Issue</option>
+                <option value="event-posting">Event Posting &amp; Approval</option>
+                <option value="technical">Technical Bug / Error</option>
+                <option value="organizer">Organizer Partnership</option>
+                <option value="college">College / Institution Inquiry</option>
+                <option value="feedback">Product Feedback</option>
+                <option value="other">Other</option>
+              </select>
+              <span class="form-error-msg" id="errSubject"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom:6px;">
+              <label class="form-label" for="contactMessage">Message *</label>
+              <textarea class="form-textarea" id="contactMessage"
+                placeholder="Describe your question or issue in as much detail as possible…"
+                maxlength="1000" rows="6"></textarea>
+              <div class="char-counter" id="charCounter">0 / 1000</div>
+              <span class="form-error-msg" id="errMessage"></span>
+            </div>
+
+            <!-- Attach optional college/org name -->
+            <div class="form-group" style="margin-bottom:24px;">
+              <label class="form-label" for="contactCollege">College / Organization <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
+              <input class="form-input" type="text" id="contactCollege"
+                placeholder="e.g. IIT Bombay" autocomplete="organization" />
+            </div>
+
+            <button type="submit" class="btn btn-primary contact-submit-btn" id="contactSubmitBtn">
+              Send Message →
+            </button>
+
+            <p style="font-size:12px;color:var(--text-3);margin-top:12px;text-align:center;">
+              By submitting this form you agree to our <a href="privacy.html" style="color:var(--color-primary);">Privacy Policy</a>.
+            </p>
+
+          </form>
+        </div>
+      </div><!-- /left -->
+
+      <!-- RIGHT — Info sidebar -->
+      <div class="contact-info-stack">
+
+        <!-- Email support -->
+        <div class="contact-info-card">
+          <div class="contact-info-icon" style="background:var(--pastel-purple);">📧</div>
+          <div>
+            <div class="contact-info-label">Email Support</div>
+            <div class="contact-info-value">
+              <a href="mailto:support@festnest.in">support@festnest.in</a>
+            </div>
+            <div class="contact-info-note">General questions, account help, event issues.</div>
+            <span class="response-badge">⚡ Replies within 24h</span>
+          </div>
+        </div>
+
+        <!-- Grievance -->
+        <div class="contact-info-card">
+          <div class="contact-info-icon" style="background:var(--pastel-pink);">⚖️</div>
+          <div>
+            <div class="contact-info-label">Grievance Officer</div>
+            <div class="contact-info-value">
+              <a href="mailto:grievance@festnest.in">grievance@festnest.in</a>
+            </div>
+            <div class="contact-info-note">DPDP Act 2023 complaints &amp; data rights requests.</div>
+            <span class="response-badge">🕐 Resolved within 30 days</span>
+          </div>
+        </div>
+
+        <!-- Organizer partnerships -->
+        <div class="contact-info-card">
+          <div class="contact-info-icon" style="background:var(--pastel-green);">🤝</div>
+          <div>
+            <div class="contact-info-label">Partnerships &amp; Colleges</div>
+            <div class="contact-info-value">
+              <a href="mailto:partners@festnest.in">partners@festnest.in</a>
+            </div>
+            <div class="contact-info-note">College tie-ups, official organizer onboarding, bulk event posting.</div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="contact-info-card">
+          <div class="contact-info-icon" style="background:var(--pastel-blue);">📍</div>
+          <div>
+            <div class="contact-info-label">Headquarters</div>
+            <div class="contact-info-value">India 🇮🇳</div>
+            <div class="contact-info-note">Remote-first team serving students across all 28 states.</div>
+          </div>
+        </div>
+
+        <!-- Hours -->
+        <div class="contact-info-card">
+          <div class="contact-info-icon" style="background:var(--pastel-yellow);">🕐</div>
+          <div>
+            <div class="contact-info-label">Support Hours</div>
+            <div class="contact-info-value">Mon – Sat, 10am – 7pm IST</div>
+            <div class="contact-info-note">Emails sent outside hours are answered the next business day.</div>
+          </div>
+        </div>
+
+        <!-- Social links -->
+        <div class="social-section">
+          <div class="social-section-title">Follow FestNest 🪺</div>
+          <div class="social-links-grid">
+            <a class="social-link-btn" href="#" target="_blank" rel="noopener">
+              <span class="social-link-icon">𝕏</span> Twitter
+            </a>
+            <a class="social-link-btn" href="#" target="_blank" rel="noopener">
+              <span class="social-link-icon">in</span> LinkedIn
+            </a>
+            <a class="social-link-btn" href="#" target="_blank" rel="noopener">
+              <span class="social-link-icon">📸</span> Instagram
+            </a>
+            <a class="social-link-btn" href="#" target="_blank" rel="noopener">
+              <span class="social-link-icon">▶</span> YouTube
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /right sidebar -->
+
+    </div><!-- /contact-layout -->
+
+    <!-- ═══════════════════════════════════
+         QUICK LINKS STRIP
+    ═══════════════════════════════════ -->
+    <section class="section section--white">
+      <div class="section-header">
+        <span class="section-eyebrow">🔍 Before you write</span>
+        <h2 class="section-title">Your answer might already be <span class="grad-text">in the Help Center</span></h2>
+        <p class="section-desc">Browse common questions — most issues have instant answers waiting for you.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card" style="background:var(--pastel-blue);">
+          <div class="why-card-icon">👤</div>
+          <div class="why-card-title">Account Help</div>
+          <div class="why-card-desc">Login issues, password reset, role changes, and profile setup guides.</div>
+          <a href="help-center.html" onclick="event.stopPropagation()" style="display:inline-block;margin-top:14px;font-size:13px;font-weight:700;color:var(--color-primary);">Browse account articles →</a>
+        </div>
+        <div class="why-card" style="background:var(--pastel-purple);">
+          <div class="why-card-icon">🎉</div>
+          <div class="why-card-title">Event Questions</div>
+          <div class="why-card-desc">How to register, save, filter, and find events across India.</div>
+          <a href="help-center.html" onclick="event.stopPropagation()" style="display:inline-block;margin-top:14px;font-size:13px;font-weight:700;color:var(--color-primary);">Browse event articles →</a>
+        </div>
+        <div class="why-card" style="background:var(--pastel-green);">
+          <div class="why-card-icon">🏢</div>
+          <div class="why-card-title">Organizer Guides</div>
+          <div class="why-card-desc">Posting events, approval timelines, editing listings, and dashboard help.</div>
+          <a href="help-center.html" onclick="event.stopPropagation()" style="display:inline-block;margin-top:14px;font-size:13px;font-weight:700;color:var(--color-primary);">Browse organizer articles →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         CTA — same as about.html
+    ═══════════════════════════════════ -->
+    <div class="cta-banner">
+      <div class="cta-banner-bg"></div>
+      <h2 class="cta-banner-title">New to FestNest? 🪺</h2>
+      <p class="cta-banner-desc">Join 48,000+ students from 850+ colleges discovering hackathons, fests, and competitions every day.</p>
+      <div class="cta-banner-actions">
+        <button class="btn btn-cta-white" id="ctaSignupBtn">Sign Up Free</button>
+        <a class="btn btn-cta-outline" href="events.html">Browse Events</a>
+      </div>
+    </div>
+
+  </div><!-- /contact-page -->
+
+  <!-- ═══════════════════════════════════
+       FOOTER — exact copy from about.html
+  ═══════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><span class="footer-logo">🪺 FestNest</span><p class="footer-desc">India's centralized campus event discovery platform. Helping students discover opportunities, connect with peers, and win at inter-college competitions.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">📸</a><a class="social-btn" href="#">▶</a></div></div>
+      <div class="footer-col"><h4>Platform</h4><a class="footer-link" href="events.html">Browse Events</a><a class="footer-link" href="post-event.html">Post an Event</a><a class="footer-link" href="saved.html">Saved Events</a><a class="footer-link" href="search.html">Search</a></div>
+      <div class="footer-col"><h4>Company</h4><a class="footer-link" href="about.html">Why FestNest</a><a class="footer-link" href="#">Blog</a><a class="footer-link" href="#">Careers</a><a class="footer-link" href="#">Press Kit</a></div>
+      <div class="footer-col"><h4>Support</h4><a class="footer-link" href="help-center.html">Help Center</a><a class="footer-link" href="contact-us.html">Contact Us</a><a class="footer-link" href="privacy.html">Privacy Policy</a><a class="footer-link" href="terms.html">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><div class="footer-bottom-text">© 2025 FestNest Technologies Pvt. Ltd. · Made with ❤️ for students</div><div class="footer-bottom-links"><a class="footer-bottom-link" href="privacy.html">Privacy</a><a class="footer-bottom-link" href="terms.html">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div></div>
+  </footer>
+
+  <!-- AUTH MODAL — exact copy -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose">✕</button>
+      <div class="auth-logo">🪺 FestNest</div>
+      <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
+      </form>
+      <form class="auth-form" id="signup-form" novalidate>
+        <div class="form-row"><div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Arjun" /></div><div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Sharma" /></div></div>
+        <div class="form-group"><label class="form-label">College Email</label><input class="form-input" type="email" placeholder="you@college.edu" /></div>
+        <div class="form-group"><label class="form-label">College Name</label><input class="form-input" type="text" placeholder="e.g. IIT Bombay" /></div>
+        <div class="form-group"><label class="form-label">Year &amp; Branch</label><input class="form-input" type="text" placeholder="e.g. 3rd Year CSE" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min. 8 characters" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+        <p class="auth-terms">By signing up you agree to our <a href="terms.html">Terms</a> &amp; <a href="privacy.html">Privacy Policy</a></p>
+        <p class="auth-footer-text">Have account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- FestNest scripts -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/toast.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/auth.js"></script>
+
+  <script>
+    /* ═══════════════════════════════════════════════════
+       CHARACTER COUNTER for message textarea
+    ═══════════════════════════════════════════════════ */
+    const msgEl      = document.getElementById('contactMessage');
+    const counterEl  = document.getElementById('charCounter');
+    const MAX_CHARS  = 1000;
+
+    msgEl.addEventListener('input', () => {
+      const len = msgEl.value.length;
+      counterEl.textContent = len + ' / ' + MAX_CHARS;
+      counterEl.className = 'char-counter' +
+        (len > 900 ? ' danger' : len > 700 ? ' warn' : '');
+    });
+
+    /* ═══════════════════════════════════════════════════
+       FORM VALIDATION & SUBMIT
+    ═══════════════════════════════════════════════════ */
+    const form      = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('contactSubmitBtn');
+    const success   = document.getElementById('contactSuccess');
+
+    /* Helpers */
+    function setErr(id, msg) {
+      document.getElementById(id).textContent = msg;
+    }
+    function clearErr(id) {
+      document.getElementById(id).textContent = '';
+    }
+    function clearAllErrors() {
+      ['errName','errEmail','errSubject','errMessage'].forEach(clearErr);
+    }
+    function setFieldState(inputEl, valid) {
+      inputEl.style.borderColor = valid
+        ? ''                   /* reset to default */
+        : '#e53e3e';
+      if (valid) inputEl.style.boxShadow = '';
+    }
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAllErrors();
+
+      const name    = document.getElementById('contactName').value.trim();
+      const email   = document.getElementById('contactEmail').value.trim();
+      const subject = document.getElementById('contactSubject').value;
+      const message = document.getElementById('contactMessage').value.trim();
+
+      let valid = true;
+
+      if (!name) {
+        setErr('errName', 'Please enter your full name.');
+        setFieldState(document.getElementById('contactName'), false);
+        valid = false;
+      } else {
+        setFieldState(document.getElementById('contactName'), true);
+      }
+
+      if (!email || !validateEmail(email)) {
+        setErr('errEmail', !email ? 'Email address is required.' : 'Please enter a valid email address.');
+        setFieldState(document.getElementById('contactEmail'), false);
+        valid = false;
+      } else {
+        setFieldState(document.getElementById('contactEmail'), true);
+      }
+
+      if (!subject) {
+        setErr('errSubject', 'Please select a subject.');
+        setFieldState(document.getElementById('contactSubject'), false);
+        valid = false;
+      } else {
+        setFieldState(document.getElementById('contactSubject'), true);
+      }
+
+      if (message.length < 20) {
+        setErr('errMessage', message.length === 0
+          ? 'Please enter your message.'
+          : 'Message is too short — please add more detail (min. 20 characters).');
+        setFieldState(document.getElementById('contactMessage'), false);
+        valid = false;
+      } else {
+        setFieldState(document.getElementById('contactMessage'), true);
+      }
+
+      if (!valid) return;
+
+      /* ── Simulate submit (replace with real API call) ── */
+      submitBtn.disabled    = true;
+      submitBtn.textContent = '⏳ Sending…';
+
+      await new Promise(r => setTimeout(r, 1200)); /* simulate network delay */
+
+      /* Show success state */
+      form.style.display    = 'none';
+      success.classList.add('show');
+
+      /* Show toast */
+      if (typeof showToast === 'function') {
+        showToast('✅ Message sent! We\'ll reply within 24 hours.', 'success');
+      }
+    });
+
+    /* Reset form for "Send another message" button */
+    function resetContactForm() {
+      form.reset();
+      counterEl.textContent = '0 / ' + MAX_CHARS;
+      counterEl.className   = 'char-counter';
+      clearAllErrors();
+      form.style.display = '';
+      success.classList.remove('show');
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Send Message →';
+      ['contactName','contactEmail','contactSubject','contactMessage']
+        .forEach(id => setFieldState(document.getElementById(id), true));
+    }
+
+    window.resetContactForm = resetContactForm;
+
+    /* Real-time inline validation on blur */
+    document.getElementById('contactName').addEventListener('blur', function () {
+      if (!this.value.trim()) {
+        setErr('errName', 'Please enter your full name.');
+        setFieldState(this, false);
+      } else {
+        clearErr('errName');
+        setFieldState(this, true);
+      }
+    });
+
+    document.getElementById('contactEmail').addEventListener('blur', function () {
+      if (!this.value.trim()) {
+        setErr('errEmail', 'Email address is required.');
+        setFieldState(this, false);
+      } else if (!validateEmail(this.value.trim())) {
+        setErr('errEmail', 'Please enter a valid email address.');
+        setFieldState(this, false);
+      } else {
+        clearErr('errEmail');
+        setFieldState(this, true);
+      }
+    });
+  </script>
+</body>
+</html>
