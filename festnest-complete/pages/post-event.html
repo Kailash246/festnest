@@ -327,6 +327,55 @@
       touch-action: none;
     }
 
+    /* ─── Image Placeholder (Before Selection) ─── */
+    .crop-image-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(90, 75, 255, 0.08) 0%, rgba(109, 95, 255, 0.05) 100%);
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 5;
+    }
+
+    .crop-image-placeholder:hover {
+      background: linear-gradient(135deg, rgba(90, 75, 255, 0.12) 0%, rgba(109, 95, 255, 0.08) 100%);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .crop-image-placeholder.hide {
+      display: none;
+    }
+
+    .placeholder-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .placeholder-icon {
+      font-size: 48px;
+      opacity: 0.6;
+    }
+
+    .placeholder-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 0.5px;
+    }
+
+    .placeholder-sub {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+    }
+
     /* ─── Frame Focus Glow (Optional Enhancement) ─── */
     .crop-frame::after {
       content: '';
@@ -505,13 +554,22 @@
       <div class="crop-canvas-area">
         <div class="crop-frame-wrapper">
           <div class="crop-frame">
+            <!-- Placeholder: Shows when no image selected -->
+            <div class="crop-image-placeholder" id="cropPlaceholder">
+              <div class="placeholder-content">
+                <div class="placeholder-icon">🖼️</div>
+                <div class="placeholder-text">Select an Image</div>
+                <div class="placeholder-sub">Click to choose an image to crop</div>
+              </div>
+            </div>
+            <!-- Image: Shows when image loaded -->
             <img class="crop-image" src="" alt="Crop Preview" />
           </div>
         </div>
       </div>
       <div class="crop-actions">
         <button type="button" class="btn-cancel">Cancel</button>
-        <button type="button" class="btn-done">Done</button>
+        <button type="button" class="btn-done" disabled>Done</button>
       </div>
     </div>
   </div>

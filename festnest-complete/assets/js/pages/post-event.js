@@ -60,45 +60,80 @@ document.addEventListener('DOMContentLoaded', function () {
   const MAX_POSTER_SIZE   = 2 * 1024 * 1024;   // 2 MB
   const MAX_BROCHURE_SIZE = 20 * 1024 * 1024;  // 20 MB
 
-  function setupUploadZone(zoneId, accept, maxSize, maxSizeLabel, onFile) {
+  /**
+   * HIDDEN FILE INPUT FOR CROPPER
+   * - User clicks upload zone → Modal opens
+   * - Inside modal, user clicks "Select Image" → This input triggered
+   * - User picks file → Image loads in cropper
+   */
+  const cropFileInput = document.createElement('input');
+  cropFileInput.id = 'cropFileInput';
+  cropFileInput.type = 'file';
+  cropFileInput.accept = 'image/jpeg,image/jpg,image/png,image/webp';
+  cropFileInput.style.display = 'none';
+  document.body.appendChild(cropFileInput);
+
+  function setupUploadZone(zoneId, maxSize, maxSizeLabel) {
     const zone = document.getElementById(zoneId);
     if (!zone) return;
 
-    const input  = document.createElement('input');
-    input.type   = 'file';
-    input.accept = accept;
-    input.style.display = 'none';
-    zone.appendChild(input);
+    if (zoneId === 'posterUpload') {
+      /**
+       * POSTER UPLOAD: Opens cropper modal (crop-first approach)
+       * User clicks → Modal opens → Select image inside modal
+       */
+      zone.addEventListener('click', () => {
+        console.log('[FLOW] Poster upload zone clicked - opening cropper');
+        openCropperModal();
+      });
 
-    const onClick = () => input.click();
-    zone.addEventListener('click', onClick);
-    zone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') input.click(); });
+      zone.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          console.log('[FLOW] Poster upload zone activated via keyboard');
+          openCropperModal();
+        }
+      });
+    } else if (zoneId === 'brochureUpload') {
+      /**
+       * BROCHURE UPLOAD: Direct file picker (not using cropper)
+       * User clicks → File picker → File selected → Stored
+       */
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/pdf';
+      input.style.display = 'none';
+      zone.appendChild(input);
 
-    input.addEventListener('change', () => {
-      const file = input.files[0];
-      if (!file) return;
+      zone.addEventListener('click', () => input.click());
+      zone.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') input.click();
+      });
 
-      console.log('[FLOW] File selected:', file.name, '(' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
+      input.addEventListener('change', () => {
+        const file = input.files[0];
+        if (!file) return;
 
-      /* ── File size validation ── */
-      if (file.size > maxSize) {
-        console.warn('[FLOW] File size exceeds limit:', maxSize / 1024 / 1024, 'MB');
-        alert(`${zoneId === 'posterUpload' ? 'Poster' : 'Brochure'} must be less than ${maxSizeLabel}.`);
-        input.value = '';
-        return;
-      }
+        console.log('[FLOW] Brochure selected:', file.name);
 
-      console.log('[FLOW] File validation passed, opening cropper (NO UPLOAD YET)...');
-      onFile(file);
-      zone.querySelector('.upload-zone-title').textContent = '✅ ' + file.name;
-      zone.querySelector('.upload-zone-sub').textContent   = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-      zone.style.borderColor = '#00BFA5';
-      zone.classList.add('upload-zone--uploaded');
-    });
+        if (file.size > maxSize) {
+          console.warn('[FLOW] Brochure size exceeds limit:', maxSize / 1024 / 1024, 'MB');
+          alert(`Brochure must be less than ${maxSizeLabel}.`);
+          input.value = '';
+          return;
+        }
+
+        brochureFile = file;
+        zone.querySelector('.upload-zone-title').textContent = '✅ ' + file.name;
+        zone.querySelector('.upload-zone-sub').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        zone.style.borderColor = '#00BFA5';
+        zone.classList.add('upload-zone--uploaded');
+      });
+    }
   }
 
-  setupUploadZone('posterUpload',   'image/jpeg,image/jpg,image/png,image/webp', MAX_POSTER_SIZE,   '2 MB', f => { openCropModal(f); });
-  setupUploadZone('brochureUpload', 'application/pdf',                           MAX_BROCHURE_SIZE, '20 MB', f => { brochureFile = f; });
+  setupUploadZone('posterUpload',   MAX_POSTER_SIZE,   '2 MB');
+  setupUploadZone('brochureUpload', MAX_BROCHURE_SIZE, '20 MB');
 
   /* ── CUSTOM IMAGE CROPPER (16:9 FIXED FRAME) ────────────────────────────────
      
@@ -129,57 +164,148 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   /**
-   * STEP 1: FILE SELECT - ONLY OPEN CROPPER (NO UPLOAD)
+   * OPEN CROPPER MODAL (CROP-FIRST APPROACH)
+   * - Opens modal without file selected yet
+   * - Shows "Select Image" button inside
+   * - User clicks to pick file
+   * - File loads into cropper
    */
-  function openCropModal(file) {
-    console.log('[FLOW] FILE SELECTED - Opening cropper');
+  function openCropperModal() {
+    console.log('[FLOW] OPENING CROPPER MODAL - User must select image');
     
-    if (!file) return;
-    
-    // GUARD: Prevent accidental re-entry
-    if (isCropping) {
-      console.warn('[FLOW] Cropper already open');
+    const modal = document.getElementById('cropModal');
+    if (!modal) {
+      console.error('[FLOW] Crop modal not found');
+      return;
+    }
+
+    // Show modal
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    // Reset state (in case reopening)
+    selectedFile = null;
+    isCropping = false;
+    cropState = {
+      offsetX: 0,
+      offsetY: 0,
+      imageWidth: 0,
+      imageHeight: 0,
+      originalWidth: 0,
+      originalHeight: 0,
+    };
+
+    // Reset image element
+    const image = document.querySelector('.crop-image');
+    if (image) {
+      image.src = '';
+      image.style.width = '';
+      image.style.height = '';
+      image.style.transform = '';
+    }
+
+    // Reset Done button
+    const doneBtn = document.querySelector('.crop-actions .btn-done');
+    if (doneBtn) {
+      doneBtn.disabled = true;
+      doneBtn.textContent = 'Done';
+    }
+
+    // Reset file input (in case user cancelled before picking file)
+    cropFileInput.value = '';
+
+    // Trigger file picker inside modal
+    console.log('[FLOW] Triggering file picker for image selection');
+    cropFileInput.click();
+  }
+
+  /**
+   * HANDLE FILE SELECTION INSIDE CROPPER
+   * - User picks file from modal
+   * - Validates size
+   * - Loads image into cropper
+   * - Sets isCropping = true
+   * - Enables Done button
+   */
+  function handleCropFileSelect(e) {
+    const file = e.target.files[0];
+    if (!file) {
+      console.log('[FLOW] No file selected');
+      return;
+    }
+
+    console.log('[FLOW] Image file selected for cropper:', file.name, '(' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
+
+    // Validate file size
+    if (file.size > MAX_POSTER_SIZE) {
+      console.warn('[FLOW] File size exceeds limit:', MAX_POSTER_SIZE / 1024 / 1024, 'MB');
+      alert('Poster must be less than 2 MB');
+      cropFileInput.value = '';
       return;
     }
 
     selectedFile = file;
-    isCropping = true;  // CRITICAL STATE
+    isCropping = true;
 
     const modal = document.getElementById('cropModal');
     const image = document.querySelector('.crop-image');
-    
-    if (!modal || !image) {
-      console.error('[FLOW] Cropper modal/image not found');
+
+    if (!image) {
+      console.error('[FLOW] Crop image element not found');
       return;
     }
 
     // Read file and display
     const reader = new FileReader();
-    reader.onload = (e) => {
-      console.log('[FLOW] Image file read, showing modal');
-      image.src = e.target.result;
+    reader.onload = (event) => {
+      console.log('[FLOW] Image file read successfully, loading into cropper');
+      image.src = event.target.result;
 
-      // Show modal based on state
-      if (isCropping) {
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
+      // Enable Done button now that image is selected
+      const doneBtn = document.querySelector('.crop-actions .btn-done');
+      if (doneBtn) {
+        doneBtn.disabled = false;
+        console.log('[FLOW] Done button ENABLED - image loaded');
       }
 
-      // Wait for image to load to get dimensions
+      // Hide placeholder now that image is loaded
+      const placeholder = document.getElementById('cropPlaceholder');
+      if (placeholder) {
+        placeholder.classList.add('hide');
+        console.log('[FLOW] Placeholder hidden, image visible');
+      }
+
+      // Wait for image to load, then initialize cropper
       image.onload = () => {
-        console.log('[FLOW] Image loaded, initializing cropper');
+        console.log('[FLOW] Image loaded in DOM, initializing cropper position');
         initializeCropper();
       };
     };
-    
+
     reader.onerror = () => {
-      console.error('[FLOW] File read error');
+      console.error('[FLOW] Error reading file');
       isCropping = false;
       selectedFile = null;
       showToast('Failed to load image', 'error');
+      cropFileInput.value = '';
     };
-    
+
     reader.readAsDataURL(file);
+  }
+
+  // Attach file change listener to hidden input
+  cropFileInput.addEventListener('change', handleCropFileSelect);
+
+  /**
+   * PLACEHOLDER CLICK: Allow user to click placeholder to select image
+   * This makes the UX more intuitive - users can click "Select Image" area
+   */
+  const cropPlaceholder = document.getElementById('cropPlaceholder');
+  if (cropPlaceholder) {
+    cropPlaceholder.addEventListener('click', () => {
+      console.log('[FLOW] Placeholder clicked - triggering file picker');
+      cropFileInput.click();
+    });
   }
 
   /**
@@ -319,6 +445,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     const modal = document.getElementById('cropModal');
     const doneBtn = document.querySelector('.crop-actions .btn-done');
+    const placeholder = document.getElementById('cropPlaceholder');
     
     // Close modal
     modal.classList.remove('show');
@@ -338,17 +465,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Reset Done button state
     if (doneBtn) {
-      doneBtn.disabled = false;
+      doneBtn.disabled = true;
       doneBtn.textContent = 'Done';
     }
 
-    // Clear image source
+    // Clear image source and show placeholder again
     const image = document.querySelector('.crop-image');
     if (image) {
       image.src = '';
       image.style.width = '';
       image.style.height = '';
       image.style.transform = '';
+    }
+
+    // Show placeholder for next time
+    if (placeholder) {
+      placeholder.classList.remove('hide');
     }
 
     console.log('[FLOW] Crop modal closed completely, cannot upload');
