@@ -97,19 +97,31 @@ document.addEventListener('DOMContentLoaded', function () {
   setupUploadZone('brochureUpload', 'application/pdf',                           MAX_BROCHURE_SIZE, '20 MB', f => { brochureFile = f; });
 
   /* ── Image Crop Modal ────────────────────────────────── */
-  /** Global Cropper instance **/
-  let cropper = null;
-  let selectedFile = null;
+  /**
+   * CUSTOM IMAGE CROPPER (16:9 FIXED FRAME)
+   * - Fixed aspect ratio (no resizing)
+   * - Draggable image inside frame
+   * - Mouse & touch support
+   * - Canvas export on Done
+   */
 
-  /** Initialize image cropper on file select **/
+  let selectedFile = null;
+  let cropState = {
+    offsetX: 0,
+    offsetY: 0,
+  };
+
+  /**
+   * Open crop modal for uploaded image
+   */
   function openCropModal(file) {
     if (!file) return;
     selectedFile = file;
 
     const modal = document.getElementById('cropModal');
-    const image = document.getElementById('cropImage');
+    const image = document.querySelector('.crop-image');
 
-    // Read file and set image source
+    // Read file and display
     const reader = new FileReader();
     reader.onload = (e) => {
       image.src = e.target.result;
@@ -118,135 +130,237 @@ document.addEventListener('DOMContentLoaded', function () {
       modal.classList.add('show');
       document.body.style.overflow = 'hidden';
 
-      // Initialize cropper after image loads
-      image.onload = () => {
-        // Destroy old cropper
-        if (cropper) {
-          cropper.destroy();
-          cropper = null;
-        }
+      // Reset drag state
+      cropState.offsetX = 0;
+      cropState.offsetY = 0;
+      updateImageTransform();
 
-        // Initialize new Cropper
-        cropper = new Cropper(image, {
-          aspectRatio: 16 / 9,
-          viewMode: 1,
-
-          dragMode: 'move',
-
-          cropBoxMovable: false,
-          cropBoxResizable: false,
-
-          movable: true,
-          zoomable: true,
-
-          background: false,
-          autoCropArea: 1,
-        });
-      };
+      // Initialize drag handlers
+      initializeDragHandlers();
     };
     reader.readAsDataURL(file);
   }
 
-  /** Close crop modal and destroy cropper **/
+  /**
+   * Initialize drag handlers for image movement
+   */
+  function initializeDragHandlers() {
+    const frame = document.querySelector('.crop-frame');
+    const image = document.querySelector('.crop-image');
+    if (!frame || !image) return;
+
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let startOffsetX = 0;
+    let startOffsetY = 0;
+
+    /* ── Mouse handlers ── */
+    frame.addEventListener('mousedown', onDragStart);
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', onDragEnd);
+
+    /* ── Touch handlers ── */
+    frame.addEventListener('touchstart', onDragStart);
+    document.addEventListener('touchmove', onDragMove);
+    document.addEventListener('touchend', onDragEnd);
+
+    function onDragStart(e) {
+      isDragging = true;
+      frame.classList.add('dragging');
+
+      const pos = getTouchOrMousePos(e);
+      startX = pos.x;
+      startY = pos.y;
+      startOffsetX = cropState.offsetX;
+      startOffsetY = cropState.offsetY;
+    }
+
+    function onDragMove(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      const pos = getTouchOrMousePos(e);
+      const deltaX = pos.x - startX;
+      const deltaY = pos.y - startY;
+
+      cropState.offsetX = startOffsetX + deltaX;
+      cropState.offsetY = startOffsetY + deltaY;
+
+      updateImageTransform();
+    }
+
+    function onDragEnd() {
+      isDragging = false;
+      frame.classList.remove('dragging');
+    }
+
+    function getTouchOrMousePos(e) {
+      if (e.touches) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+      return { x: e.clientX, y: e.clientY };
+    }
+  }
+
+  /**
+   * Update image position with transform translate
+   */
+  function updateImageTransform() {
+    const image = document.querySelector('.crop-image');
+    if (!image) return;
+    image.style.transform = `translate(${cropState.offsetX}px, ${cropState.offsetY}px)`;
+  }
+
+  /**
+   * Close crop modal without saving
+   */
   function closeCrop() {
     const modal = document.getElementById('cropModal');
     modal.classList.remove('show');
     document.body.style.overflow = '';
-    if (cropper) {
-      cropper.destroy();
-      cropper = null;
-    }
     selectedFile = null;
+    cropState = { offsetX: 0, offsetY: 0 };
   }
 
-  /** Crop and upload **/
+  /**
+   * Export cropped canvas and upload
+   */
   function cropAndUpload() {
-    if (!cropper) {
-      showToast('Cropper not initialized', 'error');
+    const frame = document.querySelector('.crop-frame');
+    const image = document.querySelector('.crop-image');
+
+    if (!frame || !image || !selectedFile) {
+      showToast('Crop state missing', 'error');
       return;
     }
 
-    // Find the crop & upload button
-    const cropBtn = document.querySelector('.crop-actions button:last-child');
-    if (cropBtn) {
-      cropBtn.disabled = true;
-      cropBtn.innerHTML = '<span class="spinner"></span> Processing...';
+    const btn = document.querySelector('.crop-actions .btn-done');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '⏳ Processing...';
     }
 
     try {
-      cropper.getCroppedCanvas({
-        width: 800,
-        height: 450,
-        imageSmoothingEnabled: true,
-        imageSmoothingQuality: 'high',
-      }).toBlob((blob) => {
-        if (!blob) {
-          showToast('Failed to crop image', 'error');
-          if (cropBtn) {
-            cropBtn.disabled = false;
-            cropBtn.textContent = 'Crop & Upload';
-          }
-          return;
-        }
+      // Get frame dimensions
+      const frameRect = frame.getBoundingClientRect();
+      const frameWidth = frameRect.width;
+      const frameHeight = frameRect.height;
 
-        const fd = new FormData();
-        fd.append('poster', blob, 'poster.jpg');
+      // Create canvas with 16:9 at high resolution
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;   // 16:9 ratio
+      canvas.height = 450;
 
-        fetch('/api/upload/poster', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${FN_AUTH.getToken()}`,
-          },
-          body: fd,
-        })
-        .then(res => {
-          if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
-          return res.json();
-        })
-        .then(data => {
-          console.log('[FestNest] Poster uploaded:', data);
-          posterFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Failed to get canvas context');
 
-          // Update UI
-          const zone = document.getElementById('posterUpload');
-          if (zone) {
-            const titleEl = zone.querySelector('.upload-zone-title');
-            const subEl = zone.querySelector('.upload-zone-sub');
-            if (titleEl) titleEl.textContent = '✅ poster.jpg';
-            if (subEl) subEl.textContent = (blob.size / 1024 / 1024).toFixed(2) + ' MB';
-            zone.style.borderColor = '#00BFA5';
-            zone.classList.add('upload-zone--uploaded');
+      // Create image element to draw from
+      const imgElement = new Image();
+      imgElement.crossOrigin = 'anonymous';
+      imgElement.onload = () => {
+        // Draw the image with the current offset
+        // Calculate the scaling factor
+        const scale = imgElement.width / frameWidth;
+
+        // Calculate scaled offset
+        const scaledOffsetX = cropState.offsetX * scale;
+        const scaledOffsetY = cropState.offsetY * scale;
+
+        // Draw image on canvas
+        ctx.drawImage(imgElement, scaledOffsetX, scaledOffsetY);
+
+        // Convert canvas to blob
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            showToast('Failed to generate image', 'error');
+            resetButton();
+            return;
           }
 
-          showToast('🖼️ Poster cropped and ready!', 'success');
-          closeCrop();
-        })
-        .catch(err => {
-          console.error('[FestNest] Upload error:', err);
-          showToast('Failed to upload poster: ' + err.message, 'error');
-          if (cropBtn) {
-            cropBtn.disabled = false;
-            cropBtn.textContent = 'Crop & Upload';
-          }
-        });
-      }, 'image/jpeg', 0.9);
+          // Upload to server
+          const fd = new FormData();
+          fd.append('poster', blob, 'poster.jpg');
+
+          fetch('/api/upload/poster', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${FN_AUTH.getToken()}`,
+            },
+            body: fd,
+          })
+          .then(res => {
+            if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
+            return res.json();
+          })
+          .then(data => {
+            console.log('[FestNest] Poster uploaded:', data);
+            selectedFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
+
+            // Update UI
+            const zone = document.getElementById('posterUpload');
+            if (zone) {
+              const titleEl = zone.querySelector('.upload-zone-title');
+              const subEl = zone.querySelector('.upload-zone-sub');
+              if (titleEl) titleEl.textContent = '✅ poster.jpg';
+              if (subEl) subEl.textContent = (blob.size / 1024 / 1024).toFixed(2) + ' MB';
+              zone.style.borderColor = '#00BFA5';
+              zone.classList.add('upload-zone--uploaded');
+            }
+
+            showToast('🖼️ Poster ready!', 'success');
+            closeCrop();
+          })
+          .catch(err => {
+            console.error('[FestNest] Upload error:', err);
+            showToast('Upload failed: ' + err.message, 'error');
+            resetButton();
+          });
+        }, 'image/jpeg', 0.95);
+      };
+
+      imgElement.onerror = () => {
+        showToast('Failed to load image', 'error');
+        resetButton();
+      };
+
+      imgElement.src = image.src;
     } catch (err) {
       console.error('[FestNest] Crop error:', err);
-      showToast('Crop error: ' + err.message, 'error');
-      if (cropBtn) {
-        cropBtn.disabled = false;
-        cropBtn.textContent = 'Crop & Upload';
+      showToast('Error: ' + err.message, 'error');
+      resetButton();
+    }
+
+    function resetButton() {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Done';
       }
     }
   }
 
-  /** Modal click handler to close on overlay click **/
-  document.getElementById('cropModal')?.addEventListener('click', (e) => {
-    // Close if clicking on modal background (not the container)
-    if (e.target.id === 'cropModal') {
-      closeCrop();
+  /**
+   * Attach crop modal event handlers
+   */
+  (function attachCropHandlers() {
+    const modal = document.getElementById('cropModal');
+    const closeBtn = document.querySelector('.crop-header-close');
+    const cancelBtn = document.querySelector('.crop-actions .btn-cancel');
+    const doneBtn = document.querySelector('.crop-actions .btn-done');
+
+    if (closeBtn) closeBtn.addEventListener('click', closeCrop);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeCrop);
+    if (doneBtn) doneBtn.addEventListener('click', cropAndUpload);
+
+    // Close on overlay click (background)
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeCrop();
+        }
+      });
     }
-  });
+  })();
 
   document.getElementById('featureEventBtn')?.addEventListener('click', () => {
     showToast('⭐ Feature placement launching soon!', 'info');

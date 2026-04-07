@@ -13,9 +13,6 @@
   <link rel="stylesheet" href="../assets/css/footer.css" />
   <link rel="stylesheet" href="../assets/css/animations.css" />
   <link rel="stylesheet" href="../assets/css/pages/inner-pages.css" />
-  <!-- Cropper.js Library -->
-  <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet"/>
-  <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
 </head>
 <body>
   <nav class="navbar" id="navbar">
@@ -167,18 +164,19 @@
       </div>
     </div>
   </div>
-  <!-- Image Crop Modal (CLEAN & SIMPLE) -->
+  <!-- CUSTOM IMAGE CROPPER (16:9 FIXED FRAME) -->
   <style>
-    /* Crop modal styles */
+    /* ─── Crop Modal ─── */
     #cropModal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       justify-content: center;
       align-items: center;
       z-index: 9999;
       padding: 20px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     #cropModal.show {
@@ -186,80 +184,186 @@
     }
 
     .crop-container {
-      width: 90%;
-      max-width: 500px;
+      width: 100%;
+      max-width: 600px;
       background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      max-height: 80vh;
-      overflow-y: auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      max-height: 90vh;
     }
 
+    /* ─── Crop Header ─── */
     .crop-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #f0f0f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
     }
 
     .crop-header h3 {
       margin: 0;
       font-size: 18px;
       font-weight: 700;
+      color: #111;
     }
 
-    .crop-header button {
+    .crop-header-close {
       background: none;
       border: none;
       font-size: 28px;
       cursor: pointer;
-      padding: 0;
       color: #999;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: background-color 0.2s;
     }
 
-    .crop-image-wrapper {
-      margin-bottom: 20px;
+    .crop-header-close:hover {
+      background-color: #f5f5f5;
     }
 
-    #cropImage {
+    /* ─── Crop Canvas Area ─── */
+    .crop-canvas-area {
+      padding: 24px;
+      text-align: center;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ─── Fixed 16:9 Frame ─── */
+    .crop-frame {
+      position: relative;
       width: 100%;
-      display: block;
+      max-width: 500px;
+      aspect-ratio: 16 / 9;
+      background: #f5f5f5;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
       cursor: grab;
     }
 
-    #cropImage:active {
+    .crop-frame.dragging {
       cursor: grabbing;
     }
 
+    /* ─── Image Inside Frame ─── */
+    .crop-image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    /* ─── Crop Image Overlay (darkened edges) ─── */
+    .crop-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      z-index: 2;
+    }
+
+    /* ─── Crop Actions ─── */
     .crop-actions {
+      padding: 20px 24px;
+      border-top: 1px solid #f0f0f0;
       display: flex;
       gap: 12px;
       justify-content: flex-end;
+      background: #fafafa;
     }
 
-    /* Hide Cropper.js handles and grid */
-    .cropper-point,
-    .cropper-line {
-      display: none !important;
+    .crop-actions button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
     }
 
-    .cropper-crop-box {
-      border: 2px solid rgb(90, 75, 255) !important;
+    .crop-actions .btn-cancel {
+      background: white;
+      color: #333;
+      border: 1px solid #e0e0e0;
+    }
+
+    .crop-actions .btn-cancel:hover {
+      background: #f5f5f5;
+      border-color: #d0d0d0;
+    }
+
+    .crop-actions .btn-done {
+      background: var(--primary, #5a4bff);
+      color: white;
+    }
+
+    .crop-actions .btn-done:hover {
+      background: #4a3be0;
+      box-shadow: 0 4px 12px rgba(90, 75, 255, 0.3);
+    }
+
+    .crop-actions .btn-done:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      .crop-header {
+        padding: 16px 20px;
+      }
+
+      .crop-canvas-area {
+        padding: 16px 20px;
+      }
+
+      .crop-actions {
+        padding: 16px 20px;
+        gap: 10px;
+      }
+
+      .crop-actions button {
+        flex: 1;
+        padding: 12px 16px;
+      }
     }
   </style>
+
+  <!-- CROP MODAL HTML -->
   <div id="cropModal">
     <div class="crop-container">
       <div class="crop-header">
-        <h3>Crop Event Poster</h3>
-        <button type="button" onclick="closeCrop()">×</button>
+        <h3>Adjust Poster</h3>
+        <button type="button" class="crop-header-close">×</button>
       </div>
-      <div class="crop-image-wrapper">
-        <img id="cropImage" src="" />
+      <div class="crop-canvas-area">
+        <div class="crop-frame">
+          <img class="crop-image" src="" alt="Crop Preview" />
+        </div>
       </div>
       <div class="crop-actions">
-        <button type="button" onclick="closeCrop()" class="btn btn-ghost">Cancel</button>
-        <button type="button" onclick="cropAndUpload()" class="btn btn-primary">Crop & Upload</button>
+        <button type="button" class="btn-cancel">Cancel</button>
+        <button type="button" class="btn-done">Done</button>
       </div>
     </div>
   </div>
