@@ -112,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
      ────────────────────────────────────────────────────────────────────────── */
 
   let selectedFile = null;
+  let isProcessing = false;  // Prevent multiple uploads
   let cropState = {
     offsetX: 0,           // Current translate X
     offsetY: 0,           // Current translate Y
@@ -271,13 +272,22 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /**
-   * Close crop modal without saving
+   * Close crop modal without saving (CANCEL action)
+   * - Discards cropped image
+   * - Resets all crop state
+   * - Clears selected file
    */
   function closeCrop() {
     const modal = document.getElementById('cropModal');
+    const doneBtn = document.querySelector('.crop-actions .btn-done');
+    
+    // Close modal
     modal.classList.remove('show');
     document.body.style.overflow = '';
+
+    // Reset all state
     selectedFile = null;
+    isProcessing = false;
     cropState = {
       offsetX: 0,
       offsetY: 0,
@@ -286,20 +296,53 @@ document.addEventListener('DOMContentLoaded', function () {
       originalWidth: 0,
       originalHeight: 0,
     };
+
+    // Reset Done button state
+    if (doneBtn) {
+      doneBtn.disabled = false;
+      doneBtn.textContent = 'Done';
+    }
+
+    // Clear image source
+    const image = document.querySelector('.crop-image');
+    if (image) {
+      image.src = '';
+      image.style.width = '';
+      image.style.height = '';
+      image.style.transform = '';
+    }
   }
 
   /**
    * Export cropped canvas and upload
    * CRITICAL: Map visual frame to original image using correct formulas
+   * 
+   * Flow:
+   * 1. Validate state
+   * 2. Set processing flag (prevent double-click)
+   * 3. Generate canvas from visible frame
+   * 4. Convert to Blob
+   * 5. Upload to server
+   * 6. Update UI
+   * 7. Close modal on success
+   * 8. Reset processing flag on error
    */
   function cropAndUpload() {
     const frame = document.querySelector('.crop-frame');
     const image = document.querySelector('.crop-image');
 
     if (!frame || !image || !selectedFile) {
-      showToast('Crop state missing', 'error');
+      showToast('Image not loaded', 'error');
       return;
     }
+
+    // Prevent multiple uploads
+    if (isProcessing) {
+      showToast('Processing... please wait', 'info');
+      return;
+    }
+
+    isProcessing = true;
 
     const btn = document.querySelector('.crop-actions .btn-done');
     if (btn) {
@@ -320,6 +363,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const originalWidth = cropState.originalWidth;
       const originalHeight = cropState.originalHeight;
 
+      // Validate dimensions
+      if (!imageDisplayWidth || !imageDisplayHeight || !originalWidth || !originalHeight) {
+        showToast('Image dimensions invalid', 'error');
+        isProcessing = false;
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Done';
+        }
+        return;
+      }
+
       // Create canvas with 16:9 at high resolution
       const canvas = document.createElement('canvas');
       canvas.width = 1280;   // 16:9 ratio
@@ -333,91 +387,61 @@ document.addEventListener('DOMContentLoaded', function () {
       imgElement.crossOrigin = 'anonymous';
 
       imgElement.onload = () => {
-        // CRITICAL FORMULA: Map visible frame to source image region
-        // The translate offset tells us how much of the display image is off-screen
-        // We need to map this back to the original image coordinates
+        try {
+          // CRITICAL FORMULA: Map visible frame to source image region
+          // The translate offset tells us how much of the display image is off-screen
+          // We need to map this back to the original image coordinates
 
-        const visibleX = (-translateX / imageDisplayWidth) * originalWidth;
-        const visibleY = (-translateY / imageDisplayHeight) * originalHeight;
+          const visibleX = (-translateX / imageDisplayWidth) * originalWidth;
+          const visibleY = (-translateY / imageDisplayHeight) * originalHeight;
 
-        const visibleWidth = (frameWidth / imageDisplayWidth) * originalWidth;
-        const visibleHeight = (frameHeight / imageDisplayHeight) * originalHeight;
+          const visibleWidth = (frameWidth / imageDisplayWidth) * originalWidth;
+          const visibleHeight = (frameHeight / imageDisplayHeight) * originalHeight;
 
-        // Draw the exact visible portion of the original image onto canvas
-        ctx.drawImage(
-          imgElement,
-          visibleX,           // source X
-          visibleY,           // source Y
-          visibleWidth,       // source width
-          visibleHeight,      // source height
-          0,                  // destination X
-          0,                  // destination Y
-          canvas.width,       // destination width
-          canvas.height       // destination height
-        );
+          // Draw the exact visible portion of the original image onto canvas
+          ctx.drawImage(
+            imgElement,
+            visibleX,           // source X
+            visibleY,           // source Y
+            visibleWidth,       // source width
+            visibleHeight,      // source height
+            0,                  // destination X
+            0,                  // destination Y
+            canvas.width,       // destination width
+            canvas.height       // destination height
+          );
 
-        // Convert canvas to blob
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            showToast('Failed to generate image', 'error');
-            resetButton();
-            return;
-          }
-
-          // Upload to server
-          const fd = new FormData();
-          fd.append('poster', blob, 'poster.jpg');
-
-          fetch('/api/upload/poster', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${FN_AUTH.getToken()}`,
-            },
-            body: fd,
-          })
-          .then(res => {
-            if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
-            return res.json();
-          })
-          .then(data => {
-            console.log('[FestNest] Poster uploaded:', data);
-            selectedFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
-
-            // Update UI
-            const zone = document.getElementById('posterUpload');
-            if (zone) {
-              const titleEl = zone.querySelector('.upload-zone-title');
-              const subEl = zone.querySelector('.upload-zone-sub');
-              if (titleEl) titleEl.textContent = '✅ poster.jpg';
-              if (subEl) subEl.textContent = (blob.size / 1024 / 1024).toFixed(2) + ' MB';
-              zone.style.borderColor = '#00BFA5';
-              zone.classList.add('upload-zone--uploaded');
+          // Convert canvas to blob and upload
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              showToast('Failed to generate image', 'error');
+              resetProcessing();
+              return;
             }
 
-            showToast('🖼️ Poster ready!', 'success');
-            closeCrop();
-          })
-          .catch(err => {
-            console.error('[FestNest] Upload error:', err);
-            showToast('Upload failed: ' + err.message, 'error');
-            resetButton();
-          });
-        }, 'image/jpeg', 0.95);
+            uploadPosterBlob(blob);
+          }, 'image/jpeg', 0.95);
+        } catch (err) {
+          console.error('[FestNest] Canvas drawing error:', err);
+          showToast('Error: ' + err.message, 'error');
+          resetProcessing();
+        }
       };
 
       imgElement.onerror = () => {
-        showToast('Failed to load image', 'error');
-        resetButton();
+        showToast('Failed to load image for processing', 'error');
+        resetProcessing();
       };
 
       imgElement.src = image.src;
     } catch (err) {
       console.error('[FestNest] Crop error:', err);
       showToast('Error: ' + err.message, 'error');
-      resetButton();
+      resetProcessing();
     }
 
-    function resetButton() {
+    function resetProcessing() {
+      isProcessing = false;
       if (btn) {
         btn.disabled = false;
         btn.textContent = 'Done';
@@ -426,7 +450,67 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /**
+   * Upload cropped poster blob to server
+   */
+  function uploadPosterBlob(blob) {
+    const btn = document.querySelector('.crop-actions .btn-done');
+
+    const fd = new FormData();
+    fd.append('poster', blob, 'poster.jpg');
+
+    fetch('/api/upload/poster', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${FN_AUTH.getToken()}`,
+      },
+      body: fd,
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Upload failed: ' + res.statusText);
+      return res.json();
+    })
+    .then(data => {
+      console.log('[FestNest] Poster uploaded:', data);
+
+      // Store the cropped file
+      selectedFile = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
+
+      // Update upload zone UI
+      const zone = document.getElementById('posterUpload');
+      if (zone) {
+        const titleEl = zone.querySelector('.upload-zone-title');
+        const subEl = zone.querySelector('.upload-zone-sub');
+        if (titleEl) titleEl.textContent = '✅ poster.jpg';
+        if (subEl) subEl.textContent = (blob.size / 1024 / 1024).toFixed(2) + ' MB';
+        zone.style.borderColor = '#00BFA5';
+        zone.classList.add('upload-zone--uploaded');
+      }
+
+      showToast('🖼️ Poster ready!', 'success');
+
+      // Close cropper after successful upload
+      isProcessing = false;
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Done';
+      }
+      closeCrop();
+    })
+    .catch(err => {
+      console.error('[FestNest] Poster upload error:', err);
+      showToast('Upload failed: ' + err.message, 'error');
+      isProcessing = false;
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Done';
+      }
+    });
+  }
+
+  /**
    * Attach crop modal event handlers
+   * - Close/Cancel: Discard changes, reset state
+   * - Done: Generate, crop, and upload poster
    */
   (function attachCropHandlers() {
     const modal = document.getElementById('cropModal');
@@ -434,13 +518,46 @@ document.addEventListener('DOMContentLoaded', function () {
     const cancelBtn = document.querySelector('.crop-actions .btn-cancel');
     const doneBtn = document.querySelector('.crop-actions .btn-done');
 
-    if (closeBtn) closeBtn.addEventListener('click', closeCrop);
-    if (cancelBtn) cancelBtn.addEventListener('click', closeCrop);
-    if (doneBtn) doneBtn.addEventListener('click', cropAndUpload);
+    /**
+     * CLOSE BUTTON (X)
+     * Action: Cancel cropping, discard changes
+     */
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeCrop();
+      });
+    }
 
-    // Close on overlay click (background)
+    /**
+     * CANCEL BUTTON
+     * Action: Cancel cropping, discard changes
+     */
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeCrop();
+      });
+    }
+
+    /**
+     * DONE BUTTON
+     * Action: Generate cropped image, upload, and close
+     */
+    if (doneBtn) {
+      doneBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        cropAndUpload();
+      });
+    }
+
+    /**
+     * MODAL OVERLAY CLICK
+     * Action: Cancel cropping (click outside frame)
+     */
     if (modal) {
       modal.addEventListener('click', (e) => {
+        // Close only if clicking on modal background, not the container
         if (e.target === modal) {
           closeCrop();
         }
