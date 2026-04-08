@@ -95,13 +95,8 @@ window.requireRole = requireRole;
   /* ════════════════════════════════════════════════════════
      OPEN / CLOSE / TABS
   ════════════════════════════════════════════════════════ */
-  function openAuth(tab = 'signup', isFullScreen = false) {
+  function openAuth(tab = 'signup') {
     modal.classList.add('modal--open');
-    if (isFullScreen) {
-      modal.classList.add('modal--fullscreen');
-    } else {
-      modal.classList.remove('modal--fullscreen');
-    }
     document.body.style.overflow = 'hidden';
     switchTab(tab);
     if (typeof trapFocus === 'function') trapFocus(modal);
@@ -109,7 +104,6 @@ window.requireRole = requireRole;
 
   function closeAuth() {
     modal.classList.remove('modal--open');
-    modal.classList.remove('modal--fullscreen');
     document.body.style.overflow = '';
     clearGlobalErr();
     /* Reset signup to step 0 for next open */
@@ -537,21 +531,11 @@ window.requireRole = requireRole;
       closeAuth();
       showToast('🎉 Welcome to FestNest, ' + r.user.firstName + '!', 'success');
 
-      /* Check for pending redirect from auth gate */
-      const redirectPath = (typeof Auth !== 'undefined' && Auth.getRedirectPath)
-        ? Auth.getRedirectPath()
-        : null;
-
-      if (redirectPath) {
-        /* Redirect to intended page (e.g., /events, /post-event) */
-        setTimeout(() => { window.location.href = redirectPath; }, 900);
+      /* Redirect based on role */
+      if (su.role === 'organizer') {
+        setTimeout(() => { window.location.href = '/pages/my-events.html'; }, 900);
       } else {
-        /* Default: Organizers land on My Events dashboard, students on home */
-        if (su.role === 'organizer') {
-          setTimeout(() => { window.location.href = '/pages/my-events.html'; }, 900);
-        } else {
-          setTimeout(() => { window.location.href = '/index.html'; }, 900);
-        }
+        setTimeout(() => { window.location.href = '/index.html'; }, 900);
       }
     } catch (err) {
       showGlobalErr(err.message || 'Registration failed. Please try again.');
@@ -587,18 +571,8 @@ window.requireRole = requireRole;
         closeAuth();
         showToast('👋 Welcome back, ' + r.user.firstName + '!', 'success');
         
-        /* Check for pending redirect from auth gate */
-        const redirectPath = (typeof Auth !== 'undefined' && Auth.getRedirectPath)
-          ? Auth.getRedirectPath()
-          : null;
-
-        if (redirectPath) {
-          /* Redirect to intended page (e.g., /events, /post-event) */
-          setTimeout(() => { window.location.href = redirectPath; }, 900);
-        } else {
-          /* Default: reload or go home */
-          setTimeout(() => { window.location.href = '/index.html'; }, 900);
-        }
+        /* Redirect to home */
+        setTimeout(() => { window.location.href = '/index.html'; }, 900);
       } catch (err) {
         showGlobalErr(err.message || 'Login failed. Check your credentials.');
         submitBtn.disabled   = false;

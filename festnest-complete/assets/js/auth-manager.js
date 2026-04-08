@@ -1,26 +1,23 @@
 /* ============================================================
    FESTNEST AUTHENTICATION MANAGER
-   Version: 2.1 — Full-Screen Auth Gate + Centralized Auth Control
+   Version: 3.0 — Clean Auth System with Inline Lock Screens
    
-   This module:
-   — Provides a SINGLE global openAuthModal() interface
-   — Enforces auth checks before protected actions
-   — Prevents access to event pages without login
-   — FULL-SCREEN blocking modal for protected navigation
-   — Redirect after auth to intended page
-   — Replaces ALL old modal triggers with this unified API
+   This module provides:
+   — Single global Auth interface
+   — Auth checks for actions & pages
+   — Inline lock screen rendering for protected pages
+   — Modal opens only on user action (Sign Up / Log In clicks)
    
    USAGE:
-   - Auth.openModal('signup') — Opens signup modal to role selection (FULL-SCREEN)
-   - Auth.openModal('login') — Opens login form (FULL-SCREEN)
+   - Auth.openModal('signup') — Opens signup modal
+   - Auth.openModal('login') — Opens login form
    - Auth.isLoggedIn() — Checks if user is authenticated
-   - Auth.requireAuth() — Enforces auth + redirects if needed
-   - Auth.setRedirectPath(path) — Set where to go after auth
-   - Auth.getRedirectPath() — Get pending redirect
+   - Auth.renderLockScreen(options) — Show lock UI for protected page
+   - Auth.requireForEvent('action') — Protect event actions
    
    Dependencies:
    - FN_AUTH (from api.js) — token & user storage
-   - window.openAuthModal (from auth.js) — actual modal implementation
+   - window.openAuthModal (from auth.js) — modal implementation
    ============================================================ */
 
 'use strict';
@@ -28,203 +25,39 @@
 window.Auth = (function() {
   
   /* ════════════════════════════════════════════════════════
-     PROTECTED PAGES & REDIRECT LOGIC
+     AUTH STATUS
   ════════════════════════════════════════════════════════ */
   
-  let redirectAfterAuth = null;
-  
-  /* Store where to redirect after successful auth */
-  function setRedirectPath(path) {
-    redirectAfterAuth = path;
-  }
-  
-  /* Get pending redirect (and clear it) */
-  function getRedirectPath() {
-    const path = redirectAfterAuth;
-    redirectAfterAuth = null;
-    return path;
-  }
-  
-  /* Check if URL is a protected route */
-  function isProtectedRoute(url) {
-    const protectedRoutes = [
-      '/events',
-      '/pages/events.html',
-      '/post',
-      '/post-event',
-      '/pages/post-event.html',
-      '/my-events',
-      '/pages/my-events.html',
-    ];
-    
-    const pathname = new URL(url, window.location.origin).pathname.toLowerCase();
-    return protectedRoutes.some(route => pathname.includes(route));
-  }
-  
-  /* ════════════════════════════════════════════════════════
-     CORE API
-  ════════════════════════════════════════════════════════ */
-  
-  /* Open auth modal at specific tab/step — FULL-SCREEN */
-  function openModal(step = 'signup', isFullScreen = false) {
-    const step_map = {
-      'signup':  'signup',
-      'login':   'login',
-      'role':    'signup',  /* Redirect role selection to signup */
-    };
-    const tab = step_map[step] || 'signup';
-    
-    // Try new 3-step modal first (auth.js)
-    if (typeof window.openAuthModal === 'function') {
-      window.openAuthModal(tab);
-      
-      // Make modal full-screen if needed
-      if (isFullScreen) {
-        const modal = document.getElementById('authModal');
-        if (modal) {
-          modal.classList.add('modal--fullscreen');
-          modal.setAttribute('data-fullscreen', 'true');
-        }
-      }
-    }
-    // Fallback to old modal trigger (auth-ui.js)
-    else if (typeof window.openAuthModal === 'function') {
-      window.openAuthModal(tab);
-    }
-  }
-
-  /* Close auth modal */
-  function closeModal() {
-    if (typeof window.closeAuthModal === 'function') {
-      window.closeAuthModal();
-    }
-    
-    // Remove full-screen class
-    const modal = document.getElementById('authModal');
-    if (modal) {
-      modal.classList.remove('modal--fullscreen');
-      modal.removeAttribute('data-fullscreen');
-    }
-  }
-
-  /* Check if user is logged in */
   function isLoggedIn() {
     return FN_AUTH && FN_AUTH.isLoggedIn();
   }
 
-  /* Get current user */
   function getUser() {
     return FN_AUTH ? FN_AUTH.getUser() : null;
   }
 
   /* ════════════════════════════════════════════════════════
-     AUTH ENFORCEMENT
+     MODAL CONTROL (NO UI CHANGES)
   ════════════════════════════════════════════════════════ */
   
-  /* 
-     Protect an action that requires auth.
-     Usage:
-       if (!Auth.require()) return;
-       // proceed with action
-  */
-  function require() {
-    if (!isLoggedIn()) {
-      openModal('login');
-      return false;
+  function openModal(step = 'signup') {
+    const tab = (step === 'role') ? 'signup' : step;
+    if (typeof window.openAuthModal === 'function') {
+      window.openAuthModal(tab);
     }
-    return true;
   }
 
-  /* 
-     Require specific role(s).
-     Usage:
-       if (!Auth.requireRole('organizer')) return;
-       // proceed with organizer-only action
-  */
-  function requireRole(...roles) {
-    if (!require()) return false;
-    const user = getUser();
-    if (!user || !roles.includes(user.role)) {
-      if (typeof showToast === 'function') {
-        showToast(`Access denied. Requires: ${roles.join(' or ')}.`, 'error');
-      }
-      return false;
+  function closeModal() {
+    if (typeof window.closeAuthModal === 'function') {
+      window.closeAuthModal();
     }
-    return true;
-  }
-
-  /* 
-     Protect navigation to restricted pages.
-     Shows FULL-SCREEN auth modal if not logged in.
-     Usage in link/button click handlers:
-       if (!Auth.guardRoute('/events')) return;
-       // allow navigation
-  */
-  function guardRoute(targetPath) {
-    if (isLoggedIn()) {
-      return true; /* Allow navigation */
-    }
-    
-    /* User not logged in — block and show auth gate */
-    if (typeof showToast === 'function') {
-      showToast('Please log in to access this page.', 'info');
-    }
-    
-    /* Store intended destination */
-    setRedirectPath(targetPath);
-    
-    /* Show FULL-SCREEN auth modal */
-    openModal('role', true); /* true = full-screen */
-    
-    return false; /* Block navigation */
-  }
-  
-  /* 
-     Enforce auth before page access.
-     Redirects to home if not logged in.
-     Usage:
-       if (!Auth.requirePage('organizer')) {
-         // Page will handle redirect automatically
-         return;
-       }
-  */
-  function requirePage(role = null) {
-    if (!isLoggedIn()) {
-      if (typeof showToast === 'function') {
-        showToast('Please log in to access this page.', 'info');
-      }
-      setTimeout(() => {
-        window.location.href = '/index.html';
-      }, 500);
-      return false;
-    }
-
-    if (role) {
-      const user = getUser();
-      if (!user || user.role !== role) {
-        if (typeof showToast === 'function') {
-          showToast(`This page is for ${role}s only.`, 'error');
-        }
-        setTimeout(() => {
-          window.location.href = '/index.html';
-        }, 800);
-        return false;
-      }
-    }
-
-    return true;
   }
 
   /* ════════════════════════════════════════════════════════
-     EVENT PROTECTION
+     ACTION PROTECTION
   ════════════════════════════════════════════════════════ */
   
-  /* 
-     Protect event registration.
-     Usage:
-       if (!Auth.requireForEvent('register')) return;
-       // make API call to register
-  */
+  /* Protect event actions (register, save, etc.) */
   function requireForEvent(action = 'register') {
     if (!isLoggedIn()) {
       if (typeof showToast === 'function') {
@@ -234,6 +67,92 @@ window.Auth = (function() {
       return false;
     }
     return true;
+  }
+
+  /* Require specific role for action */
+  function requireRole(...roles) {
+    if (!isLoggedIn()) {
+      openModal('login');
+      return false;
+    }
+    const user = getUser();
+    if (!user || !roles.includes(user.role)) {
+      if (typeof showToast === 'function') {
+        showToast(`Requires: ${roles.join(' or ')}.`, 'error');
+      }
+      return false;
+    }
+    return true;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     INLINE LOCK SCREEN FOR PROTECTED PAGES
+  ════════════════════════════════════════════════════════ */
+  
+  function renderLockScreen(options = {}) {
+    const {
+      title = 'Log in to see your events',
+      description = 'Create a free account and explore all events.',
+      buttonText = 'Sign Up Free',
+      containerId = 'authLockContainer'
+    } = options;
+
+    const container = document.getElementById(containerId);
+    if (!container) {
+      console.warn(`[Auth] Container #${containerId} not found`);
+      return;
+    }
+
+    const lockHTML = `
+      <div class="auth-lock">
+        <div class="auth-lock-content">
+          <h2 class="auth-lock-title">${title}</h2>
+          <p class="auth-lock-description">${description}</p>
+          <button class="btn btn-primary auth-lock-button" onclick="Auth.openModal('signup')">
+            ${buttonText}
+          </button>
+          <p class="auth-lock-footer">
+            Already have an account? 
+            <button class="auth-lock-login-link" onclick="Auth.openModal('login')">Log in</button>
+          </p>
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = lockHTML;
+    return container;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     PAGE RENDER HELPERS
+  ════════════════════════════════════════════════════════ */
+  
+  /* Call on protected page load to check auth */
+  function initProtectedPage(options = {}) {
+    const {
+      containerId = 'authLockContainer',
+      lockTitle = 'Log in to see your events',
+      lockDescription = 'Create a free account and explore all events.',
+      onLock = null,  // callback if lock screen is shown
+      onUnlock = null // callback if user is logged in
+    } = options;
+
+    if (!isLoggedIn()) {
+      renderLockScreen({
+        title: lockTitle,
+        description: lockDescription,
+        containerId: containerId
+      });
+      if (typeof onLock === 'function') {
+        onLock();
+      }
+      return false;
+    } else {
+      if (typeof onUnlock === 'function') {
+        onUnlock();
+      }
+      return true;
+    }
   }
 
   /* ════════════════════════════════════════════════════════
@@ -248,22 +167,20 @@ window.Auth = (function() {
       showToast('👋 Logged out successfully!', 'success');
     }
     setTimeout(() => {
-      window.location.reload();
+      window.location.href = '/index.html';
     }, 800);
   }
 
   /* ════════════════════════════════════════════════════════
-     INIT
+     INITIALIZATION
   ════════════════════════════════════════════════════════ */
   
   function init() {
-    // Ensure auth checks work even if FN_AUTH not yet defined
     if (typeof FN_AUTH === 'undefined') {
-      console.warn('[Auth] FN_AUTH not loaded. Make sure api.js loads before auth-manager.js');
+      console.warn('[Auth] FN_AUTH not loaded. Ensure api.js loads before auth-manager.js');
     }
   }
 
-  /* Call on script load */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
@@ -279,18 +196,14 @@ window.Auth = (function() {
     closeModal,
     isLoggedIn,
     getUser,
-    require,
-    requireRole,
-    requirePage,
+    renderLockScreen,
+    initProtectedPage,
     requireForEvent,
-    logout,
-    guardRoute,
-    setRedirectPath,
-    getRedirectPath,
-    isProtectedRoute,
+    requireRole,
+    logout
   };
 
 })();
 
-/* Alias for backward compatibility */
+/* Backward compatibility alias */
 window.AuthManager = window.Auth;

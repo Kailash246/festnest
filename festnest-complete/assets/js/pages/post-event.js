@@ -16,10 +16,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ── Auth guard: Require login to post events ── */
-  if (!Auth.requirePage()) {
-    return; /* Redirect handled by Auth.requirePage() */
-  }
+  /* Auth is now handled by inline lock screen in HTML */
+  /* No need for requirePage() check — protected page shows lock if not logged in */
 
   /* ── Live preview ── */
   const titleInput  = document.getElementById('pf-title');
