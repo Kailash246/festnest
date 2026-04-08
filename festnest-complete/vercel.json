@@ -13,6 +13,10 @@
     { "source": "/profile", "destination": "/pages/profile.html" },
     { "source": "/my-events", "destination": "/pages/my-events.html" },
     { "source": "/event-detail", "destination": "/pages/event-detail.html" },
-    { "source": "/privacy", "destination": "/pages/privacy-policy.html" }
+    { "source": "/help", "destination": "/pages/help-center.html" },
+    { "source": "/contact", "destination": "/pages/contact-us.html" },
+    { "source": "/privacy", "destination": "/pages/privacy.html" },
+    { "source": "/privacy-policy", "destination": "/pages/privacy.html" },
+    { "source": "/terms", "destination": "/pages/terms.html" }
   ]
 }
