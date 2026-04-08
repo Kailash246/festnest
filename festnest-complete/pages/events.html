@@ -520,20 +520,7 @@
   <script src="../assets/js/navbar.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/auth-manager.js"></script>
-  <script>
-    /* Initialize protected page — show lock or content */
-    document.addEventListener('DOMContentLoaded', function() {
-      const layoutContent = document.getElementById('eventsLayoutContent');
-      const success = Auth.initProtectedPage({
-        containerId: 'authLockContainer',
-        lockTitle: 'Log in to browse events',
-        lockDescription: 'Create a free account and discover hackathons, cultural fests, workshops, and more across India.',
-        onUnlock: function() {
-          if (layoutContent) layoutContent.style.display = '';
-        }
-      });
-    });
-  </script>
+  <script src="../assets/js/auth-lockscreen-loader.js"></script>
   <script src="../assets/js/pages/events.js"></script>
 </body>
 </html>
