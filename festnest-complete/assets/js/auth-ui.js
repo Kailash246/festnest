@@ -143,45 +143,220 @@
     });
   }
 
-  /* ── SIGNUP FORM SUBMIT ── */
+  /* ── SIGNUP FORM: Multi-Step Signup ── */
   if (signupForm) {
     const submitBtn = signupForm.querySelector('[type="submit"]');
     if (submitBtn) submitBtn.dataset.originalText = submitBtn.textContent;
 
+    // State management
+    const signupState = {
+      step: 1,
+      email: '',
+      password: '',
+      passwordConfirm: '',
+      firstName: '',
+      lastName: '',
+      college: '',
+      year: '',
+      branch: '',
+      role: 'student',
+      orgName: '',
+      city: '',
+      orgBranch: '',
+      phone: '',
+    };
+
+    const step1El = document.getElementById('signup-step-1');
+    const step2El = document.getElementById('signup-step-2');
+    const step1ContinueBtn = document.getElementById('step1-continue-btn');
+    const step2BackBtn = document.getElementById('step2-back-btn');
+    const step1ErrorsDiv = document.getElementById('step1-errors');
+    const step2ErrorsDiv = document.getElementById('step2-errors');
+
+    /* ── Password Toggle ── */
+    document.querySelectorAll('.pwd-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = btn.dataset.target;
+        const input = document.getElementById(targetId);
+        if (input) {
+          const isPassword = input.type === 'password';
+          input.type = isPassword ? 'text' : 'password';
+          btn.textContent = isPassword ? '🙈' : '👁️';
+        }
+      });
+    });
+
+    /* ── Step 1: Email & Password Validation ── */
+    function validateStep1() {
+      const email = document.getElementById('su-email-step1').value.trim();
+      const pwd = document.getElementById('su-password-step1').value;
+      const pwdConfirm = document.getElementById('su-password-confirm').value;
+
+      step1ErrorsDiv.style.display = 'none';
+      const errors = [];
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email) errors.push('Email is required.');
+      else if (!emailRegex.test(email)) errors.push('Please enter a valid email.');
+
+      // Password validation
+      if (!pwd) errors.push('Password is required.');
+      else if (pwd.length < 8) errors.push('Password must be at least 8 characters.');
+
+      if (!pwdConfirm) errors.push('Please confirm your password.');
+      else if (pwd !== pwdConfirm) errors.push('Passwords do not match.');
+
+      if (errors.length > 0) {
+        step1ErrorsDiv.innerHTML = errors.map(e => `<div class="auth-error">${e}</div>`).join('');
+        step1ErrorsDiv.style.display = 'block';
+        return false;
+      }
+
+      // Store in state
+      signupState.email = email;
+      signupState.password = pwd;
+      return true;
+    }
+
+    // Enable/disable Continue button based on input
+    const emailInput = document.getElementById('su-email-step1');
+    const pwdInput = document.getElementById('su-password-step1');
+    const pwdConfirmInput = document.getElementById('su-password-confirm');
+
+    function updateStep1Button() {
+      const isValid = validateStep1() || (
+        emailInput.value.trim() && 
+        pwdInput.value.length >= 8 && 
+        pwdConfirmInput.value && 
+        pwdInput.value === pwdConfirmInput.value
+      );
+      step1ContinueBtn.disabled = !isValid;
+    }
+
+    emailInput?.addEventListener('input', updateStep1Button);
+    pwdInput?.addEventListener('input', updateStep1Button);
+    pwdConfirmInput?.addEventListener('input', updateStep1Button);
+
+    // Continue to Step 2
+    step1ContinueBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!validateStep1()) return;
+
+      // Animate transition
+      step1El.classList.add('signup-step--slide-out');
+      setTimeout(() => {
+        step1El.classList.remove('signup-step--active', 'signup-step--slide-out');
+        step2El.classList.add('signup-step--active', 'signup-step--slide-in');
+        signupState.step = 2;
+        setTimeout(() => {
+          step2El.classList.remove('signup-step--slide-in');
+          document.getElementById('su-role-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+      }, 300);
+    });
+
+    // Back to Step 1
+    step2BackBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      step2El.classList.add('signup-step--slide-out');
+      setTimeout(() => {
+        step2El.classList.remove('signup-step--active', 'signup-step--slide-out');
+        step1El.classList.add('signup-step--active', 'signup-step--slide-in');
+        signupState.step = 1;
+        setTimeout(() => {
+          step1El.classList.remove('signup-step--slide-in');
+        }, 300);
+      }, 300);
+    });
+
+    /* ── Step 2: Role Selection & Profile Fields ── */
+    const roleCards = signupForm.querySelectorAll('.su-role-card');
+    roleCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        roleCards.forEach(c => {
+          c.classList.remove('su-role-card--active');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        card.classList.add('su-role-card--active');
+        card.setAttribute('aria-pressed', 'true');
+        signupState.role = card.dataset.role;
+
+        const fieldsSection = document.getElementById('su-fields-section');
+        const studentFields = document.getElementById('su-student-fields');
+        const orgFields = document.getElementById('su-org-fields');
+
+        fieldsSection.style.display = card.dataset.role === 'student' ? 'flex' : 'flex';
+        studentFields.style.display = card.dataset.role === 'student' ? 'block' : 'none';
+        orgFields.style.display = card.dataset.role === 'organizer' ? 'block' : 'none';
+      });
+    });
+
+    /* ── Step 2: Form Submission ── */
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearErrors();
 
-      const inputs   = signupForm.querySelectorAll('input, select');
-      const getValue = (i) => inputs[i] ? inputs[i].value.trim() : '';
-
-      const firstName = getValue(0);
-      const lastName  = getValue(1);
-      const email     = getValue(2);
-      const college   = getValue(3);
-      const year      = getValue(4);
-      const password  = getValue(5);
-      const roleEl    = signupForm.querySelector('[name="role"]');
-      const role      = roleEl ? roleEl.value : 'student';
-
-      if (!firstName || !lastName || !email || !password) {
-        return showError(signupForm, 'Please fill in all required fields.');
-      }
-      if (password.length < 8) {
-        return showError(signupForm, 'Password must be at least 8 characters.');
+      // Gather Step 2 data
+      if (signupState.role === 'student') {
+        signupState.firstName = document.getElementById('su-s-firstname')?.value.trim() || '';
+        signupState.lastName = document.getElementById('su-s-lastname')?.value.trim() || '';
+        signupState.college = document.getElementById('su-s-college')?.value.trim() || '';
+        signupState.year = document.getElementById('su-s-year')?.value || '';
+        signupState.branch = document.getElementById('su-s-branch')?.value.trim() || '';
+      } else {
+        signupState.orgName = document.getElementById('su-o-orgname')?.value.trim() || '';
+        signupState.city = document.getElementById('su-o-city')?.value.trim() || '';
+        signupState.orgBranch = document.getElementById('su-o-branch')?.value.trim() || '';
+        signupState.phone = document.getElementById('su-o-phone')?.value.trim() || '';
       }
 
+      // Validate Step 2
+      const errors = [];
+      if (signupState.role === 'student') {
+        if (!signupState.firstName) errors.push('First name is required.');
+        if (!signupState.lastName) errors.push('Last name is required.');
+        if (!signupState.college) errors.push('College/University is required.');
+      } else {
+        if (!signupState.orgName) errors.push('Organization name is required.');
+      }
+
+      if (errors.length > 0) {
+        step2ErrorsDiv.innerHTML = errors.map(e => `<div class="auth-error">${e}</div>`).join('');
+        step2ErrorsDiv.style.display = 'block';
+        return;
+      }
+
+      // Submit to API
       setLoading(submitBtn, true);
       try {
-        const res = await FN_AUTH_API.register({
-          firstName, lastName, email, password,
-          college, year, role,
-        });
+        const payload = {
+          email: signupState.email,
+          password: signupState.password,
+          role: signupState.role,
+        };
+
+        if (signupState.role === 'student') {
+          payload.firstName = signupState.firstName;
+          payload.lastName = signupState.lastName;
+          payload.college = signupState.college;
+          payload.year = signupState.year;
+        } else {
+          payload.firstName = signupState.orgName;
+          payload.lastName = signupState.orgName;
+          payload.college = signupState.city;
+          payload.phone = signupState.phone;
+        }
+
+        const res = await FN_AUTH_API.register(payload);
         closeAuth();
-        showToast(`🎉 Welcome to FestNest, ${res.user.firstName}!`, 'success');
+        showToast(`🎉 Welcome to FestNest, ${signupState.firstName}!`, 'success');
         updateNavForLoggedInUser(res.user);
       } catch (err) {
-        showError(signupForm, err.message || 'Registration failed. Please try again.');
+        step2ErrorsDiv.innerHTML = `<div class="auth-error">${err.message || 'Registration failed. Please try again.'}</div>`;
+        step2ErrorsDiv.style.display = 'block';
       } finally {
         setLoading(submitBtn, false);
       }

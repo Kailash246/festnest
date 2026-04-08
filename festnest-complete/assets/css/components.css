@@ -154,8 +154,70 @@
 .modal-desc{font-size:15px;color:var(--text-2);line-height:1.7;margin-bottom:28px;text-align:center}
 .modal-actions{display:flex;gap:12px;justify-content:center}
 
-/* ── Auth Modal ── */
-.modal-box--auth{max-width:420px;padding:32px 36px}
+/* ── Multi-Step Signup ── */
+.signup-step {
+  display: none;
+  animation: fadeIn .25s ease;
+  opacity: 0;
+}
+.signup-step.signup-step--active {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: 1;
+  animation: fadeIn .25s ease;
+}
+.signup-step.signup-step--slide-out {
+  animation: slideOutLeft .3s ease forwards;
+}
+.signup-step.signup-step--slide-in {
+  animation: slideInRight .3s ease forwards;
+  opacity: 0;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-30px); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Password Toggle ── */
+.form-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.form-input-wrapper .form-input {
+  padding-right: 44px;
+}
+.pwd-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  fontSize: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  opacity: 0.6;
+}
+.pwd-toggle:hover {
+  opacity: 1;
+}
+.pwd-toggle:active {
+  transform: translateY(-50%) scale(0.95);
+}
 .auth-logo{
   font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;
   background:var(--grad);-webkit-background-clip:text;
