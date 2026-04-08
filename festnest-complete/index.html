@@ -280,70 +280,189 @@
   </footer>
 
   <!-- AUTH MODAL -->
-  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
-    <div class="modal-box modal-box--auth">
-      <button class="modal-close" id="authModalClose">✕</button>
-      <div class="auth-logo">🪺 FestNest</div>
-      <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
-      <form class="auth-form" id="login-form" style="display:none;" novalidate>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" autocomplete="email" /></div>
-        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" autocomplete="current-password" /></div>
-        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
-        <div class="auth-divider"><span>or</span></div>
-        <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
-        <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
-      </form>
-<form class="auth-form" id="signup-form" novalidate>
-  <div id="su-role-section">
-    <p style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:16px;line-height:1.5;">I want to join FestNest as a…</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
-      <button type="button" class="su-role-card" data-role="student" aria-pressed="false" tabindex="0">
-        <span class="su-role-icon">🎓</span>
-        <span class="su-role-title">Student</span>
-        <span class="su-role-desc">Find &amp; attend events</span>
-        <span class="su-role-check" aria-hidden="true">✓</span>
-      </button>
-      <button type="button" class="su-role-card" data-role="organizer" aria-pressed="false" tabindex="0">
-        <span class="su-role-icon">🏢</span>
-        <span class="su-role-title">Organizer</span>
-        <span class="su-role-desc">Post &amp; manage events</span>
-        <span class="su-role-check" aria-hidden="true">✓</span>
-      </button>
+<div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-label="Sign in or create account">
+  <div class="modal-box modal-box--auth" id="authModalBox">
+    <button class="modal-close" id="authModalClose" aria-label="Close">✕</button>
+    <div class="auth-logo">🪺 FestNest</div>
+    <div class="auth-tabs" role="tablist">
+      <button class="auth-tab" id="tab-login"  role="tab" aria-selected="false">Log In</button>
+      <button class="auth-tab auth-tab--active" id="tab-signup" role="tab" aria-selected="true">Sign Up</button>
     </div>
-    <p class="auth-footer-text" style="margin-top:12px;">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
-  </div>
-  <div id="su-fields-section" style="display:none;flex-direction:column;gap:14px;">
-    <button type="button" id="su-back-btn" class="su-back-link" aria-label="Back to role selection">← Change role</button>
-    <div id="su-student-fields">
-      <div class="form-row" style="margin-bottom:0;">
-        <div class="form-group"><label class="form-label" for="su-s-firstname">First Name *</label><input class="form-input" id="su-s-firstname" type="text" placeholder="Arjun" autocomplete="given-name" /></div>
-        <div class="form-group"><label class="form-label" for="su-s-lastname">Last Name *</label><input class="form-input" id="su-s-lastname" type="text" placeholder="Sharma" autocomplete="family-name" /></div>
+    <form class="auth-form" id="login-form" style="display:none;" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Email</label>
+        <input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" autocomplete="email" />
+        <span class="form-error-msg" id="loginEmailErr"></span>
       </div>
-      <div class="form-group"><label class="form-label" for="su-s-college">College / University *</label><input class="form-input" id="su-s-college" type="text" placeholder="e.g. IIT Bombay" autocomplete="organization" /></div>
-      <div class="form-row" style="margin-bottom:0;">
-        <div class="form-group"><label class="form-label" for="su-s-year">Year of Study</label><select class="form-select" id="su-s-year"><option value="">Select Year</option><option value="1st Year">1st Year</option><option value="2nd Year">2nd Year</option><option value="3rd Year">3rd Year</option><option value="4th Year">4th Year</option><option value="5th Year">5th Year</option><option value="Postgraduate">Postgraduate</option></select></div>
-        <div class="form-group"><label class="form-label" for="su-s-branch">Branch / Course</label><input class="form-input" id="su-s-branch" type="text" placeholder="e.g. B.Tech CSE" /></div>
+      <div class="form-group">
+        <label class="form-label" for="loginPwd">Password</label>
+        <div class="su-pwd-wrap">
+          <input class="form-input" id="loginPwd" type="password" placeholder="••••••••" autocomplete="current-password" />
+          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd">👁</button>
+        </div>
+        <span class="form-error-msg" id="loginPwdErr"></span>
+      </div>
+      <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+      <div class="auth-divider"><span>or</span></div>
+      <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+      <p class="auth-footer-text">
+        No account?
+        <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button>
+      </p>
+    </form>
+    <div id="su-shell" role="tabpanel">
+      <div class="su-steps" id="suStepBar" aria-label="Signup progress">
+        <div class="su-step su-step--active" data-step="0" aria-label="Step 1 of 3: Role">
+          <div class="su-step-dot"><span>1</span></div>
+          <div class="su-step-label">Role</div>
+        </div>
+        <div class="su-step-line"></div>
+        <div class="su-step" data-step="1" aria-label="Step 2 of 3: Account">
+          <div class="su-step-dot"><span>2</span></div>
+          <div class="su-step-label">Account</div>
+        </div>
+        <div class="su-step-line"></div>
+        <div class="su-step" data-step="2" aria-label="Step 3 of 3: Profile">
+          <div class="su-step-dot"><span>3</span></div>
+          <div class="su-step-label">Profile</div>
+        </div>
+      </div>
+      <div class="auth-error" id="suGlobalErr" style="display:none;" role="alert"></div>
+      <div class="su-panel" id="suStep0" aria-label="Choose your role">
+        <div class="su-step-header">
+          <div class="su-step-title">I want to join as…</div>
+          <div class="su-step-desc">Your role personalizes your FestNest experience.</div>
+        </div>
+        <div class="su-role-grid" role="radiogroup" aria-label="Select role">
+          <button type="button" class="su-role-card" id="roleStudent" data-role="student" role="radio" aria-checked="false">
+            <div class="su-role-icon" style="background:var(--pastel-blue);">🎓</div>
+            <div class="su-role-body">
+              <div class="su-role-title">Student</div>
+              <div class="su-role-desc">Discover events, register, and build your campus story.</div>
+            </div>
+            <div class="su-role-check" aria-hidden="true">✓</div>
+          </button>
+          <button type="button" class="su-role-card" id="roleOrganizer" data-role="organizer" role="radio" aria-checked="false">
+            <div class="su-role-icon" style="background:var(--pastel-purple);">🏢</div>
+            <div class="su-role-body">
+              <div class="su-role-title">Organizer / College</div>
+              <div class="su-role-desc">Post events and reach 48,000+ students across India.</div>
+            </div>
+            <div class="su-role-check" aria-hidden="true">✓</div>
+          </button>
+        </div>
+        <button type="button" class="btn btn-primary w-full btn-lg su-next-btn" id="suStep0Next" disabled>Continue →</button>
+        <p class="auth-footer-text" style="margin-top:10px;">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+      </div>
+      <div class="su-panel" id="suStep1" style="display:none;" aria-label="Account setup">
+        <div class="su-step-header">
+          <div class="su-step-title">Create your account</div>
+          <div class="su-step-desc">Your login credentials. Keep your password safe.</div>
+        </div>
+        <div class="auth-form" style="gap:14px;">
+          <div class="form-group">
+            <label class="form-label" for="suEmail">Email Address *</label>
+            <input class="form-input" id="suEmail" type="email" placeholder="you@college.edu" autocomplete="email" />
+            <span class="form-error-msg" id="suEmailErr"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="suPwd">Password *</label>
+            <div class="su-pwd-wrap">
+              <input class="form-input" id="suPwd" type="password" placeholder="Min. 8 characters" autocomplete="new-password" />
+              <button type="button" class="su-eye-btn" aria-label="Toggle password visibility" data-target="suPwd">👁</button>
+            </div>
+            <div class="su-strength-wrap" id="suStrengthWrap" style="display:none;">
+              <div class="su-strength-bar"><div class="su-strength-fill" id="suStrengthFill"></div></div>
+              <span class="su-strength-label" id="suStrengthLabel"></span>
+            </div>
+            <span class="form-error-msg" id="suPwdErr"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="suConfirm">Confirm Password *</label>
+            <div class="su-pwd-wrap">
+              <input class="form-input" id="suConfirm" type="password" placeholder="Re-enter password" autocomplete="new-password" />
+              <button type="button" class="su-eye-btn" aria-label="Toggle confirm password visibility" data-target="suConfirm">👁</button>
+            </div>
+            <span class="form-error-msg" id="suConfirmErr"></span>
+          </div>
+        </div>
+        <div class="su-nav-row">
+          <button type="button" class="btn btn-ghost su-back-btn" id="suStep1Back">← Back</button>
+          <button type="button" class="btn btn-primary su-next-btn" id="suStep1Next" disabled>Continue →</button>
+        </div>
+      </div>
+      <div class="su-panel" id="suStep2" style="display:none;" aria-label="Profile details">
+        <div class="su-step-header">
+          <div class="su-step-title" id="suStep2Title">Almost done!</div>
+          <div class="su-step-desc" id="suStep2Desc">Tell us a bit about yourself.</div>
+        </div>
+        <div id="suStudentFields" class="auth-form" style="gap:14px;display:none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="suFirstName">First Name *</label>
+              <input class="form-input" id="suFirstName" type="text" placeholder="Arjun" autocomplete="given-name" />
+              <span class="form-error-msg" id="suFirstNameErr"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="suLastName">Last Name *</label>
+              <input class="form-input" id="suLastName" type="text" placeholder="Sharma" autocomplete="family-name" />
+              <span class="form-error-msg" id="suLastNameErr"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="suCollege">College / University *</label>
+            <input class="form-input" id="suCollege" type="text" placeholder="e.g. IIT Bombay" autocomplete="organization" />
+            <span class="form-error-msg" id="suCollegeErr"></span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="suYear">Year of Study *</label>
+              <select class="form-select" id="suYear">
+                <option value="">Select Year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+                <option value="5th Year">5th Year</option>
+                <option value="Postgraduate">Postgraduate</option>
+              </select>
+              <span class="form-error-msg" id="suYearErr"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="suBranch">Branch / Course</label>
+              <input class="form-input" id="suBranch" type="text" placeholder="e.g. B.Tech CSE" />
+            </div>
+          </div>
+        </div>
+        <div id="suOrgFields" class="auth-form" style="gap:14px;display:none;">
+          <div class="form-group">
+            <label class="form-label" for="suOrgName">Organization Name *</label>
+            <input class="form-input" id="suOrgName" type="text" placeholder="e.g. IIT Bombay Tech Club" autocomplete="organization" />
+            <span class="form-error-msg" id="suOrgNameErr"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="suOrgCollege">College / Company Name *</label>
+            <input class="form-input" id="suOrgCollege" type="text" placeholder="e.g. IIT Bombay" />
+            <span class="form-error-msg" id="suOrgCollegeErr"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="suDesignation">Designation <span style="font-weight:400;color:var(--text-3);font-size:11px;">(optional)</span></label>
+            <input class="form-input" id="suDesignation" type="text" placeholder="e.g. Event Coordinator" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="suOrgCity">City</label>
+            <input class="form-input" id="suOrgCity" type="text" placeholder="e.g. Mumbai" autocomplete="address-level2" />
+          </div>
+        </div>
+        <p class="auth-terms" style="margin-top:6px;">By creating an account you agree to our <a href="terms.html" target="_blank">Terms</a> &amp; <a href="privacy.html" target="_blank">Privacy Policy</a></p>
+        <div class="su-nav-row" style="margin-top:14px;">
+          <button type="button" class="btn btn-ghost su-back-btn" id="suStep2Back">← Back</button>
+          <button type="button" class="btn btn-primary su-next-btn" id="suStep2Submit" disabled>Create Account 🚀</button>
+        </div>
       </div>
     </div>
-    <div id="su-org-fields" style="display:none;">
-      <div class="form-group"><label class="form-label" for="su-o-orgname">Organization / College Name *</label><input class="form-input" id="su-o-orgname" type="text" placeholder="e.g. IIT Bombay Tech Club" autocomplete="organization" /></div>
-      <div class="form-row" style="margin-bottom:0;">
-        <div class="form-group"><label class="form-label" for="su-o-city">City</label><input class="form-input" id="su-o-city" type="text" placeholder="e.g. Mumbai" autocomplete="address-level2" /></div>
-        <div class="form-group"><label class="form-label" for="su-o-branch">Branch <span style="font-weight:400;color:var(--text-3);">(optional)</span></label><input class="form-input" id="su-o-branch" type="text" placeholder="e.g. Tech Dept." /></div>
-      </div>
-      <div class="form-group"><label class="form-label" for="su-o-phone">Phone Number</label><input class="form-input" id="su-o-phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" /></div>
-    </div>
-    <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:14px;">
-      <div class="form-group"><label class="form-label" for="su-email">Email Address *</label><input class="form-input" id="su-email" type="email" placeholder="you@college.edu" autocomplete="email" /></div>
-      <div class="form-group"><label class="form-label" for="su-password">Password *</label><input class="form-input" id="su-password" type="password" placeholder="Min. 8 characters" autocomplete="new-password" /></div>
-    </div>
-    <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
-    <p class="auth-terms">By signing up you agree to our <a href="/terms" target="_blank">Terms</a> &amp; <a href="/privacy" target="_blank">Privacy Policy</a></p>
-    <p class="auth-footer-text">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
   </div>
-</form>
-    </div>
-  </div>
+</div>
 
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
