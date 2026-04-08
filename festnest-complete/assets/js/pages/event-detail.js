@@ -370,11 +370,7 @@ function wireButtons(ev) {
 
   /* Register */
   document.getElementById('detail-register-btn')?.addEventListener('click', () => {
-    if (!FN_AUTH.isLoggedIn()) {
-      showToast('Please log in to register.', 'info');
-      if (typeof openAuthModal === 'function') openAuthModal('signup');
-      return;
-    }
+    if (!Auth.requireForEvent('register')) return;
     if (ev.registrationLink) window.open(ev.registrationLink, '_blank', 'noopener');
     else showToast('🎉 Registration link coming soon!', 'info');
   });
@@ -382,11 +378,7 @@ function wireButtons(ev) {
   /* Save / Unsave */
   const saveBtn = document.getElementById('detail-save-btn');
   saveBtn?.addEventListener('click', async () => {
-    if (!FN_AUTH.isLoggedIn()) {
-      showToast('Please log in to save events.', 'info');
-      if (typeof openAuthModal === 'function') openAuthModal('signup');
-      return;
-    }
+    if (!Auth.requireForEvent('save')) return;
     try {
       const res = await FN_EVENTS_API.toggleSave(eid);
       saveBtn.textContent = res.saved ? '🔖 Saved' : '🤍 Save Event';

@@ -16,12 +16,9 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ── Auth guard ── */
-  if (!FN_AUTH.isLoggedIn()) {
-    showToast('Please log in as an organizer to post events.', 'info');
-    setTimeout(() => {
-      if (typeof openAuthModal === 'function') openAuthModal('signup');
-    }, 400);
+  /* ── Auth guard: Require login to post events ── */
+  if (!Auth.requirePage()) {
+    return; /* Redirect handled by Auth.requirePage() */
   }
 
   /* ── Live preview ── */
