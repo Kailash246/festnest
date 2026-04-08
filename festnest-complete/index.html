@@ -300,6 +300,7 @@
           <div class="form-group">
             <label class="form-label" for="su-email-step1">Email Address *</label>
             <input class="form-input" id="su-email-step1" type="email" placeholder="you@college.edu" autocomplete="email" />
+            <div id="su-email-step1-error" class="form-error-msg"></div>
           </div>
           <div class="form-group">
             <label class="form-label" for="su-password-step1">Password *</label>
@@ -307,6 +308,7 @@
               <input class="form-input" id="su-password-step1" type="password" placeholder="Min. 8 characters" autocomplete="new-password" />
               <button type="button" class="pwd-toggle" data-target="su-password-step1" aria-label="Toggle password visibility">👁️</button>
             </div>
+            <div id="su-password-step1-error" class="form-error-msg"></div>
           </div>
           <div class="form-group">
             <label class="form-label" for="su-password-confirm">Confirm Password *</label>
@@ -314,8 +316,8 @@
               <input class="form-input" id="su-password-confirm" type="password" placeholder="Re-enter password" autocomplete="new-password" />
               <button type="button" class="pwd-toggle" data-target="su-password-confirm" aria-label="Toggle password visibility">👁️</button>
             </div>
+            <div id="su-password-confirm-error" class="form-error-msg"></div>
           </div>
-          <div id="step1-errors" style="display:none;margin-bottom:12px;"></div>
           <button type="button" id="step1-continue-btn" class="btn btn-primary w-full btn-lg" disabled>Continue</button>
           <p class="auth-footer-text" style="margin-top:16px;">Have an account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
         </div>

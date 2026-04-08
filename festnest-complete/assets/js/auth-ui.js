@@ -143,7 +143,7 @@
     });
   }
 
-  /* ── SIGNUP FORM: Multi-Step Signup ── */
+  /* ── SIGNUP FORM: Multi-Step Signup with Real-Time Validation ── */
   if (signupForm) {
     const submitBtn = signupForm.querySelector('[type="submit"]');
     if (submitBtn) submitBtn.dataset.originalText = submitBtn.textContent;
@@ -164,85 +164,196 @@
       city: '',
       orgBranch: '',
       phone: '',
+      errors: {
+        email: '',
+        password: '',
+        passwordConfirm: '',
+      },
     };
 
     const step1El = document.getElementById('signup-step-1');
     const step2El = document.getElementById('signup-step-2');
     const step1ContinueBtn = document.getElementById('step1-continue-btn');
     const step2BackBtn = document.getElementById('step2-back-btn');
-    const step1ErrorsDiv = document.getElementById('step1-errors');
-    const step2ErrorsDiv = document.getElementById('step2-errors');
 
-    /* ── Password Toggle ── */
-    document.querySelectorAll('.pwd-toggle').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = btn.dataset.target;
-        const input = document.getElementById(targetId);
-        if (input) {
-          const isPassword = input.type === 'password';
-          input.type = isPassword ? 'text' : 'password';
-          btn.textContent = isPassword ? '🙈' : '👁️';
-        }
-      });
-    });
-
-    /* ── Step 1: Email & Password Validation ── */
-    function validateStep1() {
-      const email = document.getElementById('su-email-step1').value.trim();
-      const pwd = document.getElementById('su-password-step1').value;
-      const pwdConfirm = document.getElementById('su-password-confirm').value;
-
-      step1ErrorsDiv.style.display = 'none';
-      const errors = [];
-
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!email) errors.push('Email is required.');
-      else if (!emailRegex.test(email)) errors.push('Please enter a valid email.');
-
-      // Password validation
-      if (!pwd) errors.push('Password is required.');
-      else if (pwd.length < 8) errors.push('Password must be at least 8 characters.');
-
-      if (!pwdConfirm) errors.push('Please confirm your password.');
-      else if (pwd !== pwdConfirm) errors.push('Passwords do not match.');
-
-      if (errors.length > 0) {
-        step1ErrorsDiv.innerHTML = errors.map(e => `<div class="auth-error">${e}</div>`).join('');
-        step1ErrorsDiv.style.display = 'block';
-        return false;
-      }
-
-      // Store in state
-      signupState.email = email;
-      signupState.password = pwd;
-      return true;
-    }
-
-    // Enable/disable Continue button based on input
+    // Input references
     const emailInput = document.getElementById('su-email-step1');
     const pwdInput = document.getElementById('su-password-step1');
     const pwdConfirmInput = document.getElementById('su-password-confirm');
 
-    function updateStep1Button() {
-      const isValid = validateStep1() || (
-        emailInput.value.trim() && 
-        pwdInput.value.length >= 8 && 
-        pwdConfirmInput.value && 
-        pwdInput.value === pwdConfirmInput.value
-      );
-      step1ContinueBtn.disabled = !isValid;
+    // Error message containers
+    const emailErrorDiv = document.getElementById('su-email-step1-error');
+    const pwdErrorDiv = document.getElementById('su-password-step1-error');
+    const pwdConfirmErrorDiv = document.getElementById('su-password-confirm-error');
+
+    /* ─────────────────────────────────────────────
+       PASSWORD TOGGLE (FIXED)
+       ───────────────────────────────────────────── */
+    document.querySelectorAll('.pwd-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const targetId = btn.dataset.target;
+        const input = document.getElementById(targetId);
+        
+        if (input) {
+          const isCurrentlyPassword = input.type === 'password';
+          input.type = isCurrentlyPassword ? 'text' : 'password';
+          btn.textContent = isCurrentlyPassword ? '🙈' : '👁️';
+          input.focus();
+        }
+      });
+    });
+
+    /* ─────────────────────────────────────────────
+       REAL-TIME VALIDATION FUNCTIONS
+       ───────────────────────────────────────────── */
+    
+    function validateEmail(value) {
+      if (!value || !value.trim()) {
+        return 'Email is required.';
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value.trim())) {
+        return 'Enter a valid email address.';
+      }
+      return '';
     }
 
-    emailInput?.addEventListener('input', updateStep1Button);
-    pwdInput?.addEventListener('input', updateStep1Button);
-    pwdConfirmInput?.addEventListener('input', updateStep1Button);
+    function validatePassword(value) {
+      if (!value) {
+        return 'Password is required.';
+      }
+      if (value.length < 8) {
+        return 'Password must be at least 8 characters.';
+      }
+      return '';
+    }
 
-    // Continue to Step 2
+    function validatePasswordConfirm(pwd, confirm) {
+      if (!confirm) {
+        return 'Please confirm your password.';
+      }
+      if (pwd !== confirm) {
+        return 'Passwords do not match.';
+      }
+      return '';
+    }
+
+    /* ─────────────────────────────────────────────
+       DISPLAY ERROR MESSAGE
+       ───────────────────────────────────────────── */
+    function setError(field, errorDiv, errorMessage) {
+      signupState.errors[field] = errorMessage;
+      errorDiv.textContent = errorMessage;
+      
+      const input = field === 'email' ? emailInput : 
+                    field === 'password' ? pwdInput : 
+                    field === 'passwordConfirm' ? pwdConfirmInput : null;
+      
+      if (input) {
+        if (errorMessage) {
+          input.classList.add('form-input--invalid');
+        } else {
+          input.classList.remove('form-input--invalid');
+        }
+      }
+    }
+
+    /* ─────────────────────────────────────────────
+       EMAIL VALIDATION (REAL-TIME)
+       ───────────────────────────────────────────── */
+    emailInput?.addEventListener('input', (e) => {
+      const value = e.target.value;
+      signupState.email = value;
+      const error = validateEmail(value);
+      setError('email', emailErrorDiv, error);
+      updateContinueButton();
+    });
+
+    emailInput?.addEventListener('blur', () => {
+      const error = validateEmail(emailInput.value);
+      setError('email', emailErrorDiv, error);
+      updateContinueButton();
+    });
+
+    /* ─────────────────────────────────────────────
+       PASSWORD VALIDATION (REAL-TIME)
+       ───────────────────────────────────────────── */
+    pwdInput?.addEventListener('input', (e) => {
+      const value = e.target.value;
+      signupState.password = value;
+      const error = validatePassword(value);
+      setError('password', pwdErrorDiv, error);
+
+      // Also re-validate confirm password if user has entered it
+      if (pwdConfirmInput.value) {
+        const confirmError = validatePasswordConfirm(value, pwdConfirmInput.value);
+        setError('passwordConfirm', pwdConfirmErrorDiv, confirmError);
+      }
+
+      updateContinueButton();
+    });
+
+    pwdInput?.addEventListener('blur', () => {
+      const error = validatePassword(pwdInput.value);
+      setError('password', pwdErrorDiv, error);
+      updateContinueButton();
+    });
+
+    /* ─────────────────────────────────────────────
+       CONFIRM PASSWORD VALIDATION (REAL-TIME)
+       ───────────────────────────────────────────── */
+    pwdConfirmInput?.addEventListener('input', (e) => {
+      const value = e.target.value;
+      signupState.passwordConfirm = value;
+      const error = validatePasswordConfirm(pwdInput.value, value);
+      setError('passwordConfirm', pwdConfirmErrorDiv, error);
+      updateContinueButton();
+    });
+
+    pwdConfirmInput?.addEventListener('blur', () => {
+      const error = validatePasswordConfirm(pwdInput.value, pwdConfirmInput.value);
+      setError('passwordConfirm', pwdConfirmErrorDiv, error);
+      updateContinueButton();
+    });
+
+    /* ─────────────────────────────────────────────
+       UPDATE CONTINUE BUTTON STATE
+       ───────────────────────────────────────────── */
+    function updateContinueButton() {
+      const hasNoErrors = !signupState.errors.email && 
+                          !signupState.errors.password && 
+                          !signupState.errors.passwordConfirm;
+      
+      const allFieldsFilled = emailInput.value.trim() && 
+                              pwdInput.value && 
+                              pwdConfirmInput.value;
+
+      step1ContinueBtn.disabled = !(hasNoErrors && allFieldsFilled);
+    }
+
+    /* ─────────────────────────────────────────────
+       CONTINUE TO STEP 2
+       ───────────────────────────────────────────── */
     step1ContinueBtn?.addEventListener('click', (e) => {
       e.preventDefault();
-      if (!validateStep1()) return;
+
+      // Final validation before moving to step 2
+      const emailErr = validateEmail(emailInput.value);
+      const pwdErr = validatePassword(pwdInput.value);
+      const confirmErr = validatePasswordConfirm(pwdInput.value, pwdConfirmInput.value);
+
+      setError('email', emailErrorDiv, emailErr);
+      setError('password', pwdErrorDiv, pwdErr);
+      setError('passwordConfirm', pwdConfirmErrorDiv, confirmErr);
+
+      if (emailErr || pwdErr || confirmErr) return;
+
+      // Store data and transition
+      signupState.email = emailInput.value.trim();
+      signupState.password = pwdInput.value;
 
       // Animate transition
       step1El.classList.add('signup-step--slide-out');
@@ -252,12 +363,14 @@
         signupState.step = 2;
         setTimeout(() => {
           step2El.classList.remove('signup-step--slide-in');
-          document.getElementById('su-role-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.getElementById('su-role-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 300);
       }, 300);
     });
 
-    // Back to Step 1
+    /* ─────────────────────────────────────────────
+       BACK TO STEP 1
+       ───────────────────────────────────────────── */
     step2BackBtn?.addEventListener('click', (e) => {
       e.preventDefault();
       step2El.classList.add('signup-step--slide-out');
@@ -271,7 +384,9 @@
       }, 300);
     });
 
-    /* ── Step 2: Role Selection & Profile Fields ── */
+    /* ─────────────────────────────────────────────
+       STEP 2: ROLE SELECTION & FIELDS
+       ───────────────────────────────────────────── */
     const roleCards = signupForm.querySelectorAll('.su-role-card');
     roleCards.forEach(card => {
       card.addEventListener('click', (e) => {
@@ -288,13 +403,15 @@
         const studentFields = document.getElementById('su-student-fields');
         const orgFields = document.getElementById('su-org-fields');
 
-        fieldsSection.style.display = card.dataset.role === 'student' ? 'flex' : 'flex';
+        fieldsSection.style.display = 'flex';
         studentFields.style.display = card.dataset.role === 'student' ? 'block' : 'none';
         orgFields.style.display = card.dataset.role === 'organizer' ? 'block' : 'none';
       });
     });
 
-    /* ── Step 2: Form Submission ── */
+    /* ─────────────────────────────────────────────
+       STEP 2: FORM SUBMISSION
+       ───────────────────────────────────────────── */
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearErrors();
