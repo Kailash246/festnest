@@ -1,18 +1,22 @@
 /* ============================================================
    FESTNEST AUTHENTICATION MANAGER
-   Version: 2.0 — Centralized Auth Control
+   Version: 2.1 — Full-Screen Auth Gate + Centralized Auth Control
    
    This module:
    — Provides a SINGLE global openAuthModal() interface
    — Enforces auth checks before protected actions
    — Prevents access to event pages without login
+   — FULL-SCREEN blocking modal for protected navigation
+   — Redirect after auth to intended page
    — Replaces ALL old modal triggers with this unified API
    
    USAGE:
-   - Auth.openModal('signup') — Opens signup modal to role selection
-   - Auth.openModal('login') — Opens login form
+   - Auth.openModal('signup') — Opens signup modal to role selection (FULL-SCREEN)
+   - Auth.openModal('login') — Opens login form (FULL-SCREEN)
    - Auth.isLoggedIn() — Checks if user is authenticated
    - Auth.requireAuth() — Enforces auth + redirects if needed
+   - Auth.setRedirectPath(path) — Set where to go after auth
+   - Auth.getRedirectPath() — Get pending redirect
    
    Dependencies:
    - FN_AUTH (from api.js) — token & user storage
@@ -24,11 +28,45 @@
 window.Auth = (function() {
   
   /* ════════════════════════════════════════════════════════
+     PROTECTED PAGES & REDIRECT LOGIC
+  ════════════════════════════════════════════════════════ */
+  
+  let redirectAfterAuth = null;
+  
+  /* Store where to redirect after successful auth */
+  function setRedirectPath(path) {
+    redirectAfterAuth = path;
+  }
+  
+  /* Get pending redirect (and clear it) */
+  function getRedirectPath() {
+    const path = redirectAfterAuth;
+    redirectAfterAuth = null;
+    return path;
+  }
+  
+  /* Check if URL is a protected route */
+  function isProtectedRoute(url) {
+    const protectedRoutes = [
+      '/events',
+      '/pages/events.html',
+      '/post',
+      '/post-event',
+      '/pages/post-event.html',
+      '/my-events',
+      '/pages/my-events.html',
+    ];
+    
+    const pathname = new URL(url, window.location.origin).pathname.toLowerCase();
+    return protectedRoutes.some(route => pathname.includes(route));
+  }
+  
+  /* ════════════════════════════════════════════════════════
      CORE API
   ════════════════════════════════════════════════════════ */
   
-  /* Open auth modal at specific tab/step */
-  function openModal(step = 'signup') {
+  /* Open auth modal at specific tab/step — FULL-SCREEN */
+  function openModal(step = 'signup', isFullScreen = false) {
     const step_map = {
       'signup':  'signup',
       'login':   'login',
@@ -39,6 +77,15 @@ window.Auth = (function() {
     // Try new 3-step modal first (auth.js)
     if (typeof window.openAuthModal === 'function') {
       window.openAuthModal(tab);
+      
+      // Make modal full-screen if needed
+      if (isFullScreen) {
+        const modal = document.getElementById('authModal');
+        if (modal) {
+          modal.classList.add('modal--fullscreen');
+          modal.setAttribute('data-fullscreen', 'true');
+        }
+      }
     }
     // Fallback to old modal trigger (auth-ui.js)
     else if (typeof window.openAuthModal === 'function') {
@@ -50,6 +97,13 @@ window.Auth = (function() {
   function closeModal() {
     if (typeof window.closeAuthModal === 'function') {
       window.closeAuthModal();
+    }
+    
+    // Remove full-screen class
+    const modal = document.getElementById('authModal');
+    if (modal) {
+      modal.classList.remove('modal--fullscreen');
+      modal.removeAttribute('data-fullscreen');
     }
   }
 
@@ -99,6 +153,32 @@ window.Auth = (function() {
     return true;
   }
 
+  /* 
+     Protect navigation to restricted pages.
+     Shows FULL-SCREEN auth modal if not logged in.
+     Usage in link/button click handlers:
+       if (!Auth.guardRoute('/events')) return;
+       // allow navigation
+  */
+  function guardRoute(targetPath) {
+    if (isLoggedIn()) {
+      return true; /* Allow navigation */
+    }
+    
+    /* User not logged in — block and show auth gate */
+    if (typeof showToast === 'function') {
+      showToast('Please log in to access this page.', 'info');
+    }
+    
+    /* Store intended destination */
+    setRedirectPath(targetPath);
+    
+    /* Show FULL-SCREEN auth modal */
+    openModal('role', true); /* true = full-screen */
+    
+    return false; /* Block navigation */
+  }
+  
   /* 
      Enforce auth before page access.
      Redirects to home if not logged in.
@@ -204,6 +284,10 @@ window.Auth = (function() {
     requirePage,
     requireForEvent,
     logout,
+    guardRoute,
+    setRedirectPath,
+    getRedirectPath,
+    isProtectedRoute,
   };
 
 })();
