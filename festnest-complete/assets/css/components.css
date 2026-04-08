@@ -424,16 +424,16 @@
 
 /* ── Role selection cards ── */
 .su-role-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 .su-role-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
+  gap: 10px;
+  padding: 12px 14px;
   background: var(--bg-card);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
@@ -442,7 +442,6 @@
   font-family: inherit;
   text-align: left;
   position: relative;
-  width: 100%;
   outline: none;
 }
 .su-role-card:hover {
@@ -461,35 +460,51 @@
   box-shadow: 0 0 0 3px rgba(90,75,255,.12), var(--shadow-sm);
 }
 .su-role-icon {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
   border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   flex-shrink: 0;
   transition: var(--transition);
 }
-.su-role-body { flex: 1; min-width: 0; }
+.su-role-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 .su-role-title {
   font-family: 'Clash Display', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text-1);
-  margin-bottom: 2px;
+  line-height: 1.2;
 }
 .su-role-card[aria-checked="true"] .su-role-title { color: var(--color-primary); }
-.su-role-desc { font-size: 12px; color: var(--text-2); line-height: 1.4; }
+.su-role-desc {
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 .su-role-check {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: var(--grad);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 900;
   color: #fff;
   flex-shrink: 0;
@@ -500,6 +515,36 @@
 .su-role-card[aria-checked="true"] .su-role-check {
   opacity: 1;
   transform: scale(1);
+}
+
+/* ── Mobile responsiveness for role cards ── */
+@media (max-width: 480px) {
+  .su-role-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  
+  .su-role-card {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  
+  .su-role-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    font-size: 18px;
+  }
+  
+  .su-role-title {
+    font-size: 12px;
+  }
+  
+  .su-role-desc {
+    font-size: 10px;
+    -webkit-line-clamp: 1;
+  }
 }
 
 /* ── Password field with eye toggle ── */
