@@ -8,6 +8,15 @@
 
 (function initAuthUI() {
 
+  /* ── Viewport Height Fix for Mobile ── */
+  function setViewportHeight() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  setViewportHeight();
+  window.addEventListener('resize', setViewportHeight);
+  window.addEventListener('orientationchange', setViewportHeight);
+
   /* ── Grab modal elements ── */
   const authModal  = document.getElementById('authModal');
   const closeBtn   = document.getElementById('authModalClose');
@@ -59,6 +68,36 @@
     btn.textContent  = loading ? 'Please wait...' : btn.dataset.originalText;
     btn.style.opacity= loading ? '0.7' : '1';
   }
+
+  /* ── Keyboard Safety: Smooth Scroll Input Into View ── */
+  function setupKeyboardSafety(form) {
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        // Small delay to allow keyboard to fully open
+        setTimeout(() => {
+          const inputRect = this.getBoundingClientRect();
+          const modalBox = authModal.querySelector('.modal-box');
+          
+          // Check if input is below the fold (likely to be hidden by keyboard)
+          if (inputRect.bottom > window.innerHeight * 0.6) {
+            // Scroll input into view with smooth behavior
+            this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
+      });
+
+      // Prevent zoom on input focus
+      input.addEventListener('touchstart', function() {
+        input.style.fontSize = '16px'; // Prevents iOS auto-zoom
+      });
+    });
+  }
+
+  /* ── Setup forms ── */
+  if (loginForm) setupKeyboardSafety(loginForm);
+  if (signupForm) setupKeyboardSafety(signupForm);
 
   /* ── Bindings ── */
   closeBtn  && closeBtn.addEventListener('click', closeAuth);

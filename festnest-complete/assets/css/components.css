@@ -122,22 +122,31 @@
 /* ── Modal ── */
 .modal-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.5);
-  z-index:2000;display:none;align-items:center;
+  z-index:2000;display:none;align-items:flex-end;
   justify-content:center;padding:20px;backdrop-filter:blur(4px)
 }
-.modal-overlay.modal--open{display:flex}
+.modal-overlay.modal--open{display:flex;animation:fadeIn .3s ease}
 .modal-box{
   background:#fff;border-radius:var(--radius-xl);
   padding:40px;width:100%;max-width:480px;
-  position:relative;animation:modalIn .3s ease
+  position:relative;animation:slideUp .35s cubic-bezier(.34,1.56,.64,1)
 }
 .modal-box--sm{max-width:380px}
+.modal-box--auth{
+  max-width:420px;padding:32px 36px;
+  display:flex;flex-direction:column;
+  max-height:90vh;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch
+}
+.modal-box--auth .modal-close{position:sticky;top:0;z-index:10}
 .modal-close{
   position:absolute;top:16px;right:16px;
   width:32px;height:32px;border-radius:50%;
   background:var(--bg);border:none;font-size:16px;
   color:var(--text-2);display:flex;align-items:center;
-  justify-content:center;cursor:pointer;transition:var(--transition)
+  justify-content:center;cursor:pointer;transition:var(--transition);align-self:flex-end;
+  margin-bottom:8px
 }
 .modal-close:hover{background:#fee2e2;color:#e53e3e}
 .modal-icon{font-size:60px;margin-bottom:18px;text-align:center}
@@ -157,6 +166,9 @@
 .auth-tab{flex:1;padding:12px;font-size:14px;font-weight:700;cursor:pointer;border:none;background:#fff;color:var(--text-2);transition:var(--transition);font-family:inherit}
 .auth-tab--active{background:var(--grad);color:#fff}
 .auth-form{display:flex;flex-direction:column;gap:14px}
+.auth-form[id="signup-form"]{
+  padding-bottom:100px
+}
 .auth-divider{text-align:center;font-size:13px;color:var(--text-2);position:relative;margin:4px 0}
 .auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:calc(50% - 24px);height:1px;background:var(--border)}
 .auth-divider::before{left:0}
@@ -167,6 +179,39 @@
 .auth-footer-text{font-size:12px;color:var(--text-2);text-align:center}
 .auth-switch-btn{background:none;border:none;color:var(--color-primary);font-weight:700;cursor:pointer;font-size:12px;font-family:inherit}
 .auth-error{background:#fee2e2;color:#b91c1c;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:600}
+
+/* ──  Sticky CTA Button for Signup ── */
+.auth-form[id="signup-form"] .btn[type="submit"]{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  width:100%;
+  max-width:100%;
+  border-radius:0;
+  padding:16px 20px;
+  z-index:101;
+  background:var(--grad);
+  box-shadow:0 -4px 20px rgba(90,75,255,.25);
+  margin:0;
+  font-size:15px;
+  padding-left:20px;
+  padding-right:20px
+}
+
+@media(min-width:769px){
+  .auth-form[id="signup-form"] .btn[type="submit"]{
+    position:static;
+    border-radius:var(--radius-lg);
+    box-shadow:0 4px 14px rgba(90,75,255,.35);
+    padding:14px 28px;
+    width:100%;
+    max-width:100%
+  }
+  .auth-form[id="signup-form"]{
+    padding-bottom:0
+  }
+}
 
 /* ── Toast ── */
 .toast-container{
@@ -309,13 +354,45 @@
 
 /* ── Responsive ── */
 @media(max-width:768px){
+  :root{--vh:1vh}
+  
   .section{padding:48px var(--page-padding)}
   .form-row{grid-template-columns:1fr}
   .cta-banner{padding:60px var(--page-padding)}
   .cta-banner-actions{flex-direction:column;align-items:center}
   .events-grid{grid-template-columns:1fr}
-  .modal-box{padding:28px 22px}
-  .modal-box--auth{padding:24px 20px}
+  .modal-box{padding:28px 22px;border-radius:20px 20px 0 0}
+  .modal-overlay{align-items:flex-end;padding:0}
+  .modal-box--auth{
+    padding:20px 16px;
+    border-radius:24px 24px 0 0;
+    max-width:100%;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch
+  }
+  .modal-overlay.modal--open .modal-box--auth{
+    animation:slideUpMobile .35s cubic-bezier(.34,1.56,.64,1)
+  }
+  .modal-close{top:14px;right:14px;position:absolute}
+  .auth-logo{font-size:20px;margin-bottom:16px}
+  .auth-tabs{margin-bottom:16px}
+  .auth-form{gap:12px}
+  .modal-box--auth .auth-form{padding-bottom:100px}
   .toast-container{bottom:20px;right:16px;left:16px}
   .toast{max-width:100%}
+  
+  /* Mobile bottom sheet improvements */
+  .form-input,.form-select,.form-textarea{
+    font-size:16px;
+    padding:14px 16px;
+    border-radius:12px
+  }
+  .form-group{gap:8px}
+  .form-label{font-size:12px}
+  
+  /* Tap target improvements */
+  .btn{padding:12px 20px;font-size:14px}
+  .btn-lg{padding:16px 20px;font-size:15px}
 }
