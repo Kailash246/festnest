@@ -143,337 +143,45 @@
     });
   }
 
-  /* ── SIGNUP FORM: Multi-Step Signup with Real-Time Validation ── */
+  /* ── SIGNUP FORM SUBMIT ── */
   if (signupForm) {
     const submitBtn = signupForm.querySelector('[type="submit"]');
     if (submitBtn) submitBtn.dataset.originalText = submitBtn.textContent;
 
-    // State management
-    const signupState = {
-      step: 1,
-      email: '',
-      password: '',
-      passwordConfirm: '',
-      firstName: '',
-      lastName: '',
-      college: '',
-      year: '',
-      branch: '',
-      role: 'student',
-      orgName: '',
-      city: '',
-      orgBranch: '',
-      phone: '',
-      errors: {
-        email: '',
-        password: '',
-        passwordConfirm: '',
-      },
-    };
-
-    const step1El = document.getElementById('signup-step-1');
-    const step2El = document.getElementById('signup-step-2');
-    const step1ContinueBtn = document.getElementById('step1-continue-btn');
-    const step2BackBtn = document.getElementById('step2-back-btn');
-
-    // Input references
-    const emailInput = document.getElementById('su-email-step1');
-    const pwdInput = document.getElementById('su-password-step1');
-    const pwdConfirmInput = document.getElementById('su-password-confirm');
-
-    // Error message containers
-    const emailErrorDiv = document.getElementById('su-email-step1-error');
-    const pwdErrorDiv = document.getElementById('su-password-step1-error');
-    const pwdConfirmErrorDiv = document.getElementById('su-password-confirm-error');
-
-    /* ─────────────────────────────────────────────
-       PASSWORD TOGGLE (FIXED)
-       ───────────────────────────────────────────── */
-    document.querySelectorAll('.pwd-toggle').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const targetId = btn.dataset.target;
-        const input = document.getElementById(targetId);
-        
-        if (input) {
-          const isCurrentlyPassword = input.type === 'password';
-          input.type = isCurrentlyPassword ? 'text' : 'password';
-          btn.textContent = isCurrentlyPassword ? '🙈' : '👁️';
-          input.focus();
-        }
-      });
-    });
-
-    /* ─────────────────────────────────────────────
-       REAL-TIME VALIDATION FUNCTIONS
-       ───────────────────────────────────────────── */
-    
-    function validateEmail(value) {
-      if (!value || !value.trim()) {
-        return 'Email is required.';
-      }
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value.trim())) {
-        return 'Enter a valid email address.';
-      }
-      return '';
-    }
-
-    function validatePassword(value) {
-      if (!value) {
-        return 'Password is required.';
-      }
-      if (value.length < 8) {
-        return 'Password must be at least 8 characters.';
-      }
-      return '';
-    }
-
-    function validatePasswordConfirm(pwd, confirm) {
-      if (!confirm) {
-        return 'Please confirm your password.';
-      }
-      if (pwd !== confirm) {
-        return 'Passwords do not match.';
-      }
-      return '';
-    }
-
-    /* ─────────────────────────────────────────────
-       DISPLAY ERROR MESSAGE
-       ───────────────────────────────────────────── */
-    function setError(field, errorDiv, errorMessage) {
-      signupState.errors[field] = errorMessage;
-      errorDiv.textContent = errorMessage;
-      
-      const input = field === 'email' ? emailInput : 
-                    field === 'password' ? pwdInput : 
-                    field === 'passwordConfirm' ? pwdConfirmInput : null;
-      
-      if (input) {
-        if (errorMessage) {
-          input.classList.add('form-input--invalid');
-        } else {
-          input.classList.remove('form-input--invalid');
-        }
-      }
-    }
-
-    /* ─────────────────────────────────────────────
-       EMAIL VALIDATION (REAL-TIME)
-       ───────────────────────────────────────────── */
-    emailInput?.addEventListener('input', (e) => {
-      const value = e.target.value;
-      signupState.email = value;
-      const error = validateEmail(value);
-      setError('email', emailErrorDiv, error);
-      updateContinueButton();
-    });
-
-    emailInput?.addEventListener('blur', () => {
-      const error = validateEmail(emailInput.value);
-      setError('email', emailErrorDiv, error);
-      updateContinueButton();
-    });
-
-    /* ─────────────────────────────────────────────
-       PASSWORD VALIDATION (REAL-TIME)
-       ───────────────────────────────────────────── */
-    pwdInput?.addEventListener('input', (e) => {
-      const value = e.target.value;
-      signupState.password = value;
-      const error = validatePassword(value);
-      setError('password', pwdErrorDiv, error);
-
-      // Also re-validate confirm password if user has entered it
-      if (pwdConfirmInput.value) {
-        const confirmError = validatePasswordConfirm(value, pwdConfirmInput.value);
-        setError('passwordConfirm', pwdConfirmErrorDiv, confirmError);
-      }
-
-      updateContinueButton();
-    });
-
-    pwdInput?.addEventListener('blur', () => {
-      const error = validatePassword(pwdInput.value);
-      setError('password', pwdErrorDiv, error);
-      updateContinueButton();
-    });
-
-    /* ─────────────────────────────────────────────
-       CONFIRM PASSWORD VALIDATION (REAL-TIME)
-       ───────────────────────────────────────────── */
-    pwdConfirmInput?.addEventListener('input', (e) => {
-      const value = e.target.value;
-      signupState.passwordConfirm = value;
-      const error = validatePasswordConfirm(pwdInput.value, value);
-      setError('passwordConfirm', pwdConfirmErrorDiv, error);
-      updateContinueButton();
-    });
-
-    pwdConfirmInput?.addEventListener('blur', () => {
-      const error = validatePasswordConfirm(pwdInput.value, pwdConfirmInput.value);
-      setError('passwordConfirm', pwdConfirmErrorDiv, error);
-      updateContinueButton();
-    });
-
-    /* ─────────────────────────────────────────────
-       UPDATE CONTINUE BUTTON STATE
-       ───────────────────────────────────────────── */
-    function updateContinueButton() {
-      const hasNoErrors = !signupState.errors.email && 
-                          !signupState.errors.password && 
-                          !signupState.errors.passwordConfirm;
-      
-      const allFieldsFilled = emailInput.value.trim() && 
-                              pwdInput.value && 
-                              pwdConfirmInput.value;
-
-      step1ContinueBtn.disabled = !(hasNoErrors && allFieldsFilled);
-    }
-
-    /* ─────────────────────────────────────────────
-       CONTINUE TO STEP 2
-       ───────────────────────────────────────────── */
-    step1ContinueBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      // Final validation before moving to step 2
-      const emailErr = validateEmail(emailInput.value);
-      const pwdErr = validatePassword(pwdInput.value);
-      const confirmErr = validatePasswordConfirm(pwdInput.value, pwdConfirmInput.value);
-
-      setError('email', emailErrorDiv, emailErr);
-      setError('password', pwdErrorDiv, pwdErr);
-      setError('passwordConfirm', pwdConfirmErrorDiv, confirmErr);
-
-      if (emailErr || pwdErr || confirmErr) return;
-
-      // Store data and transition
-      signupState.email = emailInput.value.trim();
-      signupState.password = pwdInput.value;
-
-      // Animate transition
-      step1El.classList.add('signup-step--slide-out');
-      setTimeout(() => {
-        step1El.classList.remove('signup-step--active', 'signup-step--slide-out');
-        step2El.classList.add('signup-step--active', 'signup-step--slide-in');
-        signupState.step = 2;
-        setTimeout(() => {
-          step2El.classList.remove('signup-step--slide-in');
-          document.getElementById('su-role-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
-      }, 300);
-    });
-
-    /* ─────────────────────────────────────────────
-       BACK TO STEP 1
-       ───────────────────────────────────────────── */
-    step2BackBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      step2El.classList.add('signup-step--slide-out');
-      setTimeout(() => {
-        step2El.classList.remove('signup-step--active', 'signup-step--slide-out');
-        step1El.classList.add('signup-step--active', 'signup-step--slide-in');
-        signupState.step = 1;
-        setTimeout(() => {
-          step1El.classList.remove('signup-step--slide-in');
-        }, 300);
-      }, 300);
-    });
-
-    /* ─────────────────────────────────────────────
-       STEP 2: ROLE SELECTION & FIELDS
-       ───────────────────────────────────────────── */
-    const roleCards = signupForm.querySelectorAll('.su-role-card');
-    roleCards.forEach(card => {
-      card.addEventListener('click', (e) => {
-        e.preventDefault();
-        roleCards.forEach(c => {
-          c.classList.remove('su-role-card--active');
-          c.setAttribute('aria-pressed', 'false');
-        });
-        card.classList.add('su-role-card--active');
-        card.setAttribute('aria-pressed', 'true');
-        signupState.role = card.dataset.role;
-
-        const fieldsSection = document.getElementById('su-fields-section');
-        const studentFields = document.getElementById('su-student-fields');
-        const orgFields = document.getElementById('su-org-fields');
-
-        fieldsSection.style.display = 'flex';
-        studentFields.style.display = card.dataset.role === 'student' ? 'block' : 'none';
-        orgFields.style.display = card.dataset.role === 'organizer' ? 'block' : 'none';
-      });
-    });
-
-    /* ─────────────────────────────────────────────
-       STEP 2: FORM SUBMISSION
-       ───────────────────────────────────────────── */
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearErrors();
 
-      // Gather Step 2 data
-      if (signupState.role === 'student') {
-        signupState.firstName = document.getElementById('su-s-firstname')?.value.trim() || '';
-        signupState.lastName = document.getElementById('su-s-lastname')?.value.trim() || '';
-        signupState.college = document.getElementById('su-s-college')?.value.trim() || '';
-        signupState.year = document.getElementById('su-s-year')?.value || '';
-        signupState.branch = document.getElementById('su-s-branch')?.value.trim() || '';
-      } else {
-        signupState.orgName = document.getElementById('su-o-orgname')?.value.trim() || '';
-        signupState.city = document.getElementById('su-o-city')?.value.trim() || '';
-        signupState.orgBranch = document.getElementById('su-o-branch')?.value.trim() || '';
-        signupState.phone = document.getElementById('su-o-phone')?.value.trim() || '';
+      const inputs   = signupForm.querySelectorAll('input, select');
+      const getValue = (i) => inputs[i] ? inputs[i].value.trim() : '';
+
+      const firstName = getValue(0);
+      const lastName  = getValue(1);
+      const email     = getValue(2);
+      const college   = getValue(3);
+      const year      = getValue(4);
+      const password  = getValue(5);
+      const roleEl    = signupForm.querySelector('[name="role"]');
+      const role      = roleEl ? roleEl.value : 'student';
+
+      if (!firstName || !lastName || !email || !password) {
+        return showError(signupForm, 'Please fill in all required fields.');
+      }
+      if (password.length < 8) {
+        return showError(signupForm, 'Password must be at least 8 characters.');
       }
 
-      // Validate Step 2
-      const errors = [];
-      if (signupState.role === 'student') {
-        if (!signupState.firstName) errors.push('First name is required.');
-        if (!signupState.lastName) errors.push('Last name is required.');
-        if (!signupState.college) errors.push('College/University is required.');
-      } else {
-        if (!signupState.orgName) errors.push('Organization name is required.');
-      }
-
-      if (errors.length > 0) {
-        step2ErrorsDiv.innerHTML = errors.map(e => `<div class="auth-error">${e}</div>`).join('');
-        step2ErrorsDiv.style.display = 'block';
-        return;
-      }
-
-      // Submit to API
       setLoading(submitBtn, true);
       try {
-        const payload = {
-          email: signupState.email,
-          password: signupState.password,
-          role: signupState.role,
-        };
-
-        if (signupState.role === 'student') {
-          payload.firstName = signupState.firstName;
-          payload.lastName = signupState.lastName;
-          payload.college = signupState.college;
-          payload.year = signupState.year;
-        } else {
-          payload.firstName = signupState.orgName;
-          payload.lastName = signupState.orgName;
-          payload.college = signupState.city;
-          payload.phone = signupState.phone;
-        }
-
-        const res = await FN_AUTH_API.register(payload);
+        const res = await FN_AUTH_API.register({
+          firstName, lastName, email, password,
+          college, year, role,
+        });
         closeAuth();
-        showToast(`🎉 Welcome to FestNest, ${signupState.firstName}!`, 'success');
+        showToast(`🎉 Welcome to FestNest, ${res.user.firstName}!`, 'success');
         updateNavForLoggedInUser(res.user);
       } catch (err) {
-        step2ErrorsDiv.innerHTML = `<div class="auth-error">${err.message || 'Registration failed. Please try again.'}</div>`;
-        step2ErrorsDiv.style.display = 'block';
+        showError(signupForm, err.message || 'Registration failed. Please try again.');
       } finally {
         setLoading(submitBtn, false);
       }
