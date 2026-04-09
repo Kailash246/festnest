@@ -14,6 +14,7 @@ const {
 } = require('../controllers/authController');
 
 const firebaseAuthRouter = require('./firebaseAuth');
+const otpRouter = require('./otp');
 
 const { protect } = require('../middleware/auth');
 const {
@@ -39,6 +40,11 @@ router.post('/login',    authLimiter, loginValidator,    login);
    PUBLIC — FIREBASE AUTH
    ────────────────────────────────────── */
 router.use('/', firebaseAuthRouter);
+
+/* ──────────────────────────────────────
+   PUBLIC — OTP VERIFICATION
+   ────────────────────────────────────── */
+router.use('/', otpRouter);
 
 /* ──────────────────────────────────────
    PROTECTED

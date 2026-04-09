@@ -1,0 +1,468 @@
+╔════════════════════════════════════════════════════════════════╗
+║                   FESTNEST OTP API REFERENCE                  ║
+║              Quick lookup for backend developers              ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════
+1. SEND OTP ENDPOINT
+═══════════════════════════════════════════════════════════════════
+
+URL:             POST /api/auth/send-otp
+Content-Type:    application/json
+Authentication:  None (Public)
+Rate Limit:      3 per minute per IP + 60 sec per email
+
+REQUEST:
+  {
+    "email": "student@example.com"
+  }
+
+SUCCESS RESPONSE (200):
+  {
+    "success": true,
+    "message": "OTP sent to your email. Valid for 5 minutes.",
+    "email": "st***@example.com",
+    "expiresIn": 300
+  }
+
+RATE LIMIT ERROR (429):
+  {
+    "success": false,
+    "message": "Please wait 45 seconds before requesting another OTP.",
+    "retryAfter": 45
+  }
+
+VALIDATION ERROR (400):
+  {
+    "success": false,
+    "message": "Email is required." | "Invalid email format."
+  }
+
+SERVER ERROR (500):
+  {
+    "success": false,
+    "message": "Failed to send OTP email. Please try again."
+  }
+
+CONSOLE LOG (Server):
+  [SendOTP] 📥 POST received
+  [SendOTP] ✅ OTP email sent to student@example.com
+  ✅ OTP generated for student@example.com: 123456 (expires in 5 min)
+  📧 Email sent to student@example.com: <message-id>
+
+
+═══════════════════════════════════════════════════════════════════
+2. VERIFY OTP ENDPOINT
+═══════════════════════════════════════════════════════════════════
+
+URL:             POST /api/auth/verify-otp
+Content-Type:    application/json
+Authentication:  None (Public)
+Rate Limit:      10 per minute per IP
+
+REQUEST:
+  {
+    "email": "student@example.com",
+    "code": "123456"
+  }
+
+SUCCESS RESPONSE (200):
+  {
+    "success": true,
+    "message": "OTP verified successfully. Proceed with signup.",
+    "email": "student@example.com",
+    "verified": true
+  }
+
+INVALID OTP RESPONSE (400):
+  {
+    "success": false,
+    "message": "Incorrect OTP. 4 attempts remaining.",
+    "attemptsRemaining": 4
+  }
+
+EXPIRED OTP RESPONSE (400):
+  {
+    "success": false,
+    "message": "OTP has expired. Please request a new OTP."
+  }
+
+MAX ATTEMPTS RESPONSE (400):
+  {
+    "success": false,
+    "message": "Maximum verification attempts exceeded. Please request a new OTP."
+  }
+
+NO OTP FOUND RESPONSE (400):
+  {
+    "success": false,
+    "message": "No OTP found for this email. Please request a new OTP."
+  }
+
+VALIDATION ERROR (400):
+  {
+    "success": false,
+    "message": "Email and OTP code are required."
+  }
+
+SERVER ERROR (500):
+  {
+    "success": false,
+    "message": "Server error. Please try again."
+  }
+
+CONSOLE LOG (Server):
+  [VerifyOTP] 📥 POST received
+  [VerifyOTP] ✅ OTP verified for student@example.com
+
+
+═══════════════════════════════════════════════════════════════════
+3. HTTP STATUS CODES REFERENCE
+═══════════════════════════════════════════════════════════════════
+
+200 OK
+  ├─ OTP sent successfully
+  └─ OTP verified successfully
+
+400 BAD REQUEST
+  ├─ Missing email or code
+  ├─ Invalid email format
+  ├─ Invalid or expired OTP
+  ├─ Maximum attempts exceeded
+  └─ No OTP found for email
+
+429 TOO MANY REQUESTS
+  ├─ Too many OTP requests from this IP
+  ├─ Wait before requesting another OTP
+  └─ Rate limit per email exceeded
+
+500 INTERNAL SERVER ERROR
+  ├─ Email send failed
+  ├─ Unexpected server error
+  └─ Contact admin for logs
+
+
+═══════════════════════════════════════════════════════════════════
+4. CURL EXAMPLES
+═══════════════════════════════════════════════════════════════════
+
+SEND OTP:
+
+  curl -X POST http://localhost:5000/api/auth/send-otp \
+    -H "Content-Type: application/json" \
+    -d '{"email":"test@gmail.com"}'
+
+VERIFY OTP:
+
+  curl -X POST http://localhost:5000/api/auth/verify-otp \
+    -H "Content-Type: application/json" \
+    -d '{"email":"test@gmail.com","code":"123456"}'
+
+
+═══════════════════════════════════════════════════════════════════
+5. JAVASCRIPT EXAMPLES
+═══════════════════════════════════════════════════════════════════
+
+SEND OTP:
+
+  fetch('/api/auth/send-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'test@gmail.com' })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      console.log('OTP sent to', data.email);
+      console.log('Expires in', data.expiresIn, 'seconds');
+    } else {
+      console.error('Error:', data.message);
+    }
+  });
+
+VERIFY OTP:
+
+  fetch('/api/auth/verify-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: 'test@gmail.com',
+      code: '123456'
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      console.log('Email verified! Proceed with signup.');
+    } else {
+      console.error('Error:', data.message);
+      if (data.attemptsRemaining !== undefined) {
+        console.log('Attempts remaining:', data.attemptsRemaining);
+      }
+    }
+  });
+
+
+═══════════════════════════════════════════════════════════════════
+6. INTEGRATION FLOW
+═══════════════════════════════════════════════════════════════════
+
+FRONTEND FLOW:
+
+  Step 1: User enters email
+    → POST /api/auth/send-otp
+    → Show OTP input form + timer (5 minutes)
+    → User receives email
+
+  Step 2: User enters OTP
+    → POST /api/auth/verify-otp
+    → If success: Show signup form
+    → If fail: Show error, allow retry
+
+  Step 3: User completes signup
+    → POST /api/auth/register (existing endpoint)
+    → Account created
+    → Redirect to login or dashboard
+
+EXISTING FLOW (UNCHANGED):
+
+  Users can still call POST /api/auth/register directly
+  No OTP requirement, fully backward compatible
+
+
+═══════════════════════════════════════════════════════════════════
+7. ERROR MESSAGES FULL REFERENCE
+═══════════════════════════════════════════════════════════════════
+
+SEND OTP ERRORS:
+
+  "Email is required."
+    └─ User didn't provide email
+
+  "Invalid email format."
+    └─ Email doesn't look like: user@domain.com
+
+  "Please wait X seconds before requesting another OTP."
+    └─ Rate limit: 60 seconds per email
+
+  "Too many OTP requests. Please wait before trying again."
+    └─ Rate limit: 3 per minute per IP
+
+  "Failed to send OTP email. Please try again."
+    └─ Email provider error (SMTP failed)
+
+  "Server error. Please try again."
+    └─ Unexpected server error
+
+────────────────────────────────────────────────────────────
+
+VERIFY OTP ERRORS:
+
+  "Email and OTP code are required."
+    └─ Missing email or code in request
+
+  "No OTP found for this email. Please request a new OTP."
+    └─ User never requested OTP for this email
+
+  "OTP has expired. Please request a new OTP."
+    └─ More than 5 minutes have passed
+
+  "Incorrect OTP. X attempts remaining."
+    └─ Wrong code entered (up to 5 attempts)
+
+  "Maximum verification attempts exceeded. Please request a new OTP."
+    └─ All 5 attempts used, OTP deleted
+
+  "Too many verification attempts. Please wait before trying again."
+    └─ Rate limit: 10 per minute per IP
+
+  "Server error. Please try again."
+    └─ Unexpected server error
+
+
+═══════════════════════════════════════════════════════════════════
+8. RESPONSE HEADER DETAILS
+═══════════════════════════════════════════════════════════════════
+
+All Responses:
+  Content-Type: application/json
+  X-RateLimit-Limit: 3              [for send-otp]
+  X-RateLimit-Remaining: 2          [for send-otp]
+  X-RateLimit-Reset: 1712234567     [unix timestamp]
+
+200 OK Response:
+  Status Code: 200
+  Body: JSON with success: true
+
+400 Bad Request:
+  Status Code: 400
+  Body: JSON with success: false
+
+429 Too Many Requests:
+  Status Code: 429
+  Body: JSON with success: false, retryAfter: X
+
+500 Server Error:
+  Status Code: 500
+  Body: JSON with success: false
+
+
+═══════════════════════════════════════════════════════════════════
+9. RATE LIMITING DETAILS
+═══════════════════════════════════════════════════════════════════
+
+SEND OTP Rate Limits:
+
+  Level 1: Per IP (Express-rate-limit)
+  ├─ Limit: 3 requests per 60 seconds
+  ├─ Status: 429 Too Many Requests
+  └─ Message: "Too many OTP requests..."
+
+  Level 2: Per Email (Built-in service)
+  ├─ Limit: 1 request per 60 seconds
+  ├─ Status: 429 Too Many Requests
+  ├─ Message: "Please wait X seconds before..."
+  └─ RetryAfter: Seconds to wait
+
+────────────────────────────────────────────────────────────
+
+VERIFY OTP Rate Limits:
+
+  Level 1: Per IP (Express-rate-limit)
+  ├─ Limit: 10 requests per 60 seconds
+  ├─ Status: 429 Too Many Requests
+  └─ Message: "Too many verification attempts..."
+
+  Level 2: Per OTP (Built-in service)
+  ├─ Limit: 5 failed attempts maximum
+  ├─ Status: 400 Bad Request
+  └─ Message: "Maximum verification attempts exceeded..."
+
+
+═══════════════════════════════════════════════════════════════════
+10. TESTING CHECKLIST
+═══════════════════════════════════════════════════════════════════
+
+Basic Flow:
+  [ ] Send OTP to valid email
+  [ ] Check email arrives within 1 second
+  [ ] Extract 6-digit code from email
+  [ ] Verify OTP with correct code
+  [ ] Get success response
+
+Error Cases:
+  [ ] Send OTP without email → 400
+  [ ] Send OTP invalid email → 400
+  [ ] Send OTP 4 times rapid → 429 on 4th
+  [ ] Verify with wrong code → 400 with attempts
+  [ ] Verify expired OTP → 400 after 5 min
+  [ ] Use expired OTP → Can't verify
+
+Rate Limiting:
+  [ ] Wait 60 sec, send again → Success
+  [ ] Send OTP 3x per IP → 429 on 3rd
+  [ ] Verify 10x per IP → Success on all
+
+Edge Cases:
+  [ ] Email with special chars → Works
+  [ ] Code as integer vs string → Both work
+  [ ] Uppercase/lowercase code → Works
+  [ ] Quick send + verify back-to-back → Works
+
+
+═══════════════════════════════════════════════════════════════════
+11. DEBUGGING TIPS
+═══════════════════════════════════════════════════════════════════
+
+Server Logs to Watch:
+
+  [SendOTP] 📥 POST received
+    └─ Request received successfully
+
+  ✅ OTP generated for student@example.com: 123456
+    └─ OTP was generated and stored
+
+  📧 Email sent to student@example.com: <message-id>
+    └─ Email was sent via provider
+
+  [VerifyOTP] ✅ OTP verified for student@example.com
+    └─ Verification successful
+
+  [VerifyOTP] ❌ Incorrect OTP. 4 attempts remaining.
+    └─ Wrong code was entered
+
+Check Email:
+  ├─ Check Inbox
+  ├─ Check Spam/Junk folder
+  ├─ Wait 2-5 seconds for delivery
+  └─ Look for subject: "🔐 Your FestNest Verification Code"
+
+Network Issues:
+  ├─ Open Developer Console (F12)
+  ├─ Check Network tab
+  ├─ Verify request was sent (POST)
+  ├─ Check response status (200/400/429)
+  └─ Look at Response body (JSON)
+
+
+═══════════════════════════════════════════════════════════════════
+12. PRODUCTION CONSIDERATIONS
+═══════════════════════════════════════════════════════════════════
+
+Email Configuration:
+  ├─ EMAIL_USER must be set in production
+  ├─ EMAIL_PASS must be app-specific password (for Gmail)
+  ├─ Verify email sender is whitelisted by provider
+  └─ Monitor email delivery rate
+
+Monitoring:
+  ├─ Track OTP send success rate (target: >98%)
+  ├─ Monitor rate limit hits (unusual = attack?)
+  ├─ Watch for patterns (same IP/email repeated)
+  └─ Set alerts for email delivery failures
+
+Performance:
+  ├─ OTP storage: ~0.1 KB per OTP
+  ├─ Typical usage: 100-500 active OTPs
+  ├─ Memory impact: Negligible (<1 KB)
+  └─ Scales to 10,000+ OTPs before concern
+
+Security:
+  ├─ Never commit EMAIL_PASS to git
+  ├─ Use production env vars, not .env file
+  ├─ Rotate APP_PASSWORD periodically
+  ├─ Monitor failed verification attempts
+  └─ Alert on suspicious patterns
+
+
+═══════════════════════════════════════════════════════════════════
+✨ QUICK REFERENCE
+═══════════════════════════════════════════════════════════════════
+
+Files:
+  Services:     services/otpService.js
+  Controller:   controllers/otpController.js
+  Routes:       routes/otp.js
+  Email:        utils/otpEmail.js
+
+Endpoints:
+  Send:         POST /api/auth/send-otp
+  Verify:       POST /api/auth/verify-otp
+
+Key Facts:
+  Duration:     5 minutes (300 seconds)
+  Attempts:     5 failed attempts maximum
+  Rate Limit:   60 seconds per email
+  OTP Length:   6 digits
+  Storage:      In-memory (no database)
+
+Success:
+  Send:         { success: true, email: "...", expiresIn: 300 }
+  Verify:       { success: true, verified: true }
+
+Error:
+  Send:         { success: false, message: "..." ,retryAfter?: X }
+  Verify:       { success: false, message: "...", attemptsRemaining?: X }
+
+═══════════════════════════════════════════════════════════════════

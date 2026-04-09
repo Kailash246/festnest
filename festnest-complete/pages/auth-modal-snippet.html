@@ -147,23 +147,64 @@
 
         <div class="su-step-header">
           <div class="su-step-title">Create your account</div>
-          <div class="su-step-desc">Your login credentials. Keep your password safe.</div>
+          <div class="su-step-desc" id="suStep1Desc">Your login credentials. Keep your password safe.</div>
         </div>
 
         <div class="auth-form" style="gap:14px;">
 
+          <!-- EXISTING EMAIL FIELD (kept unchanged) -->
           <div class="form-group">
             <label class="form-label" for="suEmail">Email Address *</label>
-            <input class="form-input" id="suEmail" type="email"
-                   placeholder="you@college.edu" autocomplete="email" />
+            <div style="display:flex;gap:8px;">
+              <input class="form-input" id="suEmail" type="email"
+                     placeholder="you@college.edu" autocomplete="email"
+                     style="flex:1;" />
+              <!-- NEW: Send OTP Button (shown after email validated) -->
+              <button type="button" class="btn btn-primary" id="suSendOtpBtn"
+                      style="display:none;white-space:nowrap;padding:10px 14px;font-size:13px;"
+                      aria-label="Send OTP to email">
+                Send OTP 📧
+              </button>
+            </div>
             <span class="form-error-msg" id="suEmailErr"></span>
           </div>
 
-          <div class="form-group">
+          <!-- NEW: OTP Verification Section (hidden until send-otp clicked) -->
+          <div id="suOtpSection" style="display:none;border:1px solid var(--border);border-radius:var(--radius);padding:12px;background:var(--bg-2);">
+            <div style="font-size:12px;color:var(--text-2);margin-bottom:8px;">
+              Enter the 6-digit code sent to your email
+            </div>
+            <div style="display:flex;gap:8px;">
+              <input class="form-input" id="suOtpCode" type="text" 
+                     placeholder="000000" style="flex:1;font-family:'Courier New',monospace;font-size:18px;letter-spacing:12px;text-align:center;"
+                     maxlength="6" autocomplete="one-time-code" />
+              <button type="button" class="btn btn-primary" id="suVerifyOtpBtn"
+                      style="white-space:nowrap;padding:10px 14px;font-size:13px;"
+                      aria-label="Verify OTP">
+                Verify ✓
+              </button>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;font-size:12px;">
+              <span id="suOtpError" class="form-error-msg" style="flex:1;"></span>
+              <button type="button" class="btn btn-ghost" id="suResendOtpBtn"
+                      style="padding:0;color:var(--color-primary);font-size:12px;white-space:nowrap;"
+                      aria-label="Resend OTP">
+                Resend (<span id="suResendCountdown">60</span>s)
+              </button>
+            </div>
+            <!-- Success state shown above password fields -->
+            <div id="suOtpSuccess" style="display:none;margin-top:8px;padding:8px;background:rgba(76,175,80,.1);border:1px solid #4CAF50;border-radius:4px;color:#2E7D32;font-size:12px;font-weight:600;">
+              ✓ Email verified! Fill in your password below.
+            </div>
+          </div>
+
+          <!-- PASSWORD FIELDS (disabled until OTP verified) -->
+          <div class="form-group" id="suPasswordSection">
             <label class="form-label" for="suPwd">Password *</label>
             <div class="su-pwd-wrap">
               <input class="form-input" id="suPwd" type="password"
-                     placeholder="Min. 8 characters" autocomplete="new-password" />
+                     placeholder="Min. 8 characters" autocomplete="new-password"
+                     disabled />
               <button type="button" class="su-eye-btn" aria-label="Toggle password visibility"
                       data-target="suPwd">👁</button>
             </div>
@@ -175,11 +216,12 @@
             <span class="form-error-msg" id="suPwdErr"></span>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" id="suConfirmSection">
             <label class="form-label" for="suConfirm">Confirm Password *</label>
             <div class="su-pwd-wrap">
               <input class="form-input" id="suConfirm" type="password"
-                     placeholder="Re-enter password" autocomplete="new-password" />
+                     placeholder="Re-enter password" autocomplete="new-password"
+                     disabled />
               <button type="button" class="su-eye-btn" aria-label="Toggle confirm password visibility"
                       data-target="suConfirm">👁</button>
             </div>

@@ -77,6 +77,12 @@ window.requireRole = requireRole;
     email:            '',
     password:         '',
     confirmPassword:  '',
+    /* NEW: OTP state */
+    emailVerified:    false,    /* Blocks next button until true */
+    otpSent:          false,    /* Show OTP input after this */
+    otpCode:          '',       /* User's OTP input */
+    otpLoading:       false,    /* Loading during send/verify */
+    resendCooldown:   0,        /* Cooldown timer in seconds */
     /* Step 2 student */
     firstName:        '',
     lastName:         '',
@@ -235,6 +241,12 @@ window.requireRole = requireRole;
     su.step = 0;
     su.role = '';
     su.email = su.password = su.confirmPassword = '';
+    /* Reset OTP state */
+    su.emailVerified = false;
+    su.otpSent = false;
+    su.otpCode = '';
+    su.otpLoading = false;
+    su.resendCooldown = 0;
     su.firstName = su.lastName = su.college = su.year = su.branch = '';
     su.organizationName = su.orgCollege = su.designation = su.city = '';
     su.errors = {};
@@ -246,9 +258,9 @@ window.requireRole = requireRole;
 
     /* Clear all inputs */
     ['suEmail','suPwd','suConfirm','suFirstName','suLastName','suCollege',
-     'suBranch','suOrgName','suOrgCollege','suDesignation','suOrgCity'].forEach(id => {
+     'suBranch','suOrgName','suOrgCollege','suDesignation','suOrgCity','suOtpCode'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) { el.value = ''; el.classList.remove('form-input--err','form-input--ok'); }
+      if (el) { el.value = ''; el.classList.remove('form-input--err','form-input--ok'); el.disabled = false; }
     });
     const yearEl = document.getElementById('suYear');
     if (yearEl) yearEl.selectedIndex = 0;
@@ -256,9 +268,29 @@ window.requireRole = requireRole;
     /* Clear error messages */
     modal.querySelectorAll('.form-error-msg').forEach(e => e.textContent = '');
 
+    /* Hide OTP section & success message */
+    const otpSection = document.getElementById('suOtpSection');
+    const otpSuccess = document.getElementById('suOtpSuccess');
+    if (otpSection) otpSection.style.display = 'none';
+    if (otpSuccess) otpSuccess.style.display = 'none';
+
+    /* Show send OTP button, hide verify OTP button */
+    const sendBtn = document.getElementById('suSendOtpBtn');
+    const verifyBtn = document.getElementById('suVerifyOtpBtn');
+    if (sendBtn) sendBtn.style.display = 'none';
+    if (verifyBtn) verifyBtn.textContent = 'Verify ✓';
+
+    /* Re-enable password fields */
+    document.getElementById('suPwd').disabled = false;
+    document.getElementById('suConfirm').disabled = false;
+
     /* Hide strength bar */
     const sw = document.getElementById('suStrengthWrap');
     if (sw) sw.style.display = 'none';
+
+    /* Reset step descriptions */
+    const desc = document.getElementById('suStep1Desc');
+    if (desc) desc.textContent = 'Your login credentials. Keep your password safe.';
 
     /* Disable continue buttons */
     setStep0NextState(false);
@@ -326,9 +358,11 @@ window.requireRole = requireRole;
     const pwd     = document.getElementById('suPwd')?.value            || '';
     const confirm = document.getElementById('suConfirm')?.value        || '';
 
+    /* Email validation — show Send OTP button if valid */
     if (email && !isEmailValid(email)) { setErr('suEmail', 'Enter a valid email address.'); ok = false; }
     else if (email) markOk('suEmail');
 
+    /* Password validation — only if email verified (fields enabled) */
     if (pwd && !isPwdValid(pwd)) { setErr('suPwd', 'Password must be at least 8 characters.'); ok = false; }
     else if (pwd) markOk('suPwd');
 
@@ -337,14 +371,153 @@ window.requireRole = requireRole;
       else markOk('suConfirm');
     }
 
-    const allFilled = email && pwd && confirm;
-    const allValid  = isEmailValid(email) && isPwdValid(pwd) && isPwdMatch(pwd, confirm);
+    /* Show/hide send OTP button (when email is valid) */
+    const sendOtpBtn = document.getElementById('suSendOtpBtn');
+    if (sendOtpBtn) {
+      sendOtpBtn.style.display = (email && isEmailValid(email) && !su.otpSent) ? 'block' : 'none';
+    }
+
+    /* Step 1 Next is only enabled if: email verified + password filled & valid */
+    const allFilled = email && pwd && confirm && su.emailVerified;
+    const allValid  = isEmailValid(email) && isPwdValid(pwd) && isPwdMatch(pwd, confirm) && su.emailVerified;
     setStep1NextState(allFilled && allValid);
+    
     return allFilled && allValid;
   }
 
   function setStep1NextState(enabled) {
     if (step1NextBtn) step1NextBtn.disabled = !enabled;
+  }
+
+  /* ═══ OTP FUNCTIONS ═══ */
+  
+  async function sendOTP() {
+    const email = document.getElementById('suEmail')?.value.trim() || '';
+    const sendOtpBtn = document.getElementById('suSendOtpBtn');
+    const otpSection = document.getElementById('suOtpSection');
+    const otpError = document.getElementById('suOtpError');
+    
+    if (!email || !isEmailValid(email)) {
+      if (otpError) otpError.textContent = 'Please enter a valid email.';
+      return;
+    }
+
+    su.otpLoading = true;
+    if (sendOtpBtn) sendOtpBtn.disabled = true;
+    if (sendOtpBtn) sendOtpBtn.innerHTML = '<span class="spinner"></span> Sending…';
+    if (otpError) otpError.textContent = '';
+
+    try {
+      const response = await apiFetch('/auth/send-otp', {
+        method: 'POST',
+        body: JSON.stringify({ email: email })
+      });
+
+      if (response.success || response.message) {
+        /* Show OTP input section */
+        su.otpSent = true;
+        su.emailVerified = false;
+        if (otpSection) otpSection.style.display = 'block';
+        if (sendOtpBtn) sendOtpBtn.style.display = 'none';
+        
+        /* Disable password fields until OTP verified */
+        document.getElementById('suPwd').disabled = true;
+        document.getElementById('suConfirm').disabled = true;
+        
+        /* Focus OTP input */
+        document.getElementById('suOtpCode')?.focus();
+        
+        /* Start 60-sec resend cooldown */
+        startResendCooldown();
+        
+        /* Enable resend button after cooldown */
+        document.getElementById('suResendOtpBtn').disabled = true;
+      } else {
+        throw new Error('Failed to send OTP');
+      }
+    } catch (err) {
+      if (otpError) otpError.textContent = err.message || 'Failed to send OTP. Try again.';
+      su.otpSent = false;
+    } finally {
+      su.otpLoading = false;
+      if (sendOtpBtn) {
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = 'Send OTP 📧';
+      }
+    }
+  }
+
+  async function verifyOTP() {
+    const email = document.getElementById('suEmail')?.value.trim() || '';
+    const otp = document.getElementById('suOtpCode')?.value.trim() || '';
+    const verifyBtn = document.getElementById('suVerifyOtpBtn');
+    const otpError = document.getElementById('suOtpError');
+    const otpSuccess = document.getElementById('suOtpSuccess');
+
+    if (!otp || otp.length !== 6 || isNaN(otp)) {
+      if (otpError) otpError.textContent = 'Enter a valid 6-digit code.';
+      return;
+    }
+
+    su.otpLoading = true;
+    if (verifyBtn) verifyBtn.disabled = true;
+    if (verifyBtn) verifyBtn.innerHTML = '<span class="spinner"></span> Verifying…';
+    if (otpError) otpError.textContent = '';
+
+    try {
+      const response = await apiFetch('/auth/verify-otp', {
+        method: 'POST',
+        body: JSON.stringify({ email: email, otp: otp })
+      });
+
+      if (response.success || response.message) {
+        /* Mark as verified */
+        su.emailVerified = true;
+        su.otpCode = otp;
+        
+        /* Hide OTP section, show success message */
+        if (otpSuccess) otpSuccess.style.display = 'block';
+        document.getElementById('suOtpSection').style.display = 'none';
+        
+        /* Enable password fields */
+        document.getElementById('suPwd').disabled = false;
+        document.getElementById('suConfirm').disabled = false;
+        
+        if (verifyBtn) verifyBtn.textContent = '✓ Verified';
+        
+        /* Update description */
+        const desc = document.getElementById('suStep1Desc');
+        if (desc) desc.textContent = 'Your email is verified! Now set your password.';
+      } else {
+        throw new Error('Invalid or expired OTP');
+      }
+    } catch (err) {
+      if (otpError) otpError.textContent = err.message || 'Invalid OTP. Please try again.';
+      su.emailVerified = false;
+    } finally {
+      su.otpLoading = false;
+      if (verifyBtn) {
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'Verify ✓';
+      }
+    }
+  }
+
+  function startResendCooldown() {
+    su.resendCooldown = 60;
+    const countdown = document.getElementById('suResendCountdown');
+    const resendBtn = document.getElementById('suResendOtpBtn');
+    
+    const timer = setInterval(() => {
+      su.resendCooldown--;
+      if (countdown) countdown.textContent = su.resendCooldown;
+      
+      if (su.resendCooldown <= 0) {
+        clearInterval(timer);
+        if (resendBtn) resendBtn.disabled = false;
+        if (countdown) countdown.textContent = '60';
+      }
+    }, 1000);
   }
 
   /* Real-time validation on each input */
@@ -410,6 +583,30 @@ window.requireRole = requireRole;
       btn.textContent = isHidden ? '🙈' : '👁';
       btn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
     });
+  });
+
+  /* ══ OTP BUTTON LISTENERS ══ */
+  document.getElementById('suSendOtpBtn')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (!su.otpLoading) await sendOTP();
+  });
+
+  document.getElementById('suVerifyOtpBtn')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (!su.otpLoading) await verifyOTP();
+  });
+
+  /* Allow Enter key in OTP field to trigger verify */
+  document.getElementById('suOtpCode')?.addEventListener('keypress', async (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!su.otpLoading) await verifyOTP();
+    }
+  });
+
+  document.getElementById('suResendOtpBtn')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (!su.otpLoading && su.resendCooldown <= 0) await sendOTP();
   });
 
   /* ════════════════════════════════════════════════════════
