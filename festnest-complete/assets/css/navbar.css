@@ -61,6 +61,12 @@
 
 /* ── Nav Actions ── */
 .nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+.nav-actions .btn {
+  padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 18px);
+  font-size: clamp(11px, 1.8vw, 12px);
+  min-height: 36px;
+  min-width: 36px;
+}
 .nav-user-btn {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 12px; border-radius: var(--radius);
@@ -244,7 +250,8 @@
     min-height: var(--nav-height);
   }
   .nav-actions .btn {
-    padding: clamp(6px, 1.5vw, 10px) clamp(12px, 2vw, 16px);
+    padding: clamp(7px, 1.5vw, 9px) clamp(10px, 2vw, 14px);
     font-size: 11px;
+    min-height: 32px;
   }
 }
