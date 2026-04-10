@@ -95,7 +95,7 @@
 
 /* ── Hamburger ── */
 .hamburger {
-  display: none; flex-direction: column; gap: 4px;
+  display: none; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
   cursor: pointer; border: none; background: transparent;
   padding: 6px; border-radius: var(--radius-sm); transition: var(--transition); min-height: 36px;
 }
@@ -215,7 +215,7 @@
   }
   .nav-logo { gap: 6px; }
   .logo-img { 
-    height: clamp(24px, 5vw, 28px);
+    height: clamp(30px, 7vw, 34px);
     width: auto;
   }
   .logo-text { 
