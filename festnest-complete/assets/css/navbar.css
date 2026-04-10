@@ -36,7 +36,7 @@
 /* Text next to logo */
 .logo-text {
   font-family: 'Clash Display', sans-serif;
-  font-size: 18px; font-weight: 700;
+  font-size: 20px; font-weight: 700;
   background: var(--grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -203,7 +203,7 @@
     width: auto;
   }
   .logo-text { 
-    font-size: clamp(14px, 4vw, 20px);
+    font-size: clamp(16px, 4vw, 22px);
     white-space: nowrap;
     display: block;
   }
@@ -220,7 +220,7 @@
     width: auto;
   }
   .logo-text { 
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     white-space: nowrap;
     display: block;
@@ -259,6 +259,6 @@
   }
   .nav-logo { gap: 5px; }
   .logo-text { 
-    font-size: 13px;
+    font-size: 14px;
   }
 }
