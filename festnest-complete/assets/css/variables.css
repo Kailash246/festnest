@@ -2,16 +2,15 @@
    FESTNEST — DESIGN TOKENS  |  assets/css/variables.css
    ============================================================ */
 :root {
-  /* Premium solid colors + very subtle gradients (Apple/Stripe style) */
-  --grad:          linear-gradient(135deg, #5A4BFF 0%, #5344E7 100%);
-  --grad-hover:    linear-gradient(135deg, #4A3EDD 0%, #483AD9 100%);
-  --grad-warm:     linear-gradient(135deg, #F97316 0%, #F77D1F 100%);
-  --grad-card-1:   #6B5B95;
-  --grad-card-2:   #D1566C;
-  --grad-card-3:   #2B9FD9;
-  --grad-card-4:   #1EC98F;
-  --grad-card-5:   #E85A5F;
-  --grad-card-6:   #9B7BA6;
+  --grad:          linear-gradient(135deg, #2F80ED 0%, #7B2FF7 100%);
+  --grad-hover:    linear-gradient(135deg, #1a6fd4 0%, #6520e0 100%);
+  --grad-warm:     linear-gradient(135deg, #FF8A00, #FF5722);
+  --grad-card-1:   linear-gradient(135deg, #667eea, #764ba2);
+  --grad-card-2:   linear-gradient(135deg, #f093fb, #f5576c);
+  --grad-card-3:   linear-gradient(135deg, #4facfe, #00f2fe);
+  --grad-card-4:   linear-gradient(135deg, #43e97b, #38f9d7);
+  --grad-card-5:   linear-gradient(135deg, #fa709a, #fee140);
+  --grad-card-6:   linear-gradient(135deg, #a18cd1, #fbc2eb);
 
   --color-primary: #5A4BFF;
   --color-accent:  #FF8A00;
