@@ -84,7 +84,7 @@ const registerValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\d{7,15}$/, 'g').withMessage('Phone must be 7-15 digits if provided'),
+    .matches(/^\d{10}$/, 'g').withMessage('Phone must be exactly 10 digits if provided'),
   
   body('state')
     .optional()

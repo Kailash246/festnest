@@ -48,7 +48,7 @@ const OrganizerSchema = new mongoose.Schema(
       type: String,
       trim: true,
       default: '',
-      match: [/^(\d{7,15})?$/, 'Please enter a valid phone number if provided'],
+      match: [/^(\d{10})?$/, 'Phone must be exactly 10 digits if provided'],
     },
 
     /* ── Additional Info ── */
