@@ -60,7 +60,7 @@
 }
 
 /* ── Nav Actions ── */
-.nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+.nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; overflow: hidden; }
 .nav-actions .btn {
   padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 18px);
   font-size: clamp(11px, 1.8vw, 12px);
