@@ -13,6 +13,7 @@
   padding: 0 var(--page-padding); gap: 32px;
   box-shadow: 0 2px 20px rgba(90,75,255,.06);
   transition: var(--transition-md);
+  margin: 16px;
 }
 .navbar--scrolled {
   background: rgba(255,255,255,.98);
