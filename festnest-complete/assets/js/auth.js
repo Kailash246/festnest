@@ -467,7 +467,7 @@ window.requireRole = requireRole;
     try {
       const response = await apiFetch('/auth/verify-otp', {
         method: 'POST',
-        body: JSON.stringify({ email: email, otp: otp })
+        body: JSON.stringify({ email: email, code: otp })
       });
 
       if (response.success || response.message) {
