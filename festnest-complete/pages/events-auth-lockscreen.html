@@ -295,15 +295,21 @@
       background: linear-gradient(135deg, var(--pastel-purple) 0%, var(--pastel-pink) 100%);
       border: 2px solid rgba(124,58,237,.15);
       display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem;
       margin-bottom: 20px;
       position: relative;
       cursor: default;
       transition: transform .3s cubic-bezier(.34,1.56,.64,1);
       animation: fadeUp .6s cubic-bezier(.22,1,.36,1) .15s forwards, iconBounce 3s ease-in-out 1.5s infinite;
     }
+    .lock-icon-wrap i {
+      font-size: 2.2rem;
+      transition: all 0.2s ease-out;
+    }
     .lock-icon-wrap:hover {
       transform: scale(1.12) rotate(8deg);
+    }
+    .lock-icon-wrap:hover i {
+      transform: scale(1.05);
     }
     /* Glow ring on icon */
     .lock-icon-wrap::before {
@@ -531,7 +537,17 @@
       50%       { transform: translateY(var(--drift-y, -6px)); }
     }
 
-    .chip-emoji { font-size: 1rem; }
+    .chip-emoji { 
+      font-size: 1.1rem; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-purple);
+      transition: all 0.2s ease-out;
+    }
+    .feature-chip:hover .chip-emoji {
+      transform: scale(1.1);
+    }
     .chip-count {
       font-weight: 800;
       color: var(--brand-purple);
@@ -663,19 +679,19 @@
       <!-- 3. Floating Feature Chips -->
       <div class="lock-feature-chips" aria-hidden="true">
         <div class="feature-chip feature-chip--1">
-          <span class="chip-emoji"><i class="fa-solid fa-ticket" style="font-size: 14px;"></i></span>
+          <span class="chip-emoji"><i class="fa-solid fa-ticket"></i></span>
           <span><span class="chip-count">2,400+</span> Live Events</span>
         </div>
         <div class="feature-chip feature-chip--2">
-          <span class="chip-emoji">🏆</span>
+          <span class="chip-emoji"><i class="fa-solid fa-trophy"></i></span>
           <span><span class="chip-count">₹50L+</span> Prize Pools</span>
         </div>
         <div class="feature-chip feature-chip--3">
-          <span class="chip-emoji">🏛</span>
+          <span class="chip-emoji"><i class="fa-solid fa-building-columns"></i></span>
           <span><span class="chip-count">850+</span> Colleges</span>
         </div>
         <div class="feature-chip feature-chip--4">
-          <span class="chip-emoji">⚡</span>
+          <span class="chip-emoji"><i class="fa-solid fa-lightning-bolt"></i></span>
           <span>Apply in <span class="chip-count">60 sec</span></span>
         </div>
       </div>
@@ -690,7 +706,7 @@
         </div>
 
         <!-- Animated icon / centerpiece -->
-        <div class="lock-icon-wrap" id="lockIcon" title="Hover to unlock!"><i class="fa-solid fa-ticket" style="font-size: 28px;"></i></div>
+        <div class="lock-icon-wrap" id="lockIcon" title="Hover to unlock!"><i class="fa-solid fa-ticket"></i></div>
 
         <!-- Heading -->
         <h2 class="lock-heading">
@@ -839,11 +855,11 @@
     // ── Lock icon: unlock on hover ──
     const lockIcon = document.getElementById('lockIcon');
     lockIcon.addEventListener('mouseenter', () => {
-      lockIcon.textContent = '🔓';
+      lockIcon.innerHTML = '<i class="fa-solid fa-lock-open"></i>';
       lockIcon.style.background = 'linear-gradient(135deg, #D1FAE5, #A7F3D0)';
     });
     lockIcon.addEventListener('mouseleave', () => {
-      lockIcon.innerHTML = '<i class="fa-solid fa-ticket" style="font-size: 28px;"></i>';
+      lockIcon.innerHTML = '<i class="fa-solid fa-ticket"></i>';
       lockIcon.style.background = 'linear-gradient(135deg, var(--pastel-purple), var(--pastel-pink))';
     });
 

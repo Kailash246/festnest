@@ -14,18 +14,27 @@
   gap:6px;padding:clamp(10px,2.5vw,14px) clamp(16px,4vw,28px);
   border-radius:var(--radius);
   font-size:clamp(12px,2vw,13px);font-weight:700;cursor:pointer;
-  transition:var(--transition);white-space:nowrap;
+  transition:all 0.2s ease-out;white-space:nowrap;
   border:2px solid transparent;line-height:1;text-decoration:none;
   min-height:44px;min-width:44px;overflow:hidden;
 }
+.btn i{
+  font-size:1em;transition:all 0.2s ease-out;display:inline-flex;align-items:center;justify-content:center;
+  opacity:0.8;
+}
+.btn:hover i{opacity:1}
 .btn-lg{padding:clamp(12px,3vw,16px) clamp(20px,5vw,32px);font-size:clamp(14px,2vw,15px);border-radius:var(--radius-lg)}
 .btn-sm{padding:clamp(6px,1.5vw,8px) clamp(10px,2vw,14px);font-size:clamp(11px,1.8vw,12px);border-radius:var(--radius-sm)}
 .btn-primary{background:var(--grad);color:#fff;box-shadow:0 4px 14px rgba(90,75,255,.35)}
 .btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-primary:hover i{transform:scale(1.02)}
 .btn-primary:active{transform:scale(.98)}
 .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-primary:focus{outline:none;ring:2px;ring-offset:0;ring-color:rgba(90,75,255,.3)}
 .btn-outline{background:transparent;color:var(--color-primary);border-color:var(--color-primary)}
 .btn-outline:hover{background:var(--color-primary);color:#fff}
+.btn-outline:hover i{transform:scale(1.02);opacity:1}
+.btn-outline:focus{outline:none;ring:2px;ring-offset:0;ring-color:rgba(90,75,255,.3)}
 .btn-accent{background:var(--grad-warm);color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(255,138,0,.35)}
 .btn-accent:hover{opacity:.9;transform:translateY(-1px)}
 .btn-ghost{background:transparent;color:var(--text-2);border-color:var(--border)}
@@ -124,10 +133,15 @@
   padding:clamp(6px,1.5vw,7px) clamp(12px,3vw,14px);border-radius:24px;
   font-size:clamp(11px,2vw,12px);font-weight:700;
   border:1.5px solid var(--border);background:var(--bg-card);
-  color:var(--text-2);cursor:pointer;transition:var(--transition);
+  color:var(--text-2);cursor:pointer;transition:all 0.2s ease-out;
   white-space:nowrap;font-family:inherit;min-height:32px;
+  display:flex;align-items:center;gap:6px;
+}
+.filter-chip i{
+  font-size:clamp(11px,2vw,13px);transition:all 0.2s ease-out;opacity:0.8
 }
 .filter-chip:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.filter-chip:hover i{transform:scale(1.02);opacity:1}
 .filter-chip--active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 3px 10px rgba(90,75,255,.3)}
 
 /* ── Modal (Mobile-optimized padding) ── */
@@ -147,10 +161,10 @@
   position:absolute;top:clamp(12px,3vw,16px);right:clamp(12px,3vw,16px);
   width:32px;height:32px;border-radius:50%;
   background:var(--bg);border:none;font-size:clamp(14px,3vw,16px);
-  color:var(--text-2);display:flex;align-items:center;
-  justify-content:center;cursor:pointer;transition:var(--transition)
+  color:#9ca3af;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;transition:all 0.2s ease-out
 }
-.modal-close:hover{background:#fee2e2;color:#e53e3e}
+.modal-close:hover{background:#fee2e2;color:#1f2937}
 .modal-icon{font-size:clamp(48px,10vw,60px);margin-bottom:clamp(12px,3vw,18px);text-align:center}
 .modal-title{font-size:clamp(20px,4vw,24px);font-weight:700;color:var(--text-1);margin-bottom:10px;text-align:center;line-height:1.2}
 .modal-desc{font-size:clamp(13px,2vw,15px);color:var(--text-2);line-height:1.7;margin-bottom:clamp(20px,4vw,28px);text-align:center}
@@ -657,24 +671,33 @@
   border: none;
   font-size: 16px;
   cursor: pointer;
-  color: #555;
+  color: #6b7280;
   padding: 4px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease-out;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.7;
 }
 
 .su-eye-btn:hover { 
-  color: var(--color-primary);
-  transform: translateY(-50%) scale(1.1);
+  color: #1f2937;
+  opacity: 1;
+  transform: translateY(-50%) scale(1.02);
+}
+
+.su-eye-btn:focus {
+  outline: none;
+  opacity: 1;
+  box-shadow: 0 0 0 2px rgba(90,75,255,.3);
 }
 
 .su-eye-btn i {
   font-size: 16px;
   width: 16px;
   height: 16px;
+  transition: all 0.2s ease-out;
 }
 
 /* ── Password strength bar ── */

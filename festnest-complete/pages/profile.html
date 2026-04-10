@@ -64,7 +64,7 @@
         <div>
           <div class="profile-hero-card">
             <!-- id="profileAvatar" — JS swaps in real image if available -->
-            <div class="profile-avatar" id="profileAvatar"><i class="fa-solid fa-user" style="font-size: 24px;"></i></div>
+            <div class="profile-avatar" id="profileAvatar"><i class="fa-solid fa-user"></i></div>
             <!-- id="profileName" — JS sets real name -->
             <div class="profile-name" id="profileName">Loading...</div>
             <!-- id="profileCollegeName" — JS sets real college -->
@@ -118,7 +118,7 @@
 
           <div class="profile-menu-card">
             <a class="profile-menu-item" href="/saved">
-              <span class="profile-menu-icon">🔖</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-bookmark"></i></span>
               <span class="profile-menu-text">Saved Events</span>
               <span class="profile-menu-arrow">›</span>
             </a>
@@ -128,7 +128,7 @@
               <span class="profile-menu-arrow">›</span>
             </div>
             <div class="profile-menu-item" id="pmNotifications">
-              <span class="profile-menu-icon">🔔</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-bell"></i></span>
               <span class="profile-menu-text">Notifications</span>
               <span class="profile-menu-arrow">›</span>
             </div>
@@ -140,7 +140,7 @@
 
             <!-- Post Event — always visible -->
             <a class="profile-menu-item" href="/post">
-              <span class="profile-menu-icon">📣</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-bullhorn"></i></span>
               <span class="profile-menu-text">Post an Event</span>
               <span class="profile-menu-arrow">›</span>
             </a>
@@ -148,7 +148,7 @@
             <!-- Organizer / Admin: My Events — shown by JS based on role -->
             <a class="profile-menu-item" href="/my-events"
                id="organizerPanelLink" style="display:none;">
-              <span class="profile-menu-icon">📊</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-chart-line"></i></span>
               <span class="profile-menu-text">My Events</span>
               <span class="profile-menu-arrow">›</span>
             </a>
@@ -167,7 +167,7 @@
               <span class="profile-menu-arrow">›</span>
             </a>
             <div class="profile-menu-item" id="pmLogout">
-              <span class="profile-menu-icon">🚪</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-door-open"></i></span>
               <span class="profile-menu-text">Logout</span>
               <span class="profile-menu-arrow profile-menu-arrow--danger">›</span>
             </div>
@@ -193,35 +193,35 @@
           </div>
 
           <div class="profile-activity-card">
-            <div class="profile-activity-title">📊 Recent Activity</div>
+            <div class="profile-activity-title"><i class="fa-solid fa-chart-line"></i> Recent Activity</div>
             <div class="activity-item">
-              <div class="activity-icon" style="background:var(--pastel-purple);">🔖</div>
+              <div class="activity-icon" style="background:var(--pastel-purple);"><i class="fa-solid fa-bookmark"></i></div>
               <div><div class="activity-event-title">Saved HackSpark 2025</div><div class="activity-time">2 hours ago</div></div>
               <div class="activity-badge badge badge--purple">Saved</div>
             </div>
             <div class="activity-item">
-              <div class="activity-icon" style="background:var(--pastel-green);">✅</div>
+              <div class="activity-icon" style="background:var(--pastel-green);"><i class="fa-solid fa-check"></i></div>
               <div><div class="activity-event-title">Registered for CodeQuest National</div><div class="activity-time">Yesterday</div></div>
               <div class="activity-badge badge badge--green">Registered</div>
             </div>
             <div class="activity-item">
-              <div class="activity-icon" style="background:var(--pastel-blue);">👀</div>
+              <div class="activity-icon" style="background:var(--pastel-blue);"><i class="fa-solid fa-eye"></i></div>
               <div><div class="activity-event-title">Viewed Culturama '25</div><div class="activity-time">2 days ago</div></div>
               <div class="activity-badge badge badge--blue">Viewed</div>
             </div>
           </div>
 
           <div class="profile-interests-card">
-            <div class="profile-interests-title">🎯 My Interests</div>
+            <div class="profile-interests-title"><i class="fa-solid fa-target"></i> My Interests</div>
             <div class="interests-tags">
-              <button class="filter-chip filter-chip--active" data-interest="hackathons">💻 Hackathons</button>
-              <button class="filter-chip filter-chip--active" data-interest="technical">🔬 Technical</button>
-              <button class="filter-chip filter-chip--active" data-interest="robotics">🤖 Robotics</button>
-              <button class="filter-chip" data-interest="cultural">🎭 Cultural</button>
-              <button class="filter-chip" data-interest="management">📊 Management</button>
-              <button class="filter-chip" data-interest="workshops">🛠 Workshops</button>
-              <button class="filter-chip" data-interest="sports">⚽ Sports</button>
-              <button class="filter-chip" data-interest="ai">🤖 AI / ML</button>
+              <button class="filter-chip filter-chip--active" data-interest="hackathons"><i class="fa-solid fa-laptop"></i> Hackathons</button>
+              <button class="filter-chip filter-chip--active" data-interest="technical"><i class="fa-solid fa-flask"></i> Technical</button>
+              <button class="filter-chip filter-chip--active" data-interest="robotics"><i class="fa-solid fa-robot"></i> Robotics</button>
+              <button class="filter-chip" data-interest="cultural"><i class="fa-solid fa-theater-masks"></i> Cultural</button>
+              <button class="filter-chip" data-interest="management"><i class="fa-solid fa-briefcase"></i> Management</button>
+              <button class="filter-chip" data-interest="workshops"><i class="fa-solid fa-hammer"></i> Workshops</button>
+              <button class="filter-chip" data-interest="sports"><i class="fa-solid fa-futbol"></i> Sports</button>
+              <button class="filter-chip" data-interest="ai"><i class="fa-solid fa-microchip"></i> AI / ML</button>
             </div>
           </div>
         </div>
@@ -302,7 +302,7 @@
       </div>
       <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
       <div class="auth-divider"><span>or</span></div>
-      <button type="button" class="btn btn-outline w-full">🔗 Continue with Google</button>
+      <button type="button" class="btn btn-outline w-full"><i class="fa-solid fa-arrow-up-right-from-square"></i> Continue with Google</button>
       <p class="auth-footer-text">
         No account?
         <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button>
@@ -411,7 +411,7 @@
               <button type="button" class="btn btn-primary" id="suSendOtpBtn"
                       style="display:none;white-space:nowrap;padding:10px 14px;font-size:13px;"
                       aria-label="Send OTP to email">
-                <i class="fa-solid fa-envelope" style="margin-right: 4px;"></i>Send OTP
+                <i class="fa-solid fa-envelope"></i> Send OTP
               </button>
             </div>
             <span class="form-error-msg" id="suEmailErr"></span>
