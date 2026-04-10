@@ -258,7 +258,7 @@ window.requireRole = requireRole;
 
     /* Clear all inputs */
     ['suEmail','suPwd','suConfirm','suFirstName','suLastName','suCollege',
-     'suBranch','suOrgName','suOrgCollege','suDesignation','suOrgCity','suOtpCode'].forEach(id => {
+     'suBranch','suOrgName','suDesignation','suOrgCity','suOtpCode'].forEach(id => {
       const el = document.getElementById(id);
       if (el) { el.value = ''; el.classList.remove('form-input--err','form-input--ok'); el.disabled = false; }
     });
@@ -640,7 +640,7 @@ window.requireRole = requireRole;
     /* Attach live-validation to the visible fields */
     (isStudent
       ? ['suFirstName','suLastName','suCollege','suYear']
-      : ['suOrgName','suOrgCollege']
+      : ['suOrgName']
     ).forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -672,11 +672,9 @@ window.requireRole = requireRole;
       }
       setStep2SubmitState(fn && ln && co && yr);
     } else {
-      const on = document.getElementById('suOrgName')?.value.trim()    || '';
-      const oc = document.getElementById('suOrgCollege')?.value.trim() || '';
+      const on = document.getElementById('suOrgName')?.value.trim() || '';
       if (!on) ok = false; else markOk('suOrgName');
-      if (!oc) ok = false; else markOk('suOrgCollege');
-      setStep2SubmitState(on && oc);
+      setStep2SubmitState(on);
     }
     return ok;
   }
@@ -699,13 +697,11 @@ window.requireRole = requireRole;
       su.branch     = document.getElementById('suBranch')?.value.trim()     || '';
     } else {
       su.organizationName = document.getElementById('suOrgName')?.value.trim()    || '';
-      su.orgCollege       = document.getElementById('suOrgCollege')?.value.trim() || '';
       su.designation      = document.getElementById('suDesignation')?.value.trim()|| '';
       su.city             = document.getElementById('suOrgCity')?.value.trim()    || '';
       /* Map org name to firstName for backend compatibility */
       su.firstName  = su.organizationName;
       su.lastName   = '—';
-      su.college    = su.orgCollege;
     }
 
     /* Build the payload the backend already understands */
