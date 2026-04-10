@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     page.innerHTML = err.statusCode === 404
       ? notFound()
       : `<div style="padding:120px 40px;text-align:center;">
-           <div style="font-size:60px;margin-bottom:16px;">⚠️</div>
+           <div style="font-size:60px;margin-bottom:16px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
            <h2 style="margin-bottom:10px;">Failed to load event</h2>
            <p style="color:var(--text-2);margin-bottom:24px;">${err.message}</p>
            <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 function notFound() {
   return `
     <div style="padding:120px 40px;text-align:center;">
-      <div style="font-size:72px;margin-bottom:20px;">😕</div>
+      <div style="font-size:72px;margin-bottom:20px;"><i class="fa-solid fa-circle-question"></i></div>
       <h2 style="font-size:28px;font-weight:700;margin-bottom:10px;">Event not found</h2>
       <p style="color:var(--text-2);margin-bottom:28px;">
         This event may have expired or the link is incorrect.
@@ -120,7 +120,7 @@ function buildDetail(ev) {
     ? (FN_AUTH.getUser()?.savedEvents?.includes(eid) || fnIsSaved(eid))
     : fnIsSaved(eid);
 
-  const modeIcon = { Online:'🌐', Offline:'🏢', Hybrid:'🔀' }[ev.mode] || '🏢';
+  const modeIcon = { Online:'<i class="fa-solid fa-globe" style="margin-right:4px;"></i>', Offline:'<i class="fa-solid fa-building-columns" style="margin-right:4px;"></i>', Hybrid:'<i class="fa-solid fa-code-branch" style="margin-right:4px;"></i>' }[ev.mode] || '<i class="fa-solid fa-building-columns" style="margin-right:4px;"></i>';
   const tagCls   = { mega:'ev-tag--mega', trending:'ev-tag--trending', new:'ev-tag--new' }[ev.badge] || 'ev-tag--new';
   const tagLabel = { mega:'Mega Event', trending:'Trending', new:'New' }[ev.badge] || 'New';
 
@@ -139,7 +139,7 @@ function buildDetail(ev) {
 
   const banner = ev.posterUrl
     ? `<img src="${ev.posterUrl}" alt="${ev.title}" style="width:100%;height:100%;object-fit:cover;">`
-    : `<div style="font-size:90px;position:relative;z-index:2;">${getCategoryEmoji ? getCategoryEmoji(ev.category) : '🎉'}</div>`;
+    : `<div style="font-size:90px;position:relative;z-index:2;"><i class="fa-solid fa-calendar-days"></i></div>`;
   const bannerBg = ev.posterUrl ? '#000' : (getCategoryGradient ? getCategoryGradient(ev.category) : 'var(--grad)');
 
   /* ── Description with expand/collapse ─────────────────────
@@ -195,7 +195,7 @@ function buildDetail(ev) {
         <span class="ev-tag" style="background:rgba(255,255,255,.2);color:#fff;">${modeIcon} ${ev.mode}</span>
       </div>
       <h1 class="detail-hero-title">${ev.title}</h1>
-      <div class="detail-hero-college">🏛 ${ev.college}</div>
+      <div class="detail-hero-college"><i class="fa-solid fa-building" style="margin-right:6px;"></i>${ev.college}</div>
     </div>
   </div>
 
@@ -205,7 +205,7 @@ function buildDetail(ev) {
       <!-- ABOUT THIS EVENT (with expand/collapse) -->
       <div class="detail-section">
         <div class="detail-section-head">
-          <span class="detail-section-icon" style="background:var(--pastel-blue);">📋</span>
+          <span class="detail-section-icon" style="background:var(--pastel-blue);"><i class="fa-solid fa-clipboard" style="color:#fff;"></i></span>
           About This Event
         </div>
 
@@ -217,16 +217,16 @@ function buildDetail(ev) {
       <!-- EVENT DETAILS -->
       <div class="detail-section">
         <div class="detail-section-head">
-          <span class="detail-section-icon" style="background:var(--pastel-teal);">📌</span>
+          <span class="detail-section-icon" style="background:var(--pastel-teal);"><i class="fa-solid fa-thumbtack" style="color:#fff;"></i></span>
           Event Details
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          ${infoBox('📅 Date',    dateStr + endStr)}
-          ${infoBox('📍 Location', loc)}
-          ${infoBox(modeIcon + ' Mode', ev.mode)}
-          ${infoBox('💰 Fee',     ev.registrationFee || 'Free')}
-          ${infoBox('🏆 Prize Pool', prize)}
-          ${infoBox('🏛 Organizer',  ev.college)}
+          ${infoBox('<i class="fa-solid fa-calendar" style="margin-right:6px;"></i>Date',    dateStr + endStr)}
+          ${infoBox('<i class="fa-solid fa-location-dot" style="margin-right:6px;"></i>Location', loc)}
+          ${infoBox(modeIcon + 'Mode', ev.mode)}
+          ${infoBox('<i class="fa-solid fa-wallet" style="margin-right:6px;"></i>Fee',     ev.registrationFee || 'Free')}
+          ${infoBox('<i class="fa-solid fa-trophy" style="margin-right:6px;"></i>Prize Pool', prize)}
+          ${infoBox('<i class="fa-solid fa-building" style="margin-right:6px;"></i>Organizer',  ev.college)}
         </div>
       </div>
 
@@ -234,7 +234,7 @@ function buildDetail(ev) {
       ${ev.eligibility || ev.rules ? `
       <div class="detail-section">
         <div class="detail-section-head">
-          <span class="detail-section-icon" style="background:var(--pastel-pink);">📜</span>
+          <span class="detail-section-icon" style="background:var(--pastel-pink);"><i class="fa-solid fa-certificate" style="color:#fff;"></i></span>
           Rules &amp; Eligibility
         </div>
         ${ev.eligibility ? `<h4 style="font-size:13px;margin-bottom:8px;">Eligibility</h4><pre class="detail-rules">${ev.eligibility}</pre>` : ''}
@@ -245,28 +245,28 @@ function buildDetail(ev) {
       ${ev.prizes?.first ? `
       <div class="detail-section">
         <div class="detail-section-head">
-          <span class="detail-section-icon" style="background:var(--pastel-yellow);">🏆</span>
+          <span class="detail-section-icon" style="background:var(--pastel-yellow);"><i class="fa-solid fa-trophy" style="color:#fff;"></i></span>
           Prize Breakdown
         </div>
         <div class="prize-grid">
-          ${prizeBox('🥇 1st', ev.prizes.first,          'var(--pastel-yellow)', '#E65100')}
-          ${prizeBox('🥈 2nd', ev.prizes.second || '—',  '#f5f5f5',             '#546E7A')}
-          ${prizeBox('🥉 3rd', ev.prizes.third  || '—',  'var(--pastel-orange)', '#BF6A02')}
+          ${prizeBox('<i class="fa-solid fa-medal" style="margin-right:6px;"></i>1st', ev.prizes.first,          'var(--pastel-yellow)', '#E65100')}
+          ${prizeBox('<i class="fa-solid fa-medal" style="margin-right:6px;"></i>2nd', ev.prizes.second || '—',  '#f5f5f5',             '#546E7A')}
+          ${prizeBox('<i class="fa-solid fa-medal" style="margin-right:6px;"></i>3rd', ev.prizes.third  || '—',  'var(--pastel-orange)', '#BF6A02')}
         </div>
-        ${ev.prizes.other ? `<p style="font-size:13px;color:var(--text-2);margin-top:12px;">🎁 ${ev.prizes.other}</p>` : ''}
+        ${ev.prizes.other ? `<p style="font-size:13px;color:var(--text-2);margin-top:12px;"><i class="fa-solid fa-gift" style="margin-right:6px;"></i>${ev.prizes.other}</p>` : ''}
       </div>` : ''}
 
       <!-- CONTACT -->
       <div class="detail-section">
         <div class="detail-section-head">
-          <span class="detail-section-icon" style="background:var(--pastel-green);">📞</span>
+          <span class="detail-section-icon" style="background:var(--pastel-green);"><i class="fa-solid fa-phone" style="color:#fff;"></i></span>
           Contact &amp; POC
         </div>
         <div class="contact-grid">
-          ${infoBox('👤 POC Name', ev.contact?.name  || '—')}
-          ${infoBox('📱 Phone',    ev.contact?.phone || '—')}
+          ${infoBox('<i class="fa-solid fa-user" style="margin-right:6px;"></i>POC Name', ev.contact?.name  || '—')}
+          ${infoBox('<i class="fa-solid fa-mobile" style="margin-right:6px;"></i>Phone',    ev.contact?.phone || '—')}
           <div class="contact-box" style="grid-column:1/-1;">
-            <div class="contact-box-label">✉️ Email</div>
+            <div class="contact-box-label"><i class="fa-solid fa-envelope" style="margin-right:6px;"></i>Email</div>
             <div class="contact-box-val">
               ${ev.contact?.email
                 ? `<a href="mailto:${ev.contact.email}" style="color:var(--color-primary);">${ev.contact.email}</a>`
@@ -275,7 +275,7 @@ function buildDetail(ev) {
           </div>
           ${ev.contact?.website ? `
           <div class="contact-box" style="grid-column:1/-1;">
-            <div class="contact-box-label">🌐 Website</div>
+            <div class="contact-box-label"><i class="fa-solid fa-globe" style="margin-right:6px;"></i>Website</div>
             <div class="contact-box-val">
               <a href="${ev.contact.website}" target="_blank" rel="noopener"
                  style="color:var(--color-primary);">${ev.contact.website}</a>
@@ -298,30 +298,30 @@ function buildDetail(ev) {
         <button class="btn-register-main" id="detail-register-btn">Register Now →</button>
 
         <button class="btn-save-detail ${saved ? 'btn-save-detail--saved' : ''}" id="detail-save-btn">
-          ${saved ? '🔖 Saved' : '🤍 Save Event'}
+          ${saved ? '<i class="fa-solid fa-bookmark" style="margin-right:6px;"></i>Saved' : '<i class="fa-solid fa-heart" style="margin-right:6px;"></i>Save Event'}
         </button>
 
         <div class="detail-quick-info">
-          <div class="quick-info-row"><span class="quick-info-icon">📅</span><span class="quick-info-text">Date</span><span class="quick-info-val">${dateStr + endStr}</span></div>
-          <div class="quick-info-row"><span class="quick-info-icon">📍</span><span class="quick-info-text">Location</span><span class="quick-info-val">${ev.location?.city || 'India'}</span></div>
+          <div class="quick-info-row"><span class="quick-info-icon"><i class="fa-solid fa-calendar"></i></span><span class="quick-info-text">Date</span><span class="quick-info-val">${dateStr + endStr}</span></div>
+          <div class="quick-info-row"><span class="quick-info-icon"><i class="fa-solid fa-location-dot"></i></span><span class="quick-info-text">Location</span><span class="quick-info-val">${ev.location?.city || 'India'}</span></div>
           <div class="quick-info-row"><span class="quick-info-icon">${modeIcon}</span><span class="quick-info-text">Mode</span><span class="quick-info-val">${ev.mode}</span></div>
-          <div class="quick-info-row"><span class="quick-info-icon">🏆</span><span class="quick-info-text">Prize</span><span class="quick-info-val">${prize}</span></div>
-          <div class="quick-info-row"><span class="quick-info-icon">👁</span><span class="quick-info-text">Views</span><span class="quick-info-val">${(ev.views || 0).toLocaleString()}</span></div>
+          <div class="quick-info-row"><span class="quick-info-icon"><i class="fa-solid fa-trophy"></i></span><span class="quick-info-text">Prize</span><span class="quick-info-val">${prize}</span></div>
+          <div class="quick-info-row"><span class="quick-info-icon"><i class="fa-solid fa-eye"></i></span><span class="quick-info-text">Views</span><span class="quick-info-val">${(ev.views || 0).toLocaleString()}</span></div>
         </div>
 
         ${ev.brochureUrl ? `
         <button class="btn-download-brochure" onclick="downloadBrochure('${ev.brochureUrl}', '${ev.title.replace(/'/g, "\\'")}')";>
-          📥 Download Brochure PDF
+          <i class="fa-solid fa-download" style="margin-right:6px;"></i>Download Brochure PDF
         </button>` : ''}
 
         <div class="detail-share-row">
-          <button class="btn-share-action" id="detail-share-btn">🔗 Share</button>
-          <button class="btn-share-action" id="detail-cal-btn">📅 Calendar</button>
+          <button class="btn-share-action" id="detail-share-btn"><i class="fa-solid fa-share" style="margin-right:6px;"></i>Share</button>
+          <button class="btn-share-action" id="detail-cal-btn"><i class="fa-solid fa-calendar" style="margin-right:6px;"></i>Calendar</button>
         </div>
       </div>
 
       <div class="detail-sidebar-card" style="background:var(--pastel-purple);border-color:rgba(90,75,255,.15);">
-        <div style="font-size:20px;margin-bottom:8px;">✨</div>
+        <div style="font-size:20px;margin-bottom:8px;"><i class="fa-solid fa-star" style="color:#5a4bff;"></i></div>
         <div style="font-size:14px;font-weight:800;margin-bottom:6px;">Discover More Events</div>
         <p style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:14px;">
           2,400+ campus events from 850+ colleges across India.
@@ -372,7 +372,7 @@ function wireButtons(ev) {
   document.getElementById('detail-register-btn')?.addEventListener('click', () => {
     if (!Auth.requireForEvent('register')) return;
     if (ev.registrationLink) window.open(ev.registrationLink, '_blank', 'noopener');
-    else showToast('🎉 Registration link coming soon!', 'info');
+    else showToast('Registration link coming soon!', 'info');
   });
 
   /* Save / Unsave */
@@ -383,7 +383,7 @@ function wireButtons(ev) {
       const res = await FN_EVENTS_API.toggleSave(eid);
       saveBtn.textContent = res.saved ? '🔖 Saved' : '🤍 Save Event';
       saveBtn.classList.toggle('btn-save-detail--saved', res.saved);
-      showToast(res.saved ? '🔖 Event saved!' : '💔 Removed from saved',
+      showToast(res.saved ? 'Event saved!' : 'Removed from saved',
                 res.saved ? 'success' : '');
     } catch (err) {
       showToast(err.message, 'error');
@@ -397,13 +397,13 @@ function wireButtons(ev) {
       navigator.share({ title: ev.title, url }).catch(() => {});
     } else {
       navigator.clipboard?.writeText(url);
-      showToast('🔗 Link copied to clipboard!', 'success');
+      showToast('Link copied to clipboard!', 'success');
     }
   });
 
   /* Calendar */
   document.getElementById('detail-cal-btn')?.addEventListener('click', () => {
-    showToast('📅 Added to calendar!', 'success');
+    showToast('Added to calendar!', 'success');
   });
 }
 
