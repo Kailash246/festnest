@@ -483,7 +483,12 @@ window.requireRole = requireRole;
         document.getElementById('suPwd').disabled = false;
         document.getElementById('suConfirm').disabled = false;
         
-        if (verifyBtn) verifyBtn.textContent = '✓ Verified';
+        if (verifyBtn) {
+          verifyBtn.textContent = '✓ Verified';
+          verifyBtn.style.background = '#4CAF50';
+          verifyBtn.style.color = 'white';
+          verifyBtn.disabled = true;
+        }
         
         /* Update description */
         const desc = document.getElementById('suStep1Desc');
