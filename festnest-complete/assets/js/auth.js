@@ -258,7 +258,7 @@ window.requireRole = requireRole;
 
     /* Clear all inputs */
     ['suEmail','suPwd','suConfirm','suFirstName','suLastName','suCollege',
-     'suBranch','suOrgName','suDesignation','suOrgCity','suOtpCode'].forEach(id => {
+     'suBranch','suOrgName','suDesignation','suOrgCity','suOrgPhone','suOtpCode'].forEach(id => {
       const el = document.getElementById(id);
       if (el) { el.value = ''; el.classList.remove('form-input--err','form-input--ok'); el.disabled = false; }
     });
@@ -699,6 +699,7 @@ window.requireRole = requireRole;
       su.organizationName = document.getElementById('suOrgName')?.value.trim()    || '';
       su.designation      = document.getElementById('suDesignation')?.value.trim()|| '';
       su.city             = document.getElementById('suOrgCity')?.value.trim()    || '';
+      su.phone            = document.getElementById('suOrgPhone')?.value.trim()   || '';
       /* Map org name to firstName for backend compatibility */
       su.firstName  = su.organizationName;
       su.lastName   = '—';
@@ -715,7 +716,7 @@ window.requireRole = requireRole;
       year:       su.year,
       branch:     su.branch,
       city:       su.city,
-      phone:      '',
+      phone:      su.phone,
     };
 
     /* Loading state */
