@@ -18,7 +18,7 @@ p{line-height:1.7}
 ::-webkit-scrollbar-thumb:hover{background:var(--color-primary)}
 
 ::selection{background:rgba(90,75,255,.15);color:var(--color-primary)}
-*:focus-visible{outline:2px solid var(--color-primary);outline-offset:2px}
+*:focus-visible{outline:none}
 
 .w-full{width:100%}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
