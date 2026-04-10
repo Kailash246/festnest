@@ -35,6 +35,7 @@ exports.generateOTP = async (email) => {
     const now = new Date();
 
     console.log(`\n[OTP Service] 🔄 generateOTP called for ${cleanEmail}`);
+    console.log(`[OTP Service] 💾 Using MongoDB storage (survives restarts & load balancing)`);
 
     /* ── Check rate limit (60 seconds) ── */
     const existingOtp = await Otp.findOne({ email: cleanEmail });
@@ -99,6 +100,7 @@ exports.verifyOTP = async (email, code) => {
     const now = new Date();
 
     console.log(`\n[OTP Service] 🔍 verifyOTP called`);
+    console.log(`[OTP Service] 💾 Querying MongoDB for OTP record`);
     console.log(`[OTP Service] Email: ${cleanEmail}`);
     console.log(`[OTP Service] Provided Code: ${cleanCode}`);
 
@@ -159,7 +161,9 @@ exports.verifyOTP = async (email, code) => {
 
     /* ── Success: Delete OTP record ── */
     console.log(`[OTP Service] ✅ OTP verified successfully`);
+    console.log(`[OTP Service] 🗑️ Deleting OTP record from MongoDB...`);
     await Otp.deleteOne({ _id: otpRecord._id });
+    console.log(`[OTP Service] ✅ OTP record deleted (one-time use enforced)`);
 
     return {
       success: true,
