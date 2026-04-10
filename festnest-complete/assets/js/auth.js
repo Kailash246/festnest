@@ -737,9 +737,10 @@ window.requireRole = requireRole;
         setTimeout(() => { window.location.href = '/index.html'; }, 900);
       }
     } catch (err) {
-      const errMsg = err.message || 'Registration failed. Please try again.';
-      showGlobalErr(errMsg);
-      showToast('❌ ' + errMsg, 'error');
+      const errorMsg = err.message || 'Registration failed. Please try again.';
+      console.error('[Signup] Error:', errorMsg, err);
+      showGlobalErr(errorMsg);
+      if (typeof showToast === 'function') showToast(errorMsg, 'error');
       step2SubmitBtn.disabled  = false;
       step2SubmitBtn.textContent = 'Create Account 🚀';
     }
@@ -760,7 +761,9 @@ window.requireRole = requireRole;
       const pwd   = document.getElementById('loginPwd')?.value           || '';
 
       if (!email || !pwd) {
-        showGlobalErr('Please enter your email and password.');
+        const msg = 'Please enter your email and password.';
+        showGlobalErr(msg);
+        if (typeof showToast === 'function') showToast(msg, 'error');
         return;
       }
 
@@ -775,9 +778,10 @@ window.requireRole = requireRole;
         /* Redirect to home */
         setTimeout(() => { window.location.href = '/index.html'; }, 900);
       } catch (err) {
-        const errMsg = err.message || 'Login failed. Check your credentials.';
-        showGlobalErr(errMsg);
-        showToast('❌ ' + errMsg, 'error');
+        const errorMsg = err.message || 'Login failed. Check your credentials.';
+        console.error('[Login] Error:', errorMsg, err);
+        showGlobalErr(errorMsg);
+        if (typeof showToast === 'function') showToast(errorMsg, 'error');
         submitBtn.disabled   = false;
         submitBtn.textContent = submitBtn.dataset.origText;
       }
