@@ -20,16 +20,16 @@
 }
 .btn-lg{padding:clamp(12px,3vw,16px) clamp(20px,5vw,32px);font-size:clamp(14px,2vw,15px);border-radius:var(--radius-lg)}
 .btn-sm{padding:clamp(6px,1.5vw,8px) clamp(10px,2vw,14px);font-size:clamp(11px,1.8vw,12px);border-radius:var(--radius-sm)}
-.btn-primary{background:#2563EB;color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.35)}
-.btn-primary:hover{background:#1D4ED8;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 4px 14px rgba(90,75,255,.35)}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:var(--shadow-md)}
 .btn-primary:active{transform:scale(.98)}
 .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.btn-outline{background:#FFFFFF;color:#111827;border-color:#E5E7EB}
-.btn-outline:hover{background:#F3F4F6;color:#111827;border-color:#E5E7EB}
+.btn-outline{background:transparent;color:var(--color-primary);border-color:var(--color-primary)}
+.btn-outline:hover{background:var(--color-primary);color:#fff}
 .btn-accent{background:var(--grad-warm);color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(255,138,0,.35)}
 .btn-accent:hover{opacity:.9;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:#374151;border-color:#E5E7EB}
-.btn-ghost:hover{border-color:#E5E7EB;color:#374151;background:#F3F4F6}
+.btn-ghost{background:transparent;color:var(--text-2);border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--color-primary);color:var(--color-primary)}
 .btn-danger{background:transparent;color:#e53e3e;border-color:#e53e3e}
 .btn-danger:hover{background:#e53e3e;color:#fff}
 .btn-cta-white{background:#fff;color:var(--color-primary);border-color:transparent;padding:clamp(12px,3vw,16px) clamp(24px,5vw,32px);font-size:clamp(14px,2vw,15px);border-radius:var(--radius-lg)}
@@ -72,8 +72,8 @@
 .ev-meta-item{display:flex;align-items:center;gap:4px;color:var(--text-2);font-weight:600}
 .ev-card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bg);padding-top:clamp(8px,2vw,12px);margin-top:auto;flex-wrap:wrap;gap:8px}
 .ev-prize-badge{background:var(--pastel-yellow);padding:clamp(4px,1vw,5px) clamp(10px,2vw,12px);border-radius:20px;font-size:clamp(10px,1.5vw,11px);font-weight:800;color:#B8680A}
-.ev-register-btn{background:#2563EB;color:#fff;border:none;border-radius:20px;padding:clamp(6px,1.5vw,8px) clamp(12px,2vw,16px);font-size:clamp(10px,1.5vw,11px);font-weight:800;cursor:pointer;transition:var(--transition);font-family:inherit;min-height:32px}
-.ev-register-btn:hover{background:#1D4ED8;transform:scale(1.03)}
+.ev-register-btn{background:var(--grad);color:#fff;border:none;border-radius:20px;padding:clamp(6px,1.5vw,8px) clamp(12px,2vw,16px);font-size:clamp(10px,1.5vw,11px);font-weight:800;cursor:pointer;transition:var(--transition);font-family:inherit;min-height:32px}
+.ev-register-btn:hover{opacity:.9;transform:scale(1.03)}
 
 /* ── Events Grid (Responsive columns) ── */
 .events-grid{
@@ -120,15 +120,15 @@
 .upload-zone-sub{font-size:clamp(10px,1.8vw,11px);color:var(--text-2)}
 
 /* ── Filter Chips ── */
-.filter-chip{  
+.filter-chip{
   padding:clamp(6px,1.5vw,7px) clamp(12px,3vw,14px);border-radius:24px;
   font-size:clamp(11px,2vw,12px);font-weight:700;
-  border:1.5px solid #E5E7EB;background:#FFFFFF;
-  color:#374151;cursor:pointer;transition:var(--transition);
+  border:1.5px solid var(--border);background:var(--bg-card);
+  color:var(--text-2);cursor:pointer;transition:var(--transition);
   white-space:nowrap;font-family:inherit;min-height:32px;
 }
-.filter-chip:hover{border-color:#2563EB;color:#2563EB;background:#F3F4F6}
-.filter-chip--active{background:#2563EB;color:#fff;border-color:transparent;box-shadow:0 3px 10px rgba(37,99,235,.3)}
+.filter-chip:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.filter-chip--active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 3px 10px rgba(90,75,255,.3)}
 
 /* ── Modal (Mobile-optimized padding) ── */
 .modal-overlay{
@@ -457,10 +457,10 @@
   flex-shrink: 0;
 }
 .su-step--active .su-step-dot {
-  background: #2563EB;
+  background: var(--grad);
   border-color: transparent;
   color: #fff;
-  box-shadow: 0 3px 10px rgba(37,99,235,.35);
+  box-shadow: 0 3px 10px rgba(90,75,255,.35);
 }
 .su-step--done .su-step-dot {
   background: #00BFA5;
