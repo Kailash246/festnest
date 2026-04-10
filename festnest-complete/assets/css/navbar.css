@@ -75,7 +75,7 @@
   border: none; font-family: inherit; transition: var(--transition);
   text-decoration: none; white-space: nowrap; min-height: 36px;
 }
-.nav-user-btn:hover { background: #5A4BFF; opacity: 0.9; }
+.nav-user-btn:hover { background: #1D4ED8; opacity: 0.9; }
 .nav-user-name {
   max-width: 150px; overflow: hidden; text-overflow: ellipsis;
   white-space: nowrap; display: inline-block;
