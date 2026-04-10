@@ -203,7 +203,7 @@
     width: auto;
   }
   .logo-text { 
-    font-size: clamp(16px, 4vw, 22px);
+    font-size: clamp(20px, 4vw, 22px);
     white-space: nowrap;
     display: block;
   }
