@@ -74,6 +74,7 @@ exports.generateOTP = (email) => {
   return {
     success: true,
     message: 'OTP sent successfully',
+    otp: code,
     expiresIn: 300, /* 5 minutes in seconds */
   };
 };

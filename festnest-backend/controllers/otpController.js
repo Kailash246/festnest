@@ -59,7 +59,7 @@ exports.sendOTP = async (req, res, next) => {
 
     /* ── Send email ── */
     try {
-      await sendOTPEmail(email);
+      await sendOTPEmail(email, result.otp);
       console.log('[SendOTP] ✅ OTP email sent to', email);
 
       return res.status(200).json({
