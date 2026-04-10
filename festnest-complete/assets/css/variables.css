@@ -32,10 +32,10 @@
   --pastel-orange: #FFF3E0;
   --pastel-teal:   #E0F7FA;
 
-  --radius-sm:   8px;
-  --radius:      14px;
-  --radius-lg:   20px;
-  --radius-xl:   28px;
+  --radius-sm:   4px;
+  --radius:      8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
 
   --shadow-sm:   0 2px 12px rgba(90,75,255,.08);
   --shadow-md:   0 8px 30px rgba(90,75,255,.15);
