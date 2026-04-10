@@ -395,6 +395,17 @@
     padding-bottom:clamp(20px,4vw,30px);
     min-height:unset;
   }
+  .hero-badge {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-size: 40px;
+  }
+  .hero-desc {
+    font-size: 16px;
+    margin-bottom: 28px;
+  }
   .features-grid,
   .how-grid,
   .categories-grid,
@@ -403,10 +414,51 @@
 }
 @media(max-width:640px){
   .hero{gap:clamp(16px,4vw,24px)}
-  .hero-stat-num{font-size:clamp(18px,4vw,24px)}
+  .hero-badge {
+    font-size: 13px;
+    padding: 8px 16px;
+    margin-bottom: 24px;
+  }
+  .hero-title {
+    font-size: 42px;
+    margin-bottom: 16px;
+  }
+  .hero-desc {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+  .btn-hero {
+    padding: 14px 32px;
+    font-size: 14px;
+  }
+  .hero-actions {
+    margin-bottom: 36px;
+    gap: 12px;
+  }
+  .hero-stat-num{font-size:28px;margin-bottom:6px}
+  .hero-stat-label{font-size:13px}
+  .hero-stats{gap:24px;margin-top:8px}
   .categories-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:480px){
-  .hero-actions{gap:clamp(8px,2vw,10px)}
-  .hero-stats{gap:clamp(12px,3vw,16px)}
+  .hero-actions{gap:12px}
+  .hero-stats{gap:20px}
+  .btn-hero {
+    padding: 12px 28px;
+    font-size: 13px;
+  }
+  .hero-title {
+    font-size: 38px;
+    margin-bottom: 14px;
+  }
+  .hero-desc {
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+  .hero-stat-num {
+    font-size: 26px;
+  }
+  .hero-stat-label {
+    font-size: 12px;
+  }
 }
