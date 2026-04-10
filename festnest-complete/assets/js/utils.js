@@ -30,16 +30,16 @@ function trapFocus(el) {
 /* ── Category helpers ── */
 function getCategoryGradient(cat) {
   const m = {
-    Hackathon:  'linear-gradient(135deg,#667eea,#764ba2)',
-    Cultural:   'linear-gradient(135deg,#f093fb,#f5576c)',
-    Technical:  'linear-gradient(135deg,#4facfe,#00f2fe)',
-    Sports:     'linear-gradient(135deg,#fa709a,#fee140)',
-    Workshop:   'linear-gradient(135deg,#a18cd1,#fbc2eb)',
-    Management: 'linear-gradient(135deg,#f7971e,#ffd200)',
-    Literary:   'linear-gradient(135deg,#43e97b,#38f9d7)',
-    Other:      'linear-gradient(135deg,#667eea,#764ba2)',
+    Hackathon:  '#6B5B95',
+    Cultural:   '#D1566C',
+    Technical:  '#2B9FD9',
+    Sports:     '#E85A5F',
+    Workshop:   '#9B7BA6',
+    Management: '#F97316',
+    Literary:   '#1EC98F',
+    Other:      '#6B5B95',
   };
-  return m[cat] || 'linear-gradient(135deg,#667eea,#764ba2)';
+  return m[cat] || '#6B5B95';
 }
 
 function getCategoryEmoji(cat) {
