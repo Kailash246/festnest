@@ -157,11 +157,10 @@ exports.register = async (req, res, next) => {
       /* Organizer-specific validation */
       /* organizationName is now optional - removed from form */
       if (!city)             return res.status(400).json({ success: false, message: 'City is required.' });
-      if (!phone)            return res.status(400).json({ success: false, message: 'Phone number is required.' });
-
-      /* Validate phone format (basic check) */
-      if (!/^\d{7,15}$/.test(phone.replace(/[\s\-]/g, ''))) {
-        return res.status(400).json({ success: false, message: 'Phone number must be 7-15 digits.' });
+      
+      /* Phone is optional but must be exactly 10 digits if provided */
+      if (phone && !/^\d{10}$/.test(phone.trim())) {
+        return res.status(400).json({ success: false, message: 'Phone must be exactly 10 digits.' });
       }
 
       console.log('[Register] ✔ All required fields present for organizer');
@@ -183,8 +182,9 @@ exports.register = async (req, res, next) => {
       console.log('[Register] ✔ Email is unique across collections');
 
       /* Create organizer document */
+      /* Frontend sends org name as 'firstName' for compatibility */
       const organizerData = {
-        organizationName: organizationName ? organizationName.trim() : '',
+        organizationName: firstName ? firstName.trim() : (organizationName ? organizationName.trim() : ''),
         email: email.toLowerCase().trim(),
         password,
         city: city.trim(),
