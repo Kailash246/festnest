@@ -49,6 +49,22 @@
 
   --transition:    all .2s ease;
   --transition-md: all .3s ease;
+
+  /* Mobile-first spacing scale */
+  --space-xs:    4px;
+  --space-sm:    8px;
+  --space-md:    12px;
+  --space-lg:    16px;
+  --space-xl:    24px;
+  --space-2xl:   32px;
+  --space-3xl:   40px;
+  --space-4xl:   48px;
 }
-@media(max-width:1024px){ :root{ --page-padding:40px; } }
-@media(max-width:768px){  :root{ --page-padding:20px; } }
+
+/* Responsive breakpoints */
+@media(max-width:1280px){ :root{ --page-padding:64px; } }
+@media(max-width:1024px){ :root{ --page-padding:48px; } }
+@media(max-width:900px){ :root{ --page-padding:32px; } }
+@media(max-width:768px){  :root{ --page-padding:20px; --nav-height:64px; } }
+@media(max-width:640px){  :root{ --page-padding:16px; --nav-height:56px; } }
+@media(max-width:480px){  :root{ --page-padding:12px; --nav-height:56px; } }
