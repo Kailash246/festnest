@@ -45,8 +45,8 @@ exports.sendOTP = async (req, res, next) => {
       });
     }
 
-    /* ── Generate OTP ── */
-    const result = generateOTP(email);
+    /* ── Generate OTP (MongoDB) ── */
+    const result = await generateOTP(email);
 
     if (!result.success) {
       console.log('[SendOTP] ⚠️ Rate limit:', result.message);
@@ -108,8 +108,8 @@ exports.verifyOTP = async (req, res, next) => {
       });
     }
 
-    /* ── Verify OTP ── */
-    const result = verifyOTP(email, code);
+    /* ── Verify OTP (MongoDB) ── */
+    const result = await verifyOTP(email, code);
 
     if (!result.success) {
       console.log('[VerifyOTP] ❌', result.message);

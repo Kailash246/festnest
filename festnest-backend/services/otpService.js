@@ -1,30 +1,20 @@
 /* ============================================================
    FESTNEST — services/otpService.js
-   OTP Management Service
+   OTP Management Service (MongoDB Storage)
    - Generate and verify 6-digit OTPs
-   - In-memory storage with 5-minute expiry
+   - MongoDB storage (survives server restarts, works on Render)
+   - 5-minute expiry
    - 5 attempts limit per OTP
    - Rate limiting: 60 seconds between send attempts
    ============================================================ */
 
 'use strict';
 
-/* ── In-memory OTP storage ──
-   Format: {
-     email: {
-       code: '123456',
-       expiresAt: timestamp,
-       attempts: 0,
-       lastSentAt: timestamp
-     }
-   }
-   ────────────────────────── */
-const otpStore = new Map();
+const Otp = require('../models/Otp');
 
 /* ── Configuration ── */
-const OTP_EXPIRY_MS = 5 * 60 * 1000;       /* 5 minutes */
-const MAX_ATTEMPTS = 5;                     /* Failed verification attempts */
-const RATE_LIMIT_MS = 60 * 1000;            /* 60 seconds between sends */
+const MAX_ATTEMPTS = 5;
+const RATE_LIMIT_MS = 60 * 1000; /* 60 seconds between sends */
 
 /**
  * Generate a random 6-digit OTP
@@ -35,180 +25,184 @@ const generateOTPCode = () => {
 };
 
 /**
- * Generate and store OTP for an email
+ * Generate and store OTP for an email (MongoDB)
  * @param {string} email - User email
- * @returns {object} { success, message, expiresIn }
+ * @returns {object} { success, message, otp, expiresIn, retryAfter }
  */
-exports.generateOTP = (email) => {
-  const now = Date.now();
-  const cleanEmail = email.toLowerCase().trim();
+exports.generateOTP = async (email) => {
+  try {
+    const cleanEmail = email.toLowerCase().trim();
+    const now = new Date();
 
-  /* ── Check rate limit (60 seconds) ── */
-  if (otpStore.has(cleanEmail)) {
-    const existing = otpStore.get(cleanEmail);
-    const timeSinceLastSent = now - existing.lastSentAt;
+    console.log(`\n[OTP Service] 🔄 generateOTP called for ${cleanEmail}`);
 
-    if (timeSinceLastSent < RATE_LIMIT_MS) {
-      const secondsRemaining = Math.ceil((RATE_LIMIT_MS - timeSinceLastSent) / 1000);
-      return {
-        success: false,
-        message: `Please wait ${secondsRemaining} seconds before requesting another OTP.`,
-        retryAfter: secondsRemaining,
-      };
+    /* ── Check rate limit (60 seconds) ── */
+    const existingOtp = await Otp.findOne({ email: cleanEmail });
+
+    if (existingOtp && existingOtp.expiresAt > now) {
+      const timeSinceCreated = now - existingOtp.createdAt;
+
+      if (timeSinceCreated < RATE_LIMIT_MS) {
+        const secondsRemaining = Math.ceil((RATE_LIMIT_MS - timeSinceCreated) / 1000);
+        console.log(`[OTP Service] ⏱️ Rate limit hit: ${secondsRemaining}s remaining`);
+
+        return {
+          success: false,
+          message: `Please wait ${secondsRemaining} seconds before requesting another OTP.`,
+          retryAfter: secondsRemaining,
+        };
+      }
     }
+
+    /* ── Generate new OTP ── */
+    const code = generateOTPCode();
+    const expiresAt = new Date(now.getTime() + 5 * 60 * 1000); /* 5 minutes */
+
+    /* ── Save or update OTP in MongoDB ── */
+    const otpRecord = await Otp.findOneAndUpdate(
+      { email: cleanEmail },
+      {
+        email: cleanEmail,
+        otp: code,
+        expiresAt,
+        attempts: 0,
+        createdAt: now,
+      },
+      { upsert: true, new: true }
+    );
+
+    console.log(`[OTP Service] ✅ OTP ${code} stored in DB for ${cleanEmail}`);
+    console.log(`[OTP Service] ⏰ Expires at: ${expiresAt.toISOString()}`);
+
+    return {
+      success: true,
+      message: 'OTP generated successfully',
+      otp: code,
+      expiresIn: 300, /* 5 minutes in seconds */
+    };
+  } catch (error) {
+    console.error(`[OTP Service] 💥 generateOTP error:`, error.message);
+    throw error;
   }
-
-  /* ── Generate new OTP ── */
-  const code = generateOTPCode();
-  const expiresAt = now + OTP_EXPIRY_MS;
-
-  otpStore.set(cleanEmail, {
-    code,
-    expiresAt,
-    attempts: 0,
-    lastSentAt: now,
-  });
-
-  console.log(`✅ OTP generated for ${cleanEmail}: ${code} (expires in 5 min)`);
-
-  return {
-    success: true,
-    message: 'OTP sent successfully',
-    otp: code,
-    expiresIn: 300, /* 5 minutes in seconds */
-  };
 };
 
 /**
  * Verify OTP for an email
  * @param {string} email - User email
  * @param {string} code - OTP code to verify
- * @returns {object} { success, message }
+ * @returns {object} { success, message, attemptsRemaining }
  */
-exports.verifyOTP = (email, code) => {
-  const now = Date.now();
-  const cleanEmail = email.toLowerCase().trim();
-  const cleanCode = code.toString().trim();
+exports.verifyOTP = async (email, code) => {
+  try {
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanCode = code.toString().trim();
+    const now = new Date();
 
-  /* ── Check if OTP exists ── */
-  if (!otpStore.has(cleanEmail)) {
-    return {
-      success: false,
-      message: 'No OTP found for this email. Please request a new OTP.',
-    };
-  }
+    console.log(`\n[OTP Service] 🔍 verifyOTP called`);
+    console.log(`[OTP Service] Email: ${cleanEmail}`);
+    console.log(`[OTP Service] Provided Code: ${cleanCode}`);
 
-  const otpData = otpStore.get(cleanEmail);
+    /* ── Find OTP record ── */
+    const otpRecord = await Otp.findOne({ email: cleanEmail });
 
-  /* ── Check if OTP expired ── */
-  if (now > otpData.expiresAt) {
-    otpStore.delete(cleanEmail);
-    return {
-      success: false,
-      message: 'OTP has expired. Please request a new OTP.',
-    };
-  }
-
-  /* ── Check attempt limit ── */
-  if (otpData.attempts >= MAX_ATTEMPTS) {
-    otpStore.delete(cleanEmail);
-    return {
-      success: false,
-      message: 'Maximum verification attempts exceeded. Please request a new OTP.',
-    };
-  }
-
-  /* ── Verify code ── */
-  if (cleanCode !== otpData.code) {
-    otpData.attempts += 1;
-    const attemptsRemaining = MAX_ATTEMPTS - otpData.attempts;
-
-    if (attemptsRemaining === 0) {
-      otpStore.delete(cleanEmail);
+    if (!otpRecord) {
+      console.log(`[OTP Service] ❌ No OTP found for ${cleanEmail}`);
       return {
         success: false,
-        message: 'Invalid OTP. Maximum attempts exceeded. Please request a new OTP.',
+        message: 'No OTP found for this email. Please request a new OTP.',
       };
     }
 
+    console.log(`[OTP Service] 📊 OTP Record Found`);
+    console.log(`[OTP Service]   Stored Code: ${otpRecord.otp}`);
+    console.log(`[OTP Service]   Expires At: ${otpRecord.expiresAt.toISOString()}`);
+    console.log(`[OTP Service]   Current Time: ${now.toISOString()}`);
+    console.log(`[OTP Service]   Attempts: ${otpRecord.attempts}/${MAX_ATTEMPTS}`);
+
+    /* ── Check expiry ── */
+    if (otpRecord.expiresAt < now) {
+      console.log(`[OTP Service] ⏱️ OTP expired`);
+      await Otp.deleteOne({ _id: otpRecord._id });
+      return {
+        success: false,
+        message: 'OTP has expired. Please request a new one.',
+      };
+    }
+
+    /* ── Check max attempts ── */
+    if (otpRecord.attempts >= MAX_ATTEMPTS) {
+      console.log(`[OTP Service] ❌ Max attempts exceeded`);
+      await Otp.deleteOne({ _id: otpRecord._id });
+      return {
+        success: false,
+        message: 'Too many incorrect attempts. Please request a new OTP.',
+      };
+    }
+
+    /* ── Verify code (safe string comparison) ── */
+    if (otpRecord.otp.toString() !== cleanCode) {
+      console.log(`[OTP Service] ❌ Code mismatch: ${otpRecord.otp} !== ${cleanCode}`);
+
+      /* ── Increment attempts ── */
+      otpRecord.attempts += 1;
+      await otpRecord.save();
+
+      console.log(`[OTP Service] 📈 Attempts incremented to ${otpRecord.attempts}`);
+
+      const attemptsRemaining = MAX_ATTEMPTS - otpRecord.attempts;
+      return {
+        success: false,
+        message: `Incorrect OTP. ${attemptsRemaining} attempt${attemptsRemaining > 1 ? 's' : ''} remaining.`,
+        attemptsRemaining,
+      };
+    }
+
+    /* ── Success: Delete OTP record ── */
+    console.log(`[OTP Service] ✅ OTP verified successfully`);
+    await Otp.deleteOne({ _id: otpRecord._id });
+
     return {
-      success: false,
-      message: `Incorrect OTP. ${attemptsRemaining} attempt${attemptsRemaining > 1 ? 's' : ''} remaining.`,
-      attemptsRemaining,
+      success: true,
+      message: 'OTP verified successfully',
     };
+  } catch (error) {
+    console.error(`[OTP Service] 💥 verifyOTP error:`, error.message);
+    throw error;
   }
-
-  /* ── OTP verified! ── */
-  otpStore.delete(cleanEmail);
-
-  console.log(`✅ OTP verified for ${cleanEmail}`);
-
-  return {
-    success: true,
-    message: 'OTP verified successfully. Proceed with signup.',
-  };
 };
 
 /**
- * Check if email has valid OTP
+ * Check if valid OTP exists for an email (helper)
  * @param {string} email - User email
  * @returns {boolean}
  */
-exports.isOTPValid = (email) => {
-  const cleanEmail = email.toLowerCase().trim();
-  
-  if (!otpStore.has(cleanEmail)) {
+exports.isOTPValid = async (email) => {
+  try {
+    const cleanEmail = email.toLowerCase().trim();
+    const now = new Date();
+
+    const otpRecord = await Otp.findOne({
+      email: cleanEmail,
+      expiresAt: { $gt: now },
+      attempts: { $lt: MAX_ATTEMPTS },
+    });
+
+    return !!otpRecord;
+  } catch (error) {
+    console.error(`[OTP Service] Error checking OTP validity:`, error.message);
     return false;
   }
-
-  const otpData = otpStore.get(cleanEmail);
-  return Date.now() <= otpData.expiresAt;
 };
 
 /**
- * Get OTP status for debugging (admin only)
- * @param {string} email - User email
- * @returns {object} OTP status data
+ * Cleanup - remove all expired OTPs (can run periodically)
  */
-exports.getOTPStatus = (email) => {
-  const cleanEmail = email.toLowerCase().trim();
-
-  if (!otpStore.has(cleanEmail)) {
-    return { stored: false };
+exports.cleanupExpiredOtps = async () => {
+  try {
+    const now = new Date();
+    const result = await Otp.deleteMany({ expiresAt: { $lt: now } });
+    console.log(`[OTP Service] 🧹 Cleanup: Deleted ${result.deletedCount} expired OTPs`);
+  } catch (error) {
+    console.error(`[OTP Service] Cleanup error:`, error.message);
   }
-
-  const otpData = otpStore.get(cleanEmail);
-  const now = Date.now();
-  const isExpired = now > otpData.expiresAt;
-  const expiresIn = Math.ceil((otpData.expiresAt - now) / 1000);
-
-  return {
-    stored: true,
-    isExpired,
-    expiresIn: isExpired ? 0 : expiresIn,
-    attempts: otpData.attempts,
-    maxAttempts: MAX_ATTEMPTS,
-    code: otpData.code, /* SECURITY: Only for debugging */
-  };
-};
-
-/**
- * Clear all expired OTPs (cleanup task)
- */
-exports.cleanupExpiredOTPs = () => {
-  const now = Date.now();
-  let cleaned = 0;
-
-  for (const [email, otpData] of otpStore.entries()) {
-    if (now > otpData.expiresAt) {
-      otpStore.delete(email);
-      cleaned++;
-    }
-  }
-
-  if (cleaned > 0) {
-    console.log(`🧹 OTP cleanup: Removed ${cleaned} expired entries`);
-  }
-
-  return cleaned;
 };
