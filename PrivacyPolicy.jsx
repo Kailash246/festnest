@@ -9,7 +9,7 @@ const LAST_UPDATED = "5 April 2026";
 const EFFECTIVE_DATE = "5 April 2026";
 const CONTACT_EMAIL = "support@festnest.in";
 const GRIEVANCE_EMAIL = "grievance@festnest.in";
-const COMPANY = "FestNest Technologies Pvt. Ltd.";
+const COMPANY = "FestNest";
 
 /* ─── Table of Contents ─── */
 const SECTIONS = [

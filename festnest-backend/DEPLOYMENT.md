@@ -295,4 +295,4 @@ Test these URLs after deployment:
 
 ---
 
-*FestNest Technologies Pvt. Ltd. — Built for Indian students* 🇮🇳
+*FestNest — Built for Indian students* 🇮🇳

@@ -74,7 +74,7 @@ exports.sendWelcomeEmail = async (user) => {
         </div>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
         <p style="color:#999;font-size:12px;text-align:center;">
-          FestNest Technologies Pvt. Ltd. · Made with ❤️ for students<br>
+          FestNest · Made with ❤️ for students<br>
           <a href="${process.env.FRONTEND_URL}" style="color:#5A4BFF;">festnest.in</a>
         </p>
       </div>`,
@@ -110,7 +110,7 @@ exports.sendEventSubmittedEmail = async (user, event) => {
         </ol>
         <p style="color:#666;font-size:13px;">Need help? Email us at <a href="mailto:support@festnest.in" style="color:#5A4BFF;">support@festnest.in</a></p>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">FestNest Technologies Pvt. Ltd.</p>
+        <p style="color:#999;font-size:12px;text-align:center;">FestNest</p>
       </div>`,
   });
 };
@@ -134,7 +134,7 @@ exports.sendEventApprovedEmail = async (user, event) => {
         </div>
         <p style="color:#666;font-size:13px;text-align:center;">Share this link with your students to boost registrations!</p>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">FestNest Technologies Pvt. Ltd.</p>
+        <p style="color:#999;font-size:12px;text-align:center;">FestNest</p>
       </div>`,
   });
 };
@@ -163,7 +163,7 @@ exports.sendEventRejectedEmail = async (user, event, reason) => {
         </div>
         <p style="color:#666;font-size:13px;">Questions? Email <a href="mailto:support@festnest.in" style="color:#5A4BFF;">support@festnest.in</a></p>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">FestNest Technologies Pvt. Ltd.</p>
+        <p style="color:#999;font-size:12px;text-align:center;">FestNest</p>
       </div>`,
   });
 };

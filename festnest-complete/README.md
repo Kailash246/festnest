@@ -177,4 +177,4 @@ npm run dev      # Starts at http://localhost:5000
 
 ---
 
-*FestNest Technologies Pvt. Ltd. · Made with ❤️ for Indian students 🇮🇳*
+*FestNest · Made with ❤️ for Indian students 🇮🇳*
