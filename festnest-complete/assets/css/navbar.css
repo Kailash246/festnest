@@ -27,7 +27,7 @@
 
 /* Real image logo */
 .logo-img {
-  height: 36px;
+  height: 28px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -36,7 +36,7 @@
 /* Text next to logo */
 .logo-text {
   font-family: 'Clash Display', sans-serif;
-  font-size: 22px; font-weight: 700;
+  font-size: 18px; font-weight: 700;
   background: var(--grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -62,14 +62,14 @@
 /* ── Nav Actions ── */
 .nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
 .nav-user-btn {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 16px; border-radius: var(--radius);
-  background: var(--pastel-purple); color: var(--color-primary);
-  font-size: 13px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: var(--radius);
+  background: var(--color-primary); color: #fff;
+  font-size: 12px; font-weight: 700; cursor: pointer;
   border: none; font-family: inherit; transition: var(--transition);
-  text-decoration: none; white-space: nowrap;
+  text-decoration: none; white-space: nowrap; min-height: 36px;
 }
-.nav-user-btn:hover { background: #ece6ff; }
+.nav-user-btn:hover { background: #5A4BFF; opacity: 0.9; }
 .nav-user-name {
   max-width: 150px; overflow: hidden; text-overflow: ellipsis;
   white-space: nowrap; display: inline-block;
@@ -89,9 +89,9 @@
 
 /* ── Hamburger ── */
 .hamburger {
-  display: none; flex-direction: column; gap: 5px;
+  display: none; flex-direction: column; gap: 4px;
   cursor: pointer; border: none; background: transparent;
-  padding: 8px; border-radius: var(--radius-sm); transition: var(--transition);
+  padding: 6px; border-radius: var(--radius-sm); transition: var(--transition); min-height: 36px;
 }
 .hamburger:hover { background: var(--pastel-purple); }
 .hamburger span {

@@ -586,7 +586,10 @@
 /* ── Input error state ── */
 .form-input--err { border-color: #e53e3e !important; background: #fff8f8 !important; }
 .form-select--err { border-color: #e53e3e !important; }
-.form-input--ok  { border-color: #00BFA5 !important; }
+
+/* ── Signup modal: error messages shown via text, not border ── */
+#su-shell .form-input--err { border-color: var(--border) !important; background: var(--bg) !important; }
+#su-shell .form-select--err { border-color: var(--border) !important; background: var(--bg) !important; }
 
 /* ── Bottom nav row (Back + Continue) ── */
 .su-nav-row {
