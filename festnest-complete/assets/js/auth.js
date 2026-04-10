@@ -179,13 +179,7 @@ window.requireRole = requireRole;
   function clearErr(elId) {
     setErr(elId, '');
     const input = document.getElementById(elId);
-    if (input) { input.classList.remove('form-input--err'); input.classList.remove('form-input--ok'); }
-  }
-
-  function markOk(elId) {
-    clearErr(elId);
-    const input = document.getElementById(elId);
-    if (input) input.classList.add('form-input--ok');
+    if (input) { input.classList.remove('form-input--err'); }
   }
 
   /* ════════════════════════════════════════════════════════
@@ -360,15 +354,12 @@ window.requireRole = requireRole;
 
     /* Email validation — show Send OTP button if valid */
     if (email && !isEmailValid(email)) { setErr('suEmail', 'Enter a valid email address.'); ok = false; }
-    else if (email) markOk('suEmail');
 
     /* Password validation — only if email verified (fields enabled) */
     if (pwd && !isPwdValid(pwd)) { setErr('suPwd', 'Password must be at least 8 characters.'); ok = false; }
-    else if (pwd) markOk('suPwd');
 
     if (confirm && pwd) {
       if (!isPwdMatch(pwd, confirm)) { setErr('suConfirm', 'Passwords do not match.'); ok = false; }
-      else markOk('suConfirm');
     }
 
     /* Show/hide send OTP button (when email is valid) */
@@ -663,9 +654,9 @@ window.requireRole = requireRole;
       const co = document.getElementById('suCollege')?.value.trim()   || '';
       const yr = document.getElementById('suYear')?.value             || '';
 
-      if (!fn) ok = false; else markOk('suFirstName');
-      if (!ln) ok = false; else markOk('suLastName');
-      if (!co) ok = false; else markOk('suCollege');
+      if (!fn) ok = false;
+      if (!ln) ok = false;
+      if (!co) ok = false;
       if (!yr) ok = false; else {
         const yrEl = document.getElementById('suYear');
         if (yrEl) yrEl.classList.remove('form-select--err');
@@ -673,7 +664,7 @@ window.requireRole = requireRole;
       setStep2SubmitState(fn && ln && co && yr);
     } else {
       const on = document.getElementById('suOrgName')?.value.trim() || '';
-      if (!on) ok = false; else markOk('suOrgName');
+      if (!on) ok = false;
       setStep2SubmitState(on);
     }
     return ok;
