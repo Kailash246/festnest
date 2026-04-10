@@ -188,7 +188,7 @@ exports.register = async (req, res, next) => {
         email: email.toLowerCase().trim(),
         password,
         city: city.trim(),
-        phone: phone.trim(),
+        phone: phone ? phone.trim() : '',
         branch: branch ? branch.trim() : '',
         role: 'organizer',
       };

@@ -46,9 +46,9 @@ const OrganizerSchema = new mongoose.Schema(
     /* ── Contact ── */
     phone: {
       type: String,
-      required: [true, 'Phone number is required'],
       trim: true,
-      match: [/^\d{7,15}$/, 'Please enter a valid phone number'],
+      default: '',
+      match: [/^(\d{7,15})?$/, 'Please enter a valid phone number if provided'],
     },
 
     /* ── Additional Info ── */

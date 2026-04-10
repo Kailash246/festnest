@@ -82,9 +82,9 @@ const registerValidator = [
     .trim().notEmpty().withMessage('City is required for organizers'),
   
   body('phone')
-    .if((val, ctx) => ctx.req.body.role === 'organizer')
-    .trim().notEmpty().withMessage('Phone number is required for organizers')
-    .matches(/^\d{7,15}$/, 'g').withMessage('Phone must be 7-15 digits'),
+    .optional()
+    .trim()
+    .matches(/^\d{7,15}$/, 'g').withMessage('Phone must be 7-15 digits if provided'),
   
   body('state')
     .optional()
