@@ -737,7 +737,9 @@ window.requireRole = requireRole;
         setTimeout(() => { window.location.href = '/index.html'; }, 900);
       }
     } catch (err) {
-      showGlobalErr(err.message || 'Registration failed. Please try again.');
+      const errMsg = err.message || 'Registration failed. Please try again.';
+      showGlobalErr(errMsg);
+      showToast('❌ ' + errMsg, 'error');
       step2SubmitBtn.disabled  = false;
       step2SubmitBtn.textContent = 'Create Account 🚀';
     }
@@ -773,7 +775,9 @@ window.requireRole = requireRole;
         /* Redirect to home */
         setTimeout(() => { window.location.href = '/index.html'; }, 900);
       } catch (err) {
-        showGlobalErr(err.message || 'Login failed. Check your credentials.');
+        const errMsg = err.message || 'Login failed. Check your credentials.';
+        showGlobalErr(errMsg);
+        showToast('❌ ' + errMsg, 'error');
         submitBtn.disabled   = false;
         submitBtn.textContent = submitBtn.dataset.origText;
       }
