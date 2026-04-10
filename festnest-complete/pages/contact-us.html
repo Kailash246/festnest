@@ -6,6 +6,7 @@
   <title>Contact Us — FestNest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="../assets/css/variables.css" />
   <link rel="stylesheet" href="../assets/css/reset.css" />
   <link rel="stylesheet" href="../assets/css/typography.css" />
@@ -201,13 +202,13 @@
   </nav>
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <a class="drawer-link" href="/">🏠 Home</a>
-    <a class="drawer-link" href="/events">🎉 Events</a>
-    <a class="drawer-link" href="/post">➕ Post Event</a>
-    <a class="drawer-link" href="/saved">🔖 Saved Events</a>
-    <a class="drawer-link" href="/search">🔍 Search</a>
-    <a class="drawer-link" href="/why">💡 Why FestNest</a>
-    <a class="drawer-link" href="/profile">👤 Profile</a>
+    <a class="drawer-link" href="/">Home</a>
+    <a class="drawer-link" href="/events">Events</a>
+    <a class="drawer-link" href="/post">Post Event</a>
+    <a class="drawer-link" href="/saved">Saved Events</a>
+    <a class="drawer-link" href="/search">Search</a>
+    <a class="drawer-link" href="/why">Why FestNest</a>
+    <a class="drawer-link" href="/profile">Profile</a>
     <div class="drawer-auth">
       <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
       <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
@@ -457,7 +458,7 @@
   <!-- AUTH MODAL — exact copy -->
   <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
     <div class="modal-box modal-box--auth">
-      <button class="modal-close" id="authModalClose">✕</button>
+      <button class="modal-close" id="authModalClose"><i class="fa-solid fa-xmark"></i></button>
       <div class="auth-logo">FestNest</div>
       <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
       <form class="auth-form" id="login-form" style="display:none;" novalidate>

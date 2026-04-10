@@ -49,14 +49,14 @@
   </nav>
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <a class="drawer-link active" href="/">🏠 Home</a>
-    <a class="drawer-link" href="/events">🎉 Events</a>
-    <a class="drawer-link" href="/post">➕ Post Event</a>
-    <a class="drawer-link" href="/saved">🔖 Saved Events</a>
-    <a class="drawer-link" href="/search">🔍 Search</a>
-    <a class="drawer-link" href="/blog">📝 Blog</a>
-    <a class="drawer-link" href="/why">💡 Why FestNest</a>
-    <a class="drawer-link" href="/profile">👤 Profile</a>
+    <a class="drawer-link active" href="/">Home</a>
+    <a class="drawer-link" href="/events">Events</a>
+    <a class="drawer-link" href="/post">Post Event</a>
+    <a class="drawer-link" href="/saved">Saved Events</a>
+    <a class="drawer-link" href="/search">Search</a>
+    <a class="drawer-link" href="/blog">Blog</a>
+    <a class="drawer-link" href="/why">Why FestNest</a>
+    <a class="drawer-link" href="/profile">Profile</a>
     <div class="drawer-auth">
       <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
       <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
@@ -283,7 +283,7 @@
   <!-- AUTH MODAL -->
 <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-label="Sign in or create account">
   <div class="modal-box modal-box--auth" id="authModalBox">
-    <button class="modal-close" id="authModalClose" aria-label="Close">✕</button>
+    <button class="modal-close" id="authModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <div class="auth-logo">FestNest</div>
     <div class="auth-tabs" role="tablist">
       <button class="auth-tab" id="tab-login"  role="tab" aria-selected="false">Log In</button>
@@ -299,7 +299,7 @@
         <label class="form-label" for="loginPwd">Password</label>
         <div class="su-pwd-wrap">
           <input class="form-input" id="loginPwd" type="password" placeholder="••••••••" autocomplete="current-password" />
-          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd"><i class="fas fa-eye"></i></button>
+          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd"><i class="fa-solid fa-eye"></i></button>
         </div>
         <span class="form-error-msg" id="loginPwdErr"></span>
       </div>
@@ -364,7 +364,7 @@
             <label class="form-label" for="suEmail">Email Address *</label>
             <div style="display:flex;gap:8px;">
               <input class="form-input" id="suEmail" type="email" placeholder="you@college.edu" autocomplete="email" style="flex:1;" />
-              <button type="button" class="btn btn-primary" id="suSendOtpBtn" style="display:none;white-space:nowrap;padding:10px 14px;font-size:13px;" aria-label="Send OTP to email">Send OTP 📧</button>
+              <button type="button" class="btn btn-primary" id="suSendOtpBtn" style="display:none;white-space:nowrap;padding:10px 14px;font-size:13px;" aria-label="Send OTP to email"><i class="fa-solid fa-envelope" style="margin-right: 4px;"></i>Send OTP</button>
             </div>
             <span class="form-error-msg" id="suEmailErr"></span>
           </div>
@@ -384,7 +384,7 @@
             <label class="form-label" for="suPwd">Password *</label>
             <div class="su-pwd-wrap">
               <input class="form-input" id="suPwd" type="password" placeholder="Min. 8 characters" autocomplete="new-password" disabled />
-              <button type="button" class="su-eye-btn" aria-label="Toggle password visibility" data-target="suPwd"><i class="fas fa-eye"></i></button>
+              <button type="button" class="su-eye-btn" aria-label="Toggle password visibility" data-target="suPwd"><i class="fa-solid fa-eye"></i></button>
             </div>
             <div class="su-strength-wrap" id="suStrengthWrap" style="display:none;">
               <div class="su-strength-bar"><div class="su-strength-fill" id="suStrengthFill"></div></div>
@@ -396,7 +396,7 @@
             <label class="form-label" for="suConfirm">Confirm Password *</label>
             <div class="su-pwd-wrap">
               <input class="form-input" id="suConfirm" type="password" placeholder="Re-enter password" autocomplete="new-password" disabled />
-              <button type="button" class="su-eye-btn" aria-label="Toggle confirm password visibility" data-target="suConfirm"><i class="fas fa-eye"></i></button>
+              <button type="button" class="su-eye-btn" aria-label="Toggle confirm password visibility" data-target="suConfirm"><i class="fa-solid fa-eye"></i></button>
             </div>
             <span class="form-error-msg" id="suConfirmErr"></span>
           </div>

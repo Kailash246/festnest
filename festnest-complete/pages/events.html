@@ -46,7 +46,7 @@
     <a class="drawer-link" href="/post">Post Event</a>
     <a class="drawer-link" href="/saved">Saved Events</a>
     <a class="drawer-link" href="/search">Search</a>
-    <a class="drawer-link" href="/blog">📝 Blog</a>
+    <a class="drawer-link" href="/blog">Blog</a>
     <a class="drawer-link" href="/why">Why FestNest</a>
     <a class="drawer-link" href="/profile">Profile</a>
     <div class="drawer-auth">
@@ -153,7 +153,7 @@
   <div class="modal-box modal-box--auth" id="authModalBox">
 
     <!-- Close button (unchanged) -->
-    <button class="modal-close" id="authModalClose" aria-label="Close">✕</button>
+    <button class="modal-close" id="authModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
 
     <!-- Logo (unchanged) -->
     <div class="auth-logo">FestNest</div>
@@ -177,7 +177,7 @@
         <label class="form-label" for="loginPwd">Password</label>
         <div class="su-pwd-wrap">
           <input class="form-input" id="loginPwd" type="password" placeholder="••••••••" autocomplete="current-password" />
-          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd"><i class="fas fa-eye"></i></button>
+          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd"><i class="fa-solid fa-eye"></i></button>
         </div>
         <span class="form-error-msg" id="loginPwdErr"></span>
       </div>
@@ -292,7 +292,7 @@
               <button type="button" class="btn btn-primary" id="suSendOtpBtn"
                       style="display:none;white-space:nowrap;padding:10px 14px;font-size:13px;"
                       aria-label="Send OTP to email">
-                Send OTP 📧
+                <i class="fa-solid fa-envelope" style="margin-right: 4px;"></i>Send OTP
               </button>
             </div>
             <span class="form-error-msg" id="suEmailErr"></span>
@@ -335,7 +335,7 @@
                      placeholder="Min. 8 characters" autocomplete="new-password"
                      disabled />
               <button type="button" class="su-eye-btn" aria-label="Toggle password visibility"
-                      data-target="suPwd"><i class="fas fa-eye"></i></button>
+                      data-target="suPwd"><i class="fa-solid fa-eye"></i></button>
             </div>
             <!-- Strength bar -->
             <div class="su-strength-wrap" id="suStrengthWrap" style="display:none;">
@@ -352,7 +352,7 @@
                      placeholder="Re-enter password" autocomplete="new-password"
                      disabled />
               <button type="button" class="su-eye-btn" aria-label="Toggle confirm password visibility"
-                      data-target="suConfirm"><i class="fas fa-eye"></i></button>
+                      data-target="suConfirm"><i class="fa-solid fa-eye"></i></button>
             </div>
             <span class="form-error-msg" id="suConfirmErr"></span>
           </div>
@@ -479,7 +479,7 @@
   <div class="filter-modal" id="filterModal">
     <div class="filter-modal-header">
       <h2>Filters</h2>
-      <button class="filter-modal-close" id="closeFiltersBtn" aria-label="Close filters">✕</button>
+      <button class="filter-modal-close" id="closeFiltersBtn" aria-label="Close filters"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="filter-modal-content">
       <div class="filter-group">

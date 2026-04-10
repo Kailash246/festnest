@@ -109,14 +109,14 @@
         // Role-specific link for drawer
         let extraLink = '';
         if (user.role === 'admin') {
-          extraLink = `<a href="/pages/admin.html" class="drawer-link" style="color:var(--color-accent);font-weight:800;">⚙️ Admin</a>`;
+          extraLink = `<a href="/pages/admin.html" class="drawer-link" style="color:var(--color-accent);font-weight:800;">Admin</a>`;
         } else if (user.role === 'organizer') {
-          extraLink = `<a href="/pages/my-events.html" class="drawer-link">📋 My Events</a>`;
+          extraLink = `<a href="/pages/my-events.html" class="drawer-link">My Events</a>`;
         }
 
         drawer.innerHTML = `
           ${extraLink}
-          <a href="/pages/profile.html" class="drawer-link">👤 ${user.firstName}'s Profile</a>`;
+          <a href="/pages/profile.html" class="drawer-link">${user.firstName}'s Profile</a>`;
       }
 
     } else {

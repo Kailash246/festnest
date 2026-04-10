@@ -43,13 +43,13 @@
   </nav>
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <a class="drawer-link" href="/">🏠 Home</a>
-    <a class="drawer-link" href="/events">🎉 Events</a>
-    <a class="drawer-link" href="/post">➕ Post Event</a>
-    <a class="drawer-link" href="/saved">🔖 Saved Events</a>
-    <a class="drawer-link" href="/search">🔍 Search</a>
-    <a class="drawer-link" href="/why">💡 Why FestNest</a>
-    <a class="drawer-link active" href="/profile">👤 Profile</a>
+    <a class="drawer-link" href="/">Home</a>
+    <a class="drawer-link" href="/events">Events</a>
+    <a class="drawer-link" href="/post">Post Event</a>
+    <a class="drawer-link" href="/saved">Saved Events</a>
+    <a class="drawer-link" href="/search">Search</a>
+    <a class="drawer-link" href="/why">Why FestNest</a>
+    <a class="drawer-link active" href="/profile">Profile</a>
     <div class="drawer-auth">
       <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
       <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>
@@ -64,7 +64,7 @@
         <div>
           <div class="profile-hero-card">
             <!-- id="profileAvatar" — JS swaps in real image if available -->
-            <div class="profile-avatar" id="profileAvatar">👤</div>
+            <div class="profile-avatar" id="profileAvatar"><i class="fa-solid fa-user" style="font-size: 24px;"></i></div>
             <!-- id="profileName" — JS sets real name -->
             <div class="profile-name" id="profileName">Loading...</div>
             <!-- id="profileCollegeName" — JS sets real college -->
@@ -75,7 +75,7 @@
 
           <div class="profile-info-card">
             <div class="profile-info-row">
-              <span class="profile-info-icon">📧</span>
+              <span class="profile-info-icon"><i class="fa-solid fa-envelope"></i></span>
               <div>
                 <div class="profile-info-label">Email</div>
                 <!-- id="profileEmail" — JS sets real email -->
@@ -123,7 +123,7 @@
               <span class="profile-menu-arrow">›</span>
             </a>
             <div class="profile-menu-item" id="pmRegistrations">
-              <span class="profile-menu-icon">📋</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-list"></i></span>
               <span class="profile-menu-text">My Registrations</span>
               <span class="profile-menu-arrow">›</span>
             </div>
@@ -133,7 +133,7 @@
               <span class="profile-menu-arrow">›</span>
             </div>
             <div class="profile-menu-item" id="pmEdit">
-              <span class="profile-menu-icon">✏️</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-pen"></i></span>
               <span class="profile-menu-text">Edit Profile</span>
               <span class="profile-menu-arrow">›</span>
             </div>
@@ -156,13 +156,13 @@
             <!-- Admin dashboard — shown by JS if role=admin -->
             <a class="profile-menu-item" href="/admin"
                id="adminPanelLink" style="display:none;">
-              <span class="profile-menu-icon">⚙️</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-sliders"></i></span>
               <span class="profile-menu-text" style="color:var(--color-accent);font-weight:800;">Admin Dashboard</span>
               <span class="profile-menu-arrow">›</span>
             </a>
 
             <a class="profile-menu-item" href="/why">
-              <span class="profile-menu-icon">ℹ️</span>
+              <span class="profile-menu-icon"><i class="fa-solid fa-circle-info"></i></span>
               <span class="profile-menu-text">About FestNest</span>
               <span class="profile-menu-arrow">›</span>
             </a>
@@ -272,7 +272,7 @@
   <div class="modal-box modal-box--auth" id="authModalBox">
 
     <!-- Close button (unchanged) -->
-    <button class="modal-close" id="authModalClose" aria-label="Close">✕</button>
+    <button class="modal-close" id="authModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
 
     <!-- Logo (unchanged) -->
     <div class="auth-logo">FestNest</div>
@@ -296,7 +296,7 @@
         <label class="form-label" for="loginPwd">Password</label>
         <div class="su-pwd-wrap">
           <input class="form-input" id="loginPwd" type="password" placeholder="••••••••" autocomplete="current-password" />
-          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd"><i class="fas fa-eye"></i></button>
+          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd"><i class="fa-solid fa-eye"></i></button>
         </div>
         <span class="form-error-msg" id="loginPwdErr"></span>
       </div>
@@ -411,7 +411,7 @@
               <button type="button" class="btn btn-primary" id="suSendOtpBtn"
                       style="display:none;white-space:nowrap;padding:10px 14px;font-size:13px;"
                       aria-label="Send OTP to email">
-                Send OTP 📧
+                <i class="fa-solid fa-envelope" style="margin-right: 4px;"></i>Send OTP
               </button>
             </div>
             <span class="form-error-msg" id="suEmailErr"></span>
@@ -454,7 +454,7 @@
                      placeholder="Min. 8 characters" autocomplete="new-password"
                      disabled />
               <button type="button" class="su-eye-btn" aria-label="Toggle password visibility"
-                      data-target="suPwd"><i class="fas fa-eye"></i></button>
+                      data-target="suPwd"><i class="fa-solid fa-eye"></i></button>
             </div>
             <!-- Strength bar -->
             <div class="su-strength-wrap" id="suStrengthWrap" style="display:none;">
@@ -471,7 +471,7 @@
                      placeholder="Re-enter password" autocomplete="new-password"
                      disabled />
               <button type="button" class="su-eye-btn" aria-label="Toggle confirm password visibility"
-                      data-target="suConfirm"><i class="fas fa-eye"></i></button>
+                      data-target="suConfirm"><i class="fa-solid fa-eye"></i></button>
             </div>
             <span class="form-error-msg" id="suConfirmErr"></span>
           </div>
