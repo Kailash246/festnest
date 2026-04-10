@@ -67,10 +67,22 @@ function renderProfile(user) {
 
   /* Hero card */
   setText('profileName',        fullName);
-  setText('profileCollegeName', user.college || 'College not set');
-  setText('profileYear',
-    [user.branch, user.year].filter(Boolean).join(' · ') || 'Details not set'
-  );
+  
+  /* Role-specific college/organization display */
+  if (user.role === 'organizer') {
+    setText('profileCollegeName', user.organizationName || 'Organization not set');
+  } else {
+    setText('profileCollegeName', user.college || 'College not set');
+  }
+  
+  /* Role-specific details display */
+  let detailsText = 'Details not set';
+  if (user.role === 'organizer' && user.city) {
+    detailsText = user.city;
+  } else if (user.role === 'student') {
+    detailsText = [user.branch, user.year].filter(Boolean).join(' · ') || 'Details not set';
+  }
+  setText('profileYear', detailsText);
 
   /* Info rows */
   setText('profileEmail',    user.email    || '—');
