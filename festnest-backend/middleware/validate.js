@@ -73,7 +73,8 @@ const registerValidator = [
   /* Organizer-specific fields */
   body('organizationName')
     .if((val, ctx) => ctx.req.body.role === 'organizer')
-    .trim().notEmpty().withMessage('Organization/College name is required for organizers')
+    .optional()
+    .trim()
     .isLength({ max: 100 }).withMessage('Organization name cannot exceed 100 characters'),
   
   body('city')

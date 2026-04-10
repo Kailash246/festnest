@@ -155,7 +155,7 @@ exports.register = async (req, res, next) => {
       console.log('[Register] 🏢 Processing ORGANIZER registration');
       
       /* Organizer-specific validation */
-      if (!organizationName) return res.status(400).json({ success: false, message: 'Organization/College name is required.' });
+      /* organizationName is now optional - removed from form */
       if (!city)             return res.status(400).json({ success: false, message: 'City is required.' });
       if (!phone)            return res.status(400).json({ success: false, message: 'Phone number is required.' });
 
@@ -184,7 +184,7 @@ exports.register = async (req, res, next) => {
 
       /* Create organizer document */
       const organizerData = {
-        organizationName: organizationName.trim(),
+        organizationName: organizationName ? organizationName.trim() : '',
         email: email.toLowerCase().trim(),
         password,
         city: city.trim(),

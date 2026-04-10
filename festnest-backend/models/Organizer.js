@@ -12,9 +12,9 @@ const OrganizerSchema = new mongoose.Schema(
     /* ── Name & Contact ── */
     organizationName: {
       type: String,
-      required: [true, 'Organization/College name is required'],
       trim: true,
       maxlength: [100, 'Organization name cannot exceed 100 characters'],
+      default: '',
     },
     email: {
       type: String,
