@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="../assets/css/variables.css" />
   <link rel="stylesheet" href="../assets/css/reset.css" />
   <link rel="stylesheet" href="../assets/css/typography.css" />
@@ -295,7 +296,7 @@
         <label class="form-label" for="loginPwd">Password</label>
         <div class="su-pwd-wrap">
           <input class="form-input" id="loginPwd" type="password" placeholder="••••••••" autocomplete="current-password" />
-          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd">👁</button>
+          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd"><i class="fas fa-eye"></i></button>
         </div>
         <span class="form-error-msg" id="loginPwdErr"></span>
       </div>
@@ -453,7 +454,7 @@
                      placeholder="Min. 8 characters" autocomplete="new-password"
                      disabled />
               <button type="button" class="su-eye-btn" aria-label="Toggle password visibility"
-                      data-target="suPwd">👁</button>
+                      data-target="suPwd"><i class="fas fa-eye"></i></button>
             </div>
             <!-- Strength bar -->
             <div class="su-strength-wrap" id="suStrengthWrap" style="display:none;">
@@ -470,7 +471,7 @@
                      placeholder="Re-enter password" autocomplete="new-password"
                      disabled />
               <button type="button" class="su-eye-btn" aria-label="Toggle confirm password visibility"
-                      data-target="suConfirm">👁</button>
+                      data-target="suConfirm"><i class="fas fa-eye"></i></button>
             </div>
             <span class="form-error-msg" id="suConfirmErr"></span>
           </div>

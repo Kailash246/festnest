@@ -657,12 +657,26 @@
   border: none;
   font-size: 16px;
   cursor: pointer;
-  color: var(--text-3);
+  color: #888;
   padding: 4px;
   transition: var(--transition);
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.su-eye-btn:hover { color: var(--color-primary); }
+.su-eye-btn:hover { 
+  color: var(--color-primary); 
+}
+
+.su-eye-btn i {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* ── Password strength bar ── */
 .su-strength-wrap {

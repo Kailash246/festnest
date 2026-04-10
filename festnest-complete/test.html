@@ -1,0 +1,34 @@
+<!-- 1. Include the Font Awesome library -->
+<link rel="stylesheet" href="https://cloudflare.com">
+
+<style>
+  .password-container { position: relative; width: 300px; }
+  input { width: 100%; padding: 10px; padding-right: 40px; box-sizing: border-box; }
+  .toggle-btn { 
+    position: absolute; right: 10px; top: 10px; 
+    cursor: pointer; color: #555; 
+  }
+</style>
+
+<div class="password-container">
+  <input type="password" id="passInput" placeholder="Enter Password">
+  <!-- 2. The actual Eye Icon -->
+  <i class="fa-solid fa-eye toggle-btn" id="eyeIcon" onclick="toggle()"></i>
+</div>
+
+<script>
+  function toggle() {
+    const input = document.getElementById("passInput");
+    const icon = document.getElementById("eyeIcon");
+
+    if (input.type === "password") {
+      input.type = "text";
+      // 3. Switch to the 'Slash' (Hidden) icon
+      icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      input.type = "password";
+      // Switch back to 'Open' icon
+      icon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+  }
+</script>

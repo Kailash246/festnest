@@ -576,7 +576,13 @@ window.requireRole = requireRole;
       if (!input) return;
       const isHidden = input.type === 'password';
       input.type    = isHidden ? 'text' : 'password';
-      btn.textContent = isHidden ? '🙈' : '👁';
+      
+      /* Update icon: eye when hidden, eye-slash when visible */
+      const icon = btn.querySelector('i');
+      if (icon) {
+        icon.className = isHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
+      }
+      
       btn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
     });
   });
