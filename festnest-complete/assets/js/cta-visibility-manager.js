@@ -1,44 +1,49 @@
 /* ============================================================
-   FESTNEST — GLOBAL CTA BANNER VISIBILITY MANAGER
-   Hides "Sign Up" CTA sections for logged-in users
+   FESTNEST — GLOBAL CTA SIGNUP BUTTON VISIBILITY MANAGER
+   Hides "Sign Up Free" button for logged-in users
    
-   This ensures a professional experience for authenticated users
-   by removing promotional CTAs when they're not needed.
+   The CTA banner container stays visible so users can still
+   see the "Browse Events" link, but the signup button is hidden
+   for a professional authenticated experience.
    ============================================================ */
 'use strict';
 
 (function initCTAVisibility() {
   
-  function updateCTABanners() {
+  function updateCTAButtons() {
     // Check if user is logged in
     const isLoggedIn = FN_AUTH && FN_AUTH.isLoggedIn();
     
-    // Find all CTA banners on the page
-    const banners = document.querySelectorAll('.cta-banner[id^="ctaBanner"]');
+    // Find ALL signup buttons in CTA banners (handle variations)
+    const signupButtons = document.querySelectorAll(
+      '#ctaSignupBtn, #ctaSignupBtn, [id*="signup"], [class*="cta"][class*="signup"]'
+    );
     
-    banners.forEach(banner => {
-      if (isLoggedIn) {
-        // Hide for logged-in users
-        banner.style.display = 'none';
-        banner.setAttribute('data-hidden-for-user', 'true');
-      } else {
-        // Show for guests
-        banner.style.display = 'block';
-        banner.removeAttribute('data-hidden-for-user');
+    signupButtons.forEach(btn => {
+      // Only hide buttons that are signup/get-started related
+      if (btn.id === 'ctaSignupBtn' || 
+          btn.textContent.includes('Sign Up') || 
+          btn.textContent.includes('Get Started')) {
+        btn.style.display = isLoggedIn ? 'none' : 'block';
+        if (isLoggedIn) {
+          btn.setAttribute('data-hidden-for-user', 'true');
+        } else {
+          btn.removeAttribute('data-hidden-for-user');
+        }
       }
     });
   }
 
   // Update on page load
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateCTABanners);
+    document.addEventListener('DOMContentLoaded', updateCTAButtons);
   } else {
-    updateCTABanners();
+    updateCTAButtons();
   }
 
   // Update on auth changes
-  window.addEventListener('fn:login', updateCTABanners);
-  window.addEventListener('fn:logout', updateCTABanners);
-  window.addEventListener('auth-state-changed', updateCTABanners);
+  window.addEventListener('fn:login', updateCTAButtons);
+  window.addEventListener('fn:logout', updateCTAButtons);
+  window.addEventListener('auth-state-changed', updateCTAButtons);
 
 })();

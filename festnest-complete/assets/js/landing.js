@@ -1,15 +1,17 @@
 /* FESTNEST — LANDING  |  assets/js/landing.js */
 'use strict';
 
-// Hide CTA banner for logged-in users
+// Hide "Sign Up Free" button (not the banner) for logged-in users
 function updateCTAVisibility() {
-  const ctaBanner = document.getElementById('ctaBanner');
-  if (!ctaBanner) return;
+  const signupBtn = document.getElementById('ctaSignupBtn');
+  if (!signupBtn) return;
   
   if (FN_AUTH && FN_AUTH.isLoggedIn()) {
-    ctaBanner.style.display = 'none';
+    // Hide signup button for logged-in users
+    signupBtn.style.display = 'none';
   } else {
-    ctaBanner.style.display = 'block';
+    // Show signup button for guests
+    signupBtn.style.display = 'block';
   }
 }
 
