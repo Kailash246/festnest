@@ -231,6 +231,12 @@
     
     console.log('[Auth Modal] Global modal injected into page');
     
+    // Re-wire OTP handlers now that modal elements exist
+    if (typeof window.wireUpOTPHandlers === 'function') {
+      window.wireUpOTPHandlers();
+      console.log('[Auth Modal] OTP handlers wired up');
+    }
+    
     // Dispatch custom event so other scripts know modal is ready
     window.dispatchEvent(new CustomEvent('fn:modal-injected', { detail: { source: 'global-modal-loader' } }));
   }

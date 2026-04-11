@@ -694,28 +694,36 @@ window.openAuthModal = function(tab = 'signup') {
   });
 
   /* ══ OTP BUTTON LISTENERS ══ */
-  document.getElementById('suSendOtpBtn')?.addEventListener('click', async (e) => {
-    e.preventDefault();
-    if (!su.otpLoading) await sendOTP();
-  });
+  function wireUpOTPHandlers() {
+    document.getElementById('suSendOtpBtn')?.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!su.otpLoading) await sendOTP();
+    });
 
-  document.getElementById('suVerifyOtpBtn')?.addEventListener('click', async (e) => {
-    e.preventDefault();
-    if (!su.otpLoading) await verifyOTP();
-  });
-
-  /* Allow Enter key in OTP field to trigger verify */
-  document.getElementById('suOtpCode')?.addEventListener('keypress', async (e) => {
-    if (e.key === 'Enter') {
+    document.getElementById('suVerifyOtpBtn')?.addEventListener('click', async (e) => {
       e.preventDefault();
       if (!su.otpLoading) await verifyOTP();
-    }
-  });
+    });
 
-  document.getElementById('suResendOtpBtn')?.addEventListener('click', async (e) => {
-    e.preventDefault();
-    if (!su.otpLoading && su.resendCooldown <= 0) await sendOTP();
-  });
+    /* Allow Enter key in OTP field to trigger verify */
+    document.getElementById('suOtpCode')?.addEventListener('keypress', async (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!su.otpLoading) await verifyOTP();
+      }
+    });
+
+    document.getElementById('suResendOtpBtn')?.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!su.otpLoading && su.resendCooldown <= 0) await sendOTP();
+    });
+  }
+
+  // Wire up OTP handlers on first load
+  wireUpOTPHandlers();
+
+  // Export for re-wiring when modal is dynamically injected
+  window.wireUpOTPHandlers = wireUpOTPHandlers;
 
   /* ════════════════════════════════════════════════════════
      STEP 2 — PROFILE DETAILS
