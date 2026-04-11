@@ -126,12 +126,7 @@
           <button class="btn btn-outline" id="navLoginBtn">Log In</button>
           <button class="btn btn-primary"  id="navSignupBtn">Sign Up Free</button>`;
 
-        document.getElementById('navLoginBtn')?.addEventListener('click', () =>
-          typeof openAuthModal === 'function' && openAuthModal('login')
-        );
-        document.getElementById('navSignupBtn')?.addEventListener('click', () =>
-          typeof openAuthModal === 'function' && openAuthModal('signup')
-        );
+        /* Button handlers are wired by auth.js - don't duplicate here */
       }
 
       if (drawer && !document.getElementById('drawerLoginBtn')) {
@@ -139,12 +134,7 @@
           <button class="btn btn-outline w-full" id="drawerLoginBtn">Log In</button>
           <button class="btn btn-primary w-full" id="drawerSignupBtn">Sign Up Free</button>`;
 
-        document.getElementById('drawerLoginBtn')?.addEventListener('click', () =>
-          typeof openAuthModal === 'function' && openAuthModal('login')
-        );
-        document.getElementById('drawerSignupBtn')?.addEventListener('click', () =>
-          typeof openAuthModal === 'function' && openAuthModal('signup')
-        );
+        /* Button handlers are wired by auth.js - don't duplicate here */
       }
     }
   }

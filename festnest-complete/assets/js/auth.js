@@ -88,7 +88,7 @@ function wireUpAllAuthButtons() {
   }
 
   // Wire up login buttons
-  const loginButtonIds = ['navLoginBtn', 'drawerLoginBtn'];
+  const loginButtonIds = ['navLoginBtn', 'drawerLoginBtn', 'lockLoginBtn'];
   loginButtonIds.forEach(id => {
     const btn = document.getElementById(id);
     if (btn) {
@@ -100,7 +100,7 @@ function wireUpAllAuthButtons() {
   });
 
   // Wire up signup buttons
-  const signupButtonIds = ['navSignupBtn', 'drawerSignupBtn', 'ctaSignupBtn', 'lockSignupBtn'];
+  const signupButtonIds = ['navSignupBtn', 'drawerSignupBtn', 'ctaSignupBtn', 'lockSignupBtn', 'lockNavSignupBtn'];
   signupButtonIds.forEach(id => {
     const btn = document.getElementById(id);
     if (btn) {
