@@ -153,4 +153,7 @@
   window.addEventListener('fn:logout', () => window.location.reload());
   syncNavAuth();
 
+  /* ── EXPORT FOR GLOBAL ACCESS ── */
+  window.syncNavAuth = syncNavAuth;
+
 }());

@@ -172,13 +172,52 @@ window.Auth = (function() {
   }
 
   /* ════════════════════════════════════════════════════════
+     AUTH STATE CHANGE HANDLERS
+     Ensures UI updates across app when auth state changes
+  ════════════════════════════════════════════════════════ */
+  
+  function dispatchAuthChange(type = 'login') {
+    // Wait for DOM to be ready before updating UI
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        syncAuthUI();
+      });
+    } else {
+      syncAuthUI();
+    }
+  }
+
+  function syncAuthUI() {
+    // Trigger navbar update if syncNavAuth is available
+    if (typeof syncNavAuth === 'function') {
+      syncNavAuth();
+    }
+    // Dispatch custom event for other listeners
+    window.dispatchEvent(new CustomEvent('auth-state-changed', {
+      detail: { isLoggedIn: isLoggedIn(), user: getUser() }
+    }));
+  }
+
+  /* ════════════════════════════════════════════════════════
      INITIALIZATION
   ════════════════════════════════════════════════════════ */
   
   function init() {
     if (typeof FN_AUTH === 'undefined') {
       console.warn('[Auth] FN_AUTH not loaded. Ensure api.js loads before auth-manager.js');
+      return;
     }
+    
+    // Sync UI on initial load
+    syncAuthUI();
+    
+    // Listen for custom auth events from login/signup
+    window.addEventListener('fn:login', () => {
+      dispatchAuthChange('login');
+    });
+    window.addEventListener('fn:logout', () => {
+      dispatchAuthChange('logout');
+    });
   }
 
   if (document.readyState === 'loading') {
@@ -200,7 +239,9 @@ window.Auth = (function() {
     initProtectedPage,
     requireForEvent,
     requireRole,
-    logout
+    logout,
+    syncAuthUI,
+    dispatchAuthChange
   };
 
 })();
