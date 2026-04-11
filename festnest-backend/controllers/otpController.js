@@ -59,19 +59,18 @@ exports.sendOTP = async (req, res, next) => {
 
     /* ── Send email ── */
     try {
+      console.log(`[SendOTP] Sending email to ${email}...`);
       await sendOTPEmail(email, result.otp);
-      console.log('[SendOTP] ✅ OTP email sent to', email);
+      console.log(`[SendOTP] Email sent successfully`);
 
       return res.status(200).json({
         success: true,
         message: 'OTP sent to your email. Valid for 5 minutes.',
-        email: email.replace(/(.{2})(.*)(@.*)/, '$1***$3'), /* Mask email */
+        email: email.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
         expiresIn: result.expiresIn,
       });
     } catch (emailError) {
-      console.error('[SendOTP] ❌ Email send failed:', emailError.message);
-      
-      /* If email fails, delete the OTP so user can retry */
+      console.error(`[SendOTP] Email error:`, emailError.message);
       return res.status(500).json({
         success: false,
         message: 'Failed to send OTP email. Please try again.',

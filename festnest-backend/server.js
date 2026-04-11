@@ -24,6 +24,9 @@ initializeFirebase();
 
 const app = express();
 
+/* ── Trust proxy for production ── */
+app.set('trust proxy', 1);
+
 /* ── Database ─────────────────────────────────────────────── */
 if (!process.env.MONGODB_URI) {
   console.error('❌  FATAL: MONGODB_URI environment variable is not set!');
