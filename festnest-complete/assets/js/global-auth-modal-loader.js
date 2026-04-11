@@ -222,6 +222,18 @@
 
   // Inject modal into body
   function injectModal() {
+    // Check if modal already exists (e.g., on index.html)
+    if (document.getElementById('authModal')) {
+      console.log('[Auth Modal] Modal already exists in DOM, skipping injection');
+      // Re-wire OTP handlers in case they weren't attached yet
+      if (typeof window.wireUpOTPHandlers === 'function') {
+        window.wireUpOTPHandlers();
+        console.log('[Auth Modal] OTP handlers wired up');
+      }
+      window.dispatchEvent(new CustomEvent('fn:modal-injected', { detail: { source: 'global-modal-loader', existing: true } }));
+      return;
+    }
+
     // Create wrapper to contain the HTML string
     const wrapper = document.createElement('div');
     wrapper.innerHTML = GLOBAL_AUTH_MODAL_HTML;

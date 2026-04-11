@@ -694,36 +694,67 @@ window.openAuthModal = function(tab = 'signup') {
   });
 
   /* ══ OTP BUTTON LISTENERS ══ */
+  let otpHandlersWired = false;
+
   function wireUpOTPHandlers() {
-    document.getElementById('suSendOtpBtn')?.addEventListener('click', async (e) => {
+    // Prevent duplicate wiring
+    if (otpHandlersWired) {
+      console.log('[Auth] OTP handlers already wired, skipping');
+      return;
+    }
+
+    // Only attach if elements exist
+    const sendBtn = document.getElementById('suSendOtpBtn');
+    const verifyBtn = document.getElementById('suVerifyOtpBtn');
+    const otpCode = document.getElementById('suOtpCode');
+    const resendBtn = document.getElementById('suResendOtpBtn');
+    
+    if (!sendBtn && !verifyBtn && !otpCode && !resendBtn) {
+      console.warn('[Auth] OTP elements not found, skipping handler attachment');
+      return;
+    }
+
+    sendBtn?.addEventListener('click', async (e) => {
       e.preventDefault();
       if (!su.otpLoading) await sendOTP();
     });
 
-    document.getElementById('suVerifyOtpBtn')?.addEventListener('click', async (e) => {
+    verifyBtn?.addEventListener('click', async (e) => {
       e.preventDefault();
       if (!su.otpLoading) await verifyOTP();
     });
 
     /* Allow Enter key in OTP field to trigger verify */
-    document.getElementById('suOtpCode')?.addEventListener('keypress', async (e) => {
+    otpCode?.addEventListener('keypress', async (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         if (!su.otpLoading) await verifyOTP();
       }
     });
 
-    document.getElementById('suResendOtpBtn')?.addEventListener('click', async (e) => {
+    resendBtn?.addEventListener('click', async (e) => {
       e.preventDefault();
       if (!su.otpLoading && su.resendCooldown <= 0) await sendOTP();
     });
+
+    otpHandlersWired = true;
+    console.log('[Auth] OTP handlers wired successfully');
   }
 
-  // Wire up OTP handlers on first load
-  wireUpOTPHandlers();
+  // Wire up OTP handlers if modal elements exist (some pages have embedded modal)
+  // Otherwise, they'll be wired up by global-auth-modal-loader when modal is injected
+  if (document.getElementById('suSendOtpBtn')) {
+    wireUpOTPHandlers();
+  }
 
   // Export for re-wiring when modal is dynamically injected
   window.wireUpOTPHandlers = wireUpOTPHandlers;
+
+  // Listen for modal injection event and wire up handlers
+  window.addEventListener('fn:modal-injected', () => {
+    console.log('[Auth] Modal injected event received, wiring OTP handlers');
+    wireUpOTPHandlers();
+  });
 
   /* ════════════════════════════════════════════════════════
      STEP 2 — PROFILE DETAILS
