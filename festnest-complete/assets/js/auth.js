@@ -149,6 +149,41 @@ window.requireRole = requireRole;
   window.closeAuthModal = closeAuth;
 
   /* ════════════════════════════════════════════════════════
+     GLOBAL SIGNUP BUTTON HANDLERS — All pages
+     Wire up all signup buttons to open the unified modal
+  ════════════════════════════════════════════════════════ */
+  function wireUpSignupButtons() {
+    // Handle navbar signup button
+    document.getElementById('navSignupBtn')?.addEventListener('click', () => openAuth('signup'));
+    
+    // Handle drawer/mobile signup button  
+    document.getElementById('drawerSignupBtn')?.addEventListener('click', () => openAuth('signup'));
+    
+    // Handle CTA banner signup button (home, blog, articles, etc.)
+    document.getElementById('ctaSignupBtn')?.addEventListener('click', () => openAuth('signup'));
+    
+    // Handle lock page signup button
+    document.getElementById('lockSignupBtn')?.addEventListener('click', () => openAuth('signup'));
+    
+    // Handle any other signup buttons with data-signup attribute
+    document.querySelectorAll('[data-signup="true"]').forEach(btn => {
+      btn.addEventListener('click', () => openAuth('signup'));
+    });
+  }
+  
+  // Wire up buttons on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wireUpSignupButtons);
+  } else {
+    wireUpSignupButtons();
+  }
+
+  // Also wire up when global auth modal loader injects the modal
+  window.addEventListener('fn:modal-injected', wireUpSignupButtons);
+
+  window.setupSignupButtons = wireUpSignupButtons; // Export for manual calls if needed
+
+  /* ════════════════════════════════════════════════════════
      GLOBAL ERROR BANNER (shared across all steps)
   ════════════════════════════════════════════════════════ */
   const globalErrEl = document.getElementById('suGlobalErr');
