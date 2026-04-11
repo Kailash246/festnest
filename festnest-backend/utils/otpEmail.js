@@ -41,11 +41,15 @@ const createTransporter = () => {
  * Send OTP email with production-safe error handling
  */
 exports.sendOTPEmail = async (email, otp) => {
-  console.log(`[SendOTPEmail] Starting send to ${email}`);
+  console.log(`\n[SendOTPEmail] ═══════════════════════════════════`);
+  console.log(`[SendOTPEmail] 📧 Starting OTP email send`);
+  console.log(`[SendOTPEmail] Recipient: ${email}`);
+  console.log(`[SendOTPEmail] OTP Code: ${otp}`);
 
   try {
-    console.log(`[SendOTPEmail] Creating transporter...`);
+    console.log(`[SendOTPEmail] 🔧 Creating transporter...`);
     const transporter = createTransporter();
+    console.log(`[SendOTPEmail] ✅ Transporter created`);
 
     const htmlContent = `
       <!DOCTYPE html>
@@ -123,7 +127,9 @@ exports.sendOTPEmail = async (email, otp) => {
       </html>
     `;
 
-    console.log(`[SendOTPEmail] Calling transporter.sendMail()...`);
+    console.log(`[SendOTPEmail] 🚀 Calling transporter.sendMail()...`);
+    console.log(`[SendOTPEmail] Mail options: to="${email}", subject="Verify your email - FestNest"`);
+    
     const info = await transporter.sendMail({
       from: process.env.EMAIL_FROM || 'FestNest <noreply@festnest.in>',
       to: email,
@@ -132,17 +138,18 @@ exports.sendOTPEmail = async (email, otp) => {
       text: `Your OTP code is: ${otp}\n\nValid for 5 minutes.\n\nDo not share this code with anyone.`,
     });
 
-    console.log(`[SendOTPEmail] SUCCESS: msgId=${info.messageId}`);
+    console.log(`[SendOTPEmail] ✅✅✅ EMAIL SENT SUCCESSFULLY`);
+    console.log(`[SendOTPEmail] Message ID: ${info.messageId}`);
+    console.log(`[SendOTPEmail] Response: ${info.response}`);
     return { success: true, messageId: info.messageId };
 
   } catch (err) {
-    console.error(`[SendOTPEmail] FAILED:`, {
-      message: err.message,
-      code: err.code,
-      command: err.command,
-      response: err.response,
-      stack: err.stack,
-    });
+    console.error(`\n[SendOTPEmail] ❌❌❌ SENDMAIL FAILED`);
+    console.error(`[SendOTPEmail] Error Message:`, err.message);
+    console.error(`[SendOTPEmail] Error Code:`, err.code);
+    console.error(`[SendOTPEmail] Error Command:`, err.command);
+    console.error(`[SendOTPEmail] SMTP Response:`, err.response);
+    console.error(`[SendOTPEmail] Full Error Object:`, JSON.stringify(err, null, 2));
     throw err;
   }
 };
