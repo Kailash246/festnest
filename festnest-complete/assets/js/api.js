@@ -19,13 +19,24 @@
 ──────────────────────────────────────────────────────────── */
 const API_BASE = (() => {
   const h = window.location.hostname;
-  // Running via backend's static serve OR via live-server
-  if (h === 'localhost' || h === '127.0.0.1') {
-    // Use same port as the page to avoid CORS
-    return `${window.location.protocol}//${window.location.hostname}:5000/api`;
+  const isLocalhost = h === 'localhost' || h === '127.0.0.1' || h.startsWith('192.168.');
+  const isProduction = h.includes('festnest.in') || h.includes('onrender.com') || h.includes('vercel.app');
+  
+  console.log('[API] Hostname:', h);
+  console.log('[API] Is localhost:', isLocalhost);
+  console.log('[API] Is production:', isProduction);
+  
+  // If NOT on production, assume local development
+  if (!isProduction) {
+    const apiUrl = `http://localhost:5000/api`;
+    console.log('[API] Using LOCAL backend:', apiUrl);
+    return apiUrl;
   }
-  // Production — Render backend
-  return 'https://festnest.onrender.com/api';
+  
+  // Production — Use Render backend
+  const apiUrl = 'https://festnest.onrender.com/api';
+  console.log('[API] Using PRODUCTION backend:', apiUrl);
+  return apiUrl;
 })();
 
 /* ════════════════════════════════════════════════════════════
