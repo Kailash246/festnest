@@ -81,7 +81,7 @@
 .ev-meta-item{display:flex;align-items:center;gap:4px;color:var(--text-2);font-weight:600}
 .ev-card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bg);padding-top:clamp(8px,2vw,12px);margin-top:auto;flex-wrap:wrap;gap:8px}
 .ev-prize-badge{background:var(--pastel-yellow);padding:clamp(4px,1vw,5px) clamp(10px,2vw,12px);border-radius:20px;font-size:clamp(10px,1.5vw,11px);font-weight:800;color:#B8680A}
-.ev-register-btn{background:var(--grad);color:#fff;border:none;border-radius:20px;padding:clamp(6px,1.5vw,8px) clamp(12px,2vw,16px);font-size:clamp(10px,1.5vw,11px);font-weight:800;cursor:pointer;transition:var(--transition);font-family:inherit;min-height:32px}
+.ev-register-btn{background:var(--grad);color:#fff;border:none;border-radius:var(--radius);padding:clamp(6px,1.5vw,8px) clamp(12px,2vw,16px);font-size:clamp(10px,1.5vw,11px);font-weight:800;cursor:pointer;transition:var(--transition);font-family:inherit;min-height:32px}
 .ev-register-btn:hover{opacity:.9;transform:scale(1.03)}
 
 /* ── Events Grid (Responsive columns) ── */
