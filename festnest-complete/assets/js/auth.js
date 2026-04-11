@@ -50,6 +50,113 @@ window.requireAuth = requireAuth;
 window.requireRole = requireRole;
 
 /* ════════════════════════════════════════════════════════════
+   GLOBAL AUTH BUTTON HANDLERS (Run regardless of modal state)
+   Wire up ALL signup and login buttons to open modal when it's ready
+   ════════════════════════════════════════════════════════════ */
+let authButtonsWired = false;
+
+function wireUpAllAuthButtons() {
+  // Prevent duplicate wiring
+  if (authButtonsWired) {
+    console.log('[Auth] Buttons already wired, skipping');
+    return;
+  }
+
+  function openAuthTab(tab = 'signup') {
+    const authModal = document.getElementById('authModal');
+    if (!authModal) {
+      console.warn('[Auth] Modal not found when button clicked');
+      return;
+    }
+    
+    authModal.classList.add('modal--open');
+    document.body.style.overflow = 'hidden';
+    
+    // Switch to appropriate tab
+    const isLogin = tab === 'login';
+    const tabLogin = document.getElementById('tab-login');
+    const tabSignup = document.getElementById('tab-signup');
+    const formLogin = document.getElementById('login-form');
+    const suShell = document.getElementById('su-shell');
+    
+    if (formLogin) formLogin.style.display = isLogin ? 'flex' : 'none';
+    if (suShell) suShell.style.display = isLogin ? 'none' : 'block';
+    if (tabLogin) tabLogin.classList.toggle('auth-tab--active', isLogin);
+    if (tabSignup) tabSignup.classList.toggle('auth-tab--active', !isLogin);
+    
+    if (typeof trapFocus === 'function') trapFocus(authModal);
+  }
+
+  // Wire up login buttons
+  const loginButtonIds = ['navLoginBtn', 'drawerLoginBtn'];
+  loginButtonIds.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openAuthTab('login');
+      });
+    }
+  });
+
+  // Wire up signup buttons
+  const signupButtonIds = ['navSignupBtn', 'drawerSignupBtn', 'ctaSignupBtn', 'lockSignupBtn'];
+  signupButtonIds.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openAuthTab('signup');
+      });
+    }
+  });
+
+  // Also handle any buttons with data-signup attribute
+  document.querySelectorAll('[data-signup="true"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openAuthTab('signup');
+    });
+  });
+
+  authButtonsWired = true;
+  console.log('[Auth] All auth buttons wired successfully');
+}
+
+// Wire buttons as soon as DOM is ready (don't wait for modal)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', wireUpAllAuthButtons);
+} else {
+  wireUpAllAuthButtons();
+}
+
+// Export for manual calls
+window.setupSignupButtons = wireUpAllAuthButtons;
+window.openAuthModal = function(tab = 'signup') {
+  const modal = document.getElementById('authModal');
+  if (!modal) {
+    console.warn('[Auth] Modal not found');
+    return;
+  }
+  
+  modal.classList.add('modal--open');
+  document.body.style.overflow = 'hidden';
+  
+  const isLogin = tab === 'login';
+  const tabLogin = document.getElementById('tab-login');
+  const tabSignup = document.getElementById('tab-signup');
+  const formLogin = document.getElementById('login-form');
+  const suShell = document.getElementById('su-shell');
+  
+  if (formLogin) formLogin.style.display = isLogin ? 'flex' : 'none';
+  if (suShell) suShell.style.display = isLogin ? 'none' : 'block';
+  if (tabLogin) tabLogin.classList.toggle('auth-tab--active', isLogin);
+  if (tabSignup) tabSignup.classList.toggle('auth-tab--active', !isLogin);
+  
+  if (typeof trapFocus === 'function') trapFocus(modal);
+};
+
+/* ════════════════════════════════════════════════════════════
    AUTH MODAL
    ════════════════════════════════════════════════════════════ */
 (function initAuthModal() {
@@ -137,51 +244,8 @@ window.requireRole = requireRole;
     btn.addEventListener('click', () => switchTab(btn.dataset.switch))
   );
 
-  /* ── Trigger buttons anywhere on the page ── */
-  ['navLoginBtn','navSignupBtn','drawerLoginBtn','drawerSignupBtn','ctaSignupBtn'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (!btn) return;
-    const tab = id.toLowerCase().includes('login') ? 'login' : 'signup';
-    btn.addEventListener('click', () => openAuth(tab));
-  });
-
   window.openAuthModal  = openAuth;
   window.closeAuthModal = closeAuth;
-
-  /* ════════════════════════════════════════════════════════
-     GLOBAL SIGNUP BUTTON HANDLERS — All pages
-     Wire up all signup buttons to open the unified modal
-  ════════════════════════════════════════════════════════ */
-  function wireUpSignupButtons() {
-    // Handle navbar signup button
-    document.getElementById('navSignupBtn')?.addEventListener('click', () => openAuth('signup'));
-    
-    // Handle drawer/mobile signup button  
-    document.getElementById('drawerSignupBtn')?.addEventListener('click', () => openAuth('signup'));
-    
-    // Handle CTA banner signup button (home, blog, articles, etc.)
-    document.getElementById('ctaSignupBtn')?.addEventListener('click', () => openAuth('signup'));
-    
-    // Handle lock page signup button
-    document.getElementById('lockSignupBtn')?.addEventListener('click', () => openAuth('signup'));
-    
-    // Handle any other signup buttons with data-signup attribute
-    document.querySelectorAll('[data-signup="true"]').forEach(btn => {
-      btn.addEventListener('click', () => openAuth('signup'));
-    });
-  }
-  
-  // Wire up buttons on page load
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', wireUpSignupButtons);
-  } else {
-    wireUpSignupButtons();
-  }
-
-  // Also wire up when global auth modal loader injects the modal
-  window.addEventListener('fn:modal-injected', wireUpSignupButtons);
-
-  window.setupSignupButtons = wireUpSignupButtons; // Export for manual calls if needed
 
   /* ════════════════════════════════════════════════════════
      GLOBAL ERROR BANNER (shared across all steps)
