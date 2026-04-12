@@ -149,10 +149,80 @@
     </div>
   </div><!-- end events-layout -->
 
-  <!-- FILTER MODAL (Mobile) -->
-  <div class="filter-modal-overlay" id="filterModalOverlay"></div>
-  <div class="filter-modal" id="filterModal">
-    <div class="filter-modal-header">
+<div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-label="Sign in or create account">
+  <div class="modal-box modal-box--auth" id="authModalBox">
+
+    <!-- Close button (unchanged) -->
+    <button class="modal-close" id="authModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+
+    <!-- Logo (unchanged) -->
+    <div class="auth-logo">FestNest</div>
+
+    <!-- ── Tabs (unchanged) ── -->
+    <div class="auth-tabs" role="tablist">
+      <button class="auth-tab" id="tab-login"  role="tab" aria-selected="false">Log In</button>
+      <button class="auth-tab auth-tab--active" id="tab-signup" role="tab" aria-selected="true">Sign Up</button>
+    </div>
+
+    <!-- ════════════════════════════════
+         LOGIN FORM — completely unchanged
+    ════════════════════════════════ -->
+    <form class="auth-form" id="login-form" style="display:none;" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Email</label>
+        <input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" autocomplete="email" />
+        <span class="form-error-msg" id="loginEmailErr"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="loginPwd">Password</label>
+        <div class="su-pwd-wrap">
+          <input class="form-input" id="loginPwd" type="password" placeholder="••••••••" autocomplete="current-password" />
+          <button type="button" class="su-eye-btn" aria-label="Show/hide password" data-target="loginPwd"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <span class="form-error-msg" id="loginPwdErr"></span>
+      </div>
+      <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+      <div class="auth-divider"><span>or</span></div>
+      <button type="button" class="btn btn-outline w-full"><i class="fa-solid fa-arrow-up-right-from-square"></i> Continue with Google</button>
+      <p class="auth-footer-text">
+        No account?
+        <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button>
+      </p>
+    </form>
+
+    <!-- ════════════════════════════════
+         SIGNUP — 3-STEP FLOW
+         #su-shell wraps all 3 steps
+    ════════════════════════════════ -->
+    <div id="su-shell" role="tabpanel">
+
+      <!-- ── Step indicator ── -->
+      <div class="su-steps" id="suStepBar" aria-label="Signup progress">
+        <div class="su-step su-step--active" data-step="0" aria-label="Step 1 of 3: Role">
+          <div class="su-step-dot"><span>1</span></div>
+          <div class="su-step-label">Role</div>
+        </div>
+        <div class="su-step-line"></div>
+        <div class="su-step" data-step="1" aria-label="Step 2 of 3: Account">
+          <div class="su-step-dot"><span>2</span></div>
+          <div class="su-step-label">Account</div>
+        </div>
+        <div class="su-step-line"></div>
+        <div class="su-step" data-step="2" aria-label="Step 3 of 3: Profile">
+          <div class="su-step-dot"><span>3</span></div>
+          <div class="su-step-label">Profile</div>
+        </div>
+      </div>
+
+      <!-- ────────────────────────────
+           STEP 0 — ROLE SELECTION
+      ──────────────────────────────── -->
+      <div class="su-panel" id="suStep0" aria-label="Choose your role">
+
+        <div class="su-step-header">
+          <div class="su-step-title">I want to join as…</div>
+          <div class="su-step-desc">Your role personalizes your FestNest experience.</div>
+        </div>
 
         <div class="su-role-grid" role="radiogroup" aria-label="Select role">
 
@@ -401,7 +471,8 @@
 
     </div><!-- /#su-shell -->
 
-
+  </div><!-- /.modal-box -->
+</div><!-- /.modal-overlay -->
   
   <!-- FILTER MODAL (Mobile) -->
   <div class="filter-modal-overlay" id="filterModalOverlay"></div>

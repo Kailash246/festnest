@@ -120,9 +120,6 @@
     document.body.appendChild(wrapper.firstElementChild);
     
     console.log('[Auth Modal] Global modal injected into page');
-    
-    // Dispatch custom event so other scripts know modal is ready
-    window.dispatchEvent(new CustomEvent('fn:modal-injected', { detail: { source: 'global-modal-loader' } }));
   }
 
   // Inject modal when page is ready

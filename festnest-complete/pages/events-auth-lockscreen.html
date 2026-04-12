@@ -620,7 +620,7 @@
   <nav class="demo-nav">
     <a class="demo-nav-logo" href="#">FestNest</a>
     <span class="demo-nav-title">Events</span>
-    <button class="demo-nav-cta" id="lockNavSignupBtn">Sign Up Free</button>
+    <button class="demo-nav-cta" onclick="if(typeof Auth!=='undefined'&&Auth.openModal){Auth.openModal('signup')}else if(typeof openAuthModal==='function'){openAuthModal('signup')}">Sign Up Free</button>
   </nav>
 
   <div class="page-wrap">
@@ -723,12 +723,14 @@
           <button
             class="btn-lock-primary"
             id="lockSignupBtn"
+            onclick="if(typeof Auth!=='undefined'&&Auth.openModal){Auth.openModal('signup')}else if(typeof openAuthModal==='function'){openAuthModal('signup')}"
           >
             <i class="fa-solid fa-rocket" style="margin-right:6px;"></i>Sign Up Free
           </button>
           <button
             class="btn-lock-secondary"
             id="lockLoginBtn"
+            onclick="if(typeof Auth!=='undefined'&&Auth.openModal){Auth.openModal('login')}else if(typeof openAuthModal==='function'){openAuthModal('login')}"
           >
             Already have an account? Log in
           </button>
@@ -756,7 +758,60 @@
   </div><!-- /page-wrap -->
 
 
+  <!-- ═══════════════════════════════════════════════
+       AUTH MODAL (reuse existing from index.html)
+  ═══════════════════════════════════════════════ -->
+  <div id="authModal" style="
+    display: none;
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(15,14,23,.55);
+    backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+  " onclick="if(event.target===this)this.style.display='none'">
+    <div style="
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 36px;
+      width: min(460px, calc(100vw - 32px));
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0,0,0,.2);
+      animation: modalIn .4s cubic-bezier(.22,1,.36,1);
+    ">
+      <style>
+        @keyframes modalIn {
+          from { opacity:0; transform: scale(.92) translateY(16px); }
+          to   { opacity:1; transform: scale(1) translateY(0); }
+        }
+      </style>
+      <button onclick="document.getElementById('authModal').style.display='none'" style="
+        position: absolute; top: 16px; right: 16px;
+        background: var(--surface-alt); border: none;
+        width: 32px; height: 32px; border-radius: 50%;
+        cursor: pointer; font-size: .9rem; color: var(--text-muted);
+        display: flex; align-items: center; justify-content: center;
+      ">✕</button>
+      <div style="font-family:'Clash Display',sans-serif; font-weight:700; font-size:1.4rem; margin-bottom:4px;">FestNest</div>
+      <p style="font-size:.9rem; color:var(--text-muted); margin-bottom:24px;">Create your free account — it takes 30 seconds.</p>
 
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <button style="
+          padding: 13px; border-radius: 50px;
+          background: linear-gradient(135deg, var(--brand-purple), #9333ea);
+          color:#fff; border:none; font-weight:700; font-size:1rem;
+          cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif;
+        ">Create Free Account <i class="fa-solid fa-rocket" style="margin-left:6px;"></i></button>
+        <button style="
+          padding: 13px; border-radius: 50px;
+          background: transparent; border: 1.5px solid var(--border);
+          color: var(--text-secondary); font-weight:600; font-size:.95rem;
+          cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif;
+        ">🔗 Continue with Google</button>
+      </div>
+      <p style="text-align:center; margin-top:16px; font-size:.82rem; color:var(--text-muted);">
+        Already have an account? <a href="#" style="color:var(--brand-purple); font-weight:600;">Log in</a>
+      </p>
+    </div>
+  </div>
 
 
   <!-- ═══════════════════════════════════════
@@ -840,20 +895,6 @@
       });
     }
   </script>
-
-  <!-- Firebase (CDN v8) -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <!-- Firebase config & initialization -->
-  <script src="../assets/js/firebase-config.js"></script>
-  <!-- Auth scripts -->
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/toast.js"></script>
-  <script src="../assets/js/utils.js"></script>
-  <script src="../assets/js/navbar.js"></script>
-  <script src="../assets/js/global-auth-modal-loader.js"></script>
-  <script src="../assets/js/auth.js"></script>
-  <script src="../assets/js/auth-manager.js"></script>
 
 </body>
 </html>
