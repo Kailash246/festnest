@@ -24,9 +24,6 @@ initializeFirebase();
 
 const app = express();
 
-/* ── Trust proxy for production ── */
-app.set('trust proxy', 1);
-
 /* ── Database ─────────────────────────────────────────────── */
 if (!process.env.MONGODB_URI) {
   console.error('❌  FATAL: MONGODB_URI environment variable is not set!');
@@ -38,19 +35,6 @@ if (!process.env.MONGODB_URI) {
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅  MongoDB connected'))
   .catch(err => { console.error('❌  MongoDB:', err.message); process.exit(1); });
-
-/* ── Validate Email Config ─────────────────────────────── */
-if (!process.env.EMAIL_HOST || !process.env.EMAIL_PORT || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-  console.error('\n❌  CRITICAL: Email configuration incomplete!');
-  console.error('   Missing SMTP variables:');
-  console.error('   - EMAIL_HOST (should be: smtp.zoho.in)');
-  console.error('   - EMAIL_PORT (should be: 587)');
-  console.error('   - EMAIL_USER (should be: noreply@festnest.in)');
-  console.error('   - EMAIL_PASS (your Zoho app password)');
-  console.error('\n   On Render: Add these to Environment Variables in dashboard');
-  console.error('   Locally: Ensure .env file has these values\n');
-  process.exit(1);
-}
 
 /* ── Security ─────────────────────────────────────────────── */
 app.use(helmet({

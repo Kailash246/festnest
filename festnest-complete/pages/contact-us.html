@@ -455,7 +455,34 @@
     <div class="footer-bottom"><div class="footer-bottom-text">© 2025 FestNest · Made with ❤️ for students</div><div class="footer-bottom-links"><a class="footer-bottom-link" href="/privacy">Privacy</a><a class="footer-bottom-link" href="/terms">Terms</a><a class="footer-bottom-link" href="#">Cookies</a></div></div>
   </footer>
 
-
+  <!-- AUTH MODAL — exact copy -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box--auth">
+      <button class="modal-close" id="authModalClose"><i class="fa-solid fa-xmark"></i></button>
+      <div class="auth-logo">FestNest</div>
+      <div class="auth-tabs"><button class="auth-tab" id="tab-login">Log In</button><button class="auth-tab auth-tab--active" id="tab-signup">Sign Up</button></div>
+      <form class="auth-form" id="login-form" style="display:none;" novalidate>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Log In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full"><i class="fa-solid fa-arrow-up-right-from-square"></i> Continue with Google</button>
+        <p class="auth-footer-text">No account? <button type="button" class="auth-switch-btn" data-switch="signup">Sign up free</button></p>
+      </form>
+      <form class="auth-form" id="signup-form" novalidate>
+        <div class="form-row"><div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Anita" /></div><div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Kumari" /></div></div>
+        <div class="form-group"><label class="form-label">College Email</label><input class="form-input" type="email" placeholder="you@college.edu" /></div>
+        <div class="form-group"><label class="form-label">College Name</label><input class="form-input" type="text" placeholder="e.g. IIT Bombay" /></div>
+        <div class="form-group"><label class="form-label">Year &amp; Branch</label><input class="form-input" type="text" placeholder="e.g. 3rd Year CSE" /></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min. 8 characters" /></div>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Create Free Account 🚀</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn btn-outline w-full"><i class="fa-solid fa-arrow-up-right-from-square"></i> Continue with Google</button>
+        <p class="auth-terms">By signing up you agree to our <a href="terms.html">Terms</a> &amp; <a href="privacy.html">Privacy Policy</a></p>
+        <p class="auth-footer-text">Have account? <button type="button" class="auth-switch-btn" data-switch="login">Log in</button></p>
+      </form>
+    </div>
+  </div>
 
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
@@ -464,6 +491,7 @@
   <script src="../assets/js/toast.js"></script>
   <script src="../assets/js/utils.js"></script>
   <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/global-auth-modal-loader.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/auth-manager.js"></script>
   <script src="../assets/js/cta-visibility-manager.js"></script>

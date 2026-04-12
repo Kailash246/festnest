@@ -20,12 +20,11 @@ const {
  */
 exports.sendOTP = async (req, res, next) => {
   try {
+    const { email } = req.body;
+
     console.log('\n[SendOTP] ═══════════════════════════════════');
     console.log('[SendOTP] 📥 POST received');
-    console.log('[SendOTP] Full Request Body:', JSON.stringify(req.body));
-    
-    const { email } = req.body;
-    console.log('[SendOTP] Extracted Email:', email);
+    console.log('[SendOTP] Email:', email ? `${email.substring(0, 5)}...` : 'N/A');
 
     /* ── Validate email ── */
     if (!email) {
@@ -60,28 +59,19 @@ exports.sendOTP = async (req, res, next) => {
 
     /* ── Send email ── */
     try {
-      console.log(`[SendOTP] ⏳ About to call sendOTPEmail...`);
-      console.log(`[SendOTP] Params: email="${email}", otp="${result.otp}"`);
-      
-      const emailResult = await sendOTPEmail(email, result.otp);
-      
-      console.log(`[SendOTP] ✅ sendOTPEmail completed successfully`);
-      console.log(`[SendOTP] Result:`, emailResult);
+      await sendOTPEmail(email, result.otp);
+      console.log('[SendOTP] ✅ OTP email sent to', email);
 
       return res.status(200).json({
         success: true,
         message: 'OTP sent to your email. Valid for 5 minutes.',
-        email: email.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
+        email: email.replace(/(.{2})(.*)(@.*)/, '$1***$3'), /* Mask email */
         expiresIn: result.expiresIn,
       });
     } catch (emailError) {
-      console.error(`[SendOTP] ❌ sendOTPEmail threw error`);
-      console.error(`[SendOTP] Error Message:`, emailError.message);
-      console.error(`[SendOTP] Error Code:`, emailError.code);
-      console.error(`[SendOTP] Error Command:`, emailError.command);
-      console.error(`[SendOTP] Error Response:`, emailError.response);
-      console.error(`[SendOTP] Full Error:`, emailError);
+      console.error('[SendOTP] ❌ Email send failed:', emailError.message);
       
+      /* If email fails, delete the OTP so user can retry */
       return res.status(500).json({
         success: false,
         message: 'Failed to send OTP email. Please try again.',
