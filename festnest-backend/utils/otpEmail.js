@@ -15,25 +15,22 @@ const createTransporter = () => {
     throw new Error('EMAIL_HOST and EMAIL_PORT are required in environment variables');
   }
 
-  const port = parseInt(process.env.EMAIL_PORT);
-  const secure = port === 465; /* secure=true for 465, false for 587 (TLS) */
-  
-  const config = {
-    host:   process.env.EMAIL_HOST,
-    port:   port,
-    secure: secure,
+  const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: Number(process.env.EMAIL_PORT),
+    secure: true, // MUST be true for 465
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
-  };
+  });
   
   console.log(`[EmailTransport] ✅ LIVE EMAIL CONFIG LOADED`);
-  console.log(`[EmailTransport] Host: ${config.host}:${config.port}`);
-  console.log(`[EmailTransport] Secure (TLS): ${config.secure}`);
-  console.log(`[EmailTransport] User: ${config.auth.user}`);
+  console.log(`[EmailTransport] Host: ${process.env.EMAIL_HOST}:${process.env.EMAIL_PORT}`);
+  console.log(`[EmailTransport] Secure (TLS): true`);
+  console.log(`[EmailTransport] User: ${process.env.EMAIL_USER}`);
   
-  return nodemailer.createTransport(config);
+  return transporter;
 };
 
 /**
@@ -44,7 +41,7 @@ const createTransporter = () => {
 exports.sendOTPEmail = async (email, otp) => {
   console.log(`\n[SendOTPEmail] 📧 Starting OTP email send`);
   console.log(`[SendOTPEmail] Recipient: ${email}`);
-  console.log(`[SendOTPEmail] OTP Code: ${otp}`);
+  console.log(`[SendOTPEmail] OTP generated`);
   
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     throw new Error('❌ CRITICAL: EMAIL_USER and EMAIL_PASS not configured. OTP email cannot be sent.');
@@ -151,8 +148,7 @@ exports.sendOTPEmail = async (email, otp) => {
   } catch (error) {
     console.error(`[SendOTPEmail] ❌ EMAIL SEND FAILED:`, error.message);
     console.error(`[SendOTPEmail] ❌ Check SMTP credentials and firewall rules`);
-    console.error(`[SendOTPEmail] Code:`, error.code);
-    console.error(`[SendOTPEmail] Command:`, error.command);
+    console.error(`[SendOTPEmail] FULL ERROR OBJECT:`, error);
     throw error;
   }
 };
