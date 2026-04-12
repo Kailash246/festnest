@@ -11,7 +11,16 @@ exports.sendOTPEmail = async (email, otp) => {
     to: email,
     from: process.env.EMAIL_FROM,
     subject: 'Verify your email - FestNest',
-    html: `<h2>Your OTP is: ${otp}</h2>`,
+    html: `
+      <div style="font-family: Arial; padding: 20px;">
+        <h2>FestNest Verification Code</h2>
+        <p>Hello,</p>
+        <p>Your OTP code is:</p>
+        <h1 style="letter-spacing: 6px;">${otp}</h1>
+        <p>This code is valid for 5 minutes.</p>
+        <p>If you didn't request this, ignore this email.</p>
+      </div>
+    `,
   };
 
   try {
