@@ -8,7 +8,9 @@
 
 const nodemailer = require('nodemailer');
 
-/* ── Zoho SMTP Configuration ── */
+/* ── Zoho SMTP Configuration (Production-Safe) ── */
+let emailTransporter = null;
+
 const createTransporter = () => {
   const required = ['EMAIL_HOST', 'EMAIL_PORT', 'EMAIL_USER', 'EMAIL_PASS'];
   const missing = required.filter(key => !process.env[key]);
@@ -19,9 +21,8 @@ const createTransporter = () => {
     throw new Error(err);
   }
 
-  const port = parseInt(process.env.EMAIL_PORT);
-  // Zoho: 465 = SSL, 587 = TLS
-  const secure = port === 465;
+  const port = Number(process.env.EMAIL_PORT);
+  const secure = port === 465; // 465 = SSL (recommended for clouds), 587 = TLS
   
   const config = {
     host:   process.env.EMAIL_HOST,
@@ -35,27 +36,45 @@ const createTransporter = () => {
     greetingTimeout: 10000,
     socketTimeout: 10000,
     tls: {
-      rejectUnauthorized: false,
+      rejectUnauthorized: false, // Zoho requires this
     },
   };
   
-  console.log(`[EmailTransport] ✅ SMTP Ready: ${config.host}:${config.port} (secure=${config.secure})`);
-  return nodemailer.createTransport(config);
+  console.log(`[EmailTransport] 🔧 Creating transporter: ${config.host}:${config.port} (${secure ? 'SSL' : 'TLS'})`);\n  const transporter = nodemailer.createTransport(config);
+  
+  // Verify SMTP connection on startup
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error(`[EmailTransport] ❌ SMTP VERIFICATION FAILED`);
+      console.error(`[EmailTransport]    Error: ${error.message}`);
+      console.error(`[EmailTransport]    Check Zoho credentials and account status`);
+    } else {
+      console.log(`[EmailTransport] ✅ SMTP SERVER VERIFIED & READY`);
+    }
+  });
+  
+  return transporter;
 };
+
+// Create transporter once at startup
+try {
+  emailTransporter = createTransporter();
+} catch (err) {
+  console.error('[EmailTransport] Failed to initialize:', err.message);
+}
 
 /**
  * Send OTP email with production-safe error handling
  */
 exports.sendOTPEmail = async (email, otp) => {
   console.log(`\n[SendOTPEmail] ═══════════════════════════════════`);
-  console.log(`[SendOTPEmail] 📧 Starting OTP email send`);
-  console.log(`[SendOTPEmail] Recipient: ${email}`);
-  console.log(`[SendOTPEmail] OTP Code: ${otp}`);
+  console.log(`[SendOTPEmail] 📧 OTP send request`);
+  console.log(`[SendOTPEmail] To: ${email}, OTP: ${otp}`);
 
   try {
-    console.log(`[SendOTPEmail] 🔧 Creating transporter...`);
-    const transporter = createTransporter();
-    console.log(`[SendOTPEmail] ✅ Transporter created`);
+    if (!emailTransporter) {
+      throw new Error('Email transporter not initialized. Check SMTP configuration.');
+    }
 
     const htmlContent = `
       <!DOCTYPE html>
@@ -133,10 +152,10 @@ exports.sendOTPEmail = async (email, otp) => {
       </html>
     `;
 
-    console.log(`[SendOTPEmail] 🚀 Calling transporter.sendMail()...`);
+    console.log(`[SendOTPEmail] 🚀 Calling emailTransporter.sendMail()...`);
     console.log(`[SendOTPEmail] Mail options: to="${email}", subject="Verify your email - FestNest"`);
     
-    const info = await transporter.sendMail({
+    const info = await emailTransporter.sendMail({
       from: process.env.EMAIL_FROM || 'FestNest <noreply@festnest.in>',
       to: email,
       subject: 'Verify your email - FestNest',
