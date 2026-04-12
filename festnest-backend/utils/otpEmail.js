@@ -8,13 +8,19 @@
 
 const nodemailer = require('nodemailer');
 
-/* ── Production-safe email config ── */
+/* ── Zoho SMTP Configuration ── */
 const createTransporter = () => {
-  if (!process.env.EMAIL_HOST || !process.env.EMAIL_PORT || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error('Email config incomplete: EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS required');
+  const required = ['EMAIL_HOST', 'EMAIL_PORT', 'EMAIL_USER', 'EMAIL_PASS'];
+  const missing = required.filter(key => !process.env[key]);
+  
+  if (missing.length > 0) {
+    const err = `Missing SMTP config: ${missing.join(', ')}`;
+    console.error(`[EmailTransport] ❌ ${err}`);
+    throw new Error(err);
   }
 
   const port = parseInt(process.env.EMAIL_PORT);
+  // Zoho: 465 = SSL, 587 = TLS
   const secure = port === 465;
   
   const config = {
@@ -33,7 +39,7 @@ const createTransporter = () => {
     },
   };
   
-  console.log(`[EmailTransport] Config: ${config.host}:${config.port} (secure: ${config.secure})`);
+  console.log(`[EmailTransport] ✅ SMTP Ready: ${config.host}:${config.port} (secure=${config.secure})`);
   return nodemailer.createTransport(config);
 };
 
