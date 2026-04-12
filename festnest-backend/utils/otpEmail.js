@@ -40,7 +40,9 @@ const createTransporter = () => {
     },
   };
   
-  console.log(`[EmailTransport] 🔧 Creating transporter: ${config.host}:${config.port} (${secure ? 'SSL' : 'TLS'})`);\n  const transporter = nodemailer.createTransport(config);
+  console.log(`[EmailTransport] 🔧 Creating transporter: ${config.host}:${config.port} (${secure ? 'SSL' : 'TLS'})`);
+  
+  const transporter = nodemailer.createTransport(config);
   
   // Verify SMTP connection on startup
   transporter.verify((error, success) => {
