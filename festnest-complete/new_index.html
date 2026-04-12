@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FestNest — Discover College Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --indigo:#4F46E5;
+  --indigo-dark:#3730A3;
+  --indigo-light:#EEF2FF;
+  --indigo-mid:#818CF8;
+  --surface:#FFFFFF;
+  --surface-2:#F8F8F6;
+  --surface-3:#F1F0ED;
+  --text-1:#111110;
+  --text-2:#4B4B47;
+  --text-3:#8A8A85;
+  --border:#E4E4E0;
+  --border-strong:#CBCBC6;
+  --green:#16A34A;
+  --green-bg:#F0FDF4;
+  --amber:#B45309;
+  --amber-bg:#FFFBEB;
+  --red:#DC2626;
+  --red-bg:#FEF2F2;
+  --radius-sm:6px;
+  --radius-md:10px;
+  --radius-lg:16px;
+  --radius-xl:22px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.07),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 32px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.05);
+  --font-display:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);background:var(--surface-2);color:var(--text-1);min-height:100vh;font-size:15px;line-height:1.5}
+
+/* ── LAYOUT ── */
+.app-shell{max-width:430px;margin:0 auto;background:var(--surface);min-height:100vh;position:relative;box-shadow:0 0 0 1px var(--border),var(--shadow-lg)}
+@media(min-width:900px){
+  .app-shell{max-width:100%;display:grid;grid-template-columns:280px 1fr;grid-template-rows:auto 1fr;min-height:100vh;box-shadow:none}
+  .top-nav{grid-column:1/-1}
+  .sidebar{display:flex!important;grid-column:1;grid-row:2}
+  .main-content{grid-column:2;grid-row:2;max-width:680px}
+  .bottom-nav{display:none}
+}
+
+/* ── TOP NAV ── */
+.top-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 16px;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.logo{font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--indigo);letter-spacing:-0.5px;display:flex;align-items:center;gap:6px}
+.logo-dot{width:7px;height:7px;background:var(--indigo);border-radius:50%;margin-bottom:1px}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:36px;height:36px;border:none;background:none;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2);transition:background 0.15s}
+.icon-btn:hover{background:var(--surface-3)}
+.icon-btn svg{width:20px;height:20px}
+.avatar-btn{width:34px;height:34px;border-radius:50%;background:var(--indigo-light);border:2px solid var(--indigo);display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:var(--font-display);font-weight:700;font-size:12px;color:var(--indigo)}
+
+/* ── SIDEBAR (desktop) ── */
+.sidebar{
+  display:none;
+  flex-direction:column;
+  padding:24px 16px;
+  border-right:1px solid var(--border);
+  gap:4px;
+  position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;
+}
+.sidebar-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--radius-md);cursor:pointer;font-size:14px;font-weight:500;color:var(--text-2);transition:all 0.15s;border:none;background:none;width:100%;text-align:left}
+.sidebar-item:hover{background:var(--surface-2);color:var(--text-1)}
+.sidebar-item.active{background:var(--indigo-light);color:var(--indigo)}
+.sidebar-item svg{width:18px;height:18px;flex-shrink:0}
+.sidebar-section{font-size:11px;font-weight:600;letter-spacing:0.06em;color:var(--text-3);padding:8px 14px 4px;text-transform:uppercase;margin-top:8px}
+
+/* ── MAIN CONTENT ── */
+.main-content{padding-bottom:80px}
+@media(min-width:900px){.main-content{padding-bottom:24px;border-right:1px solid var(--border)}}
+
+/* ── HERO SEARCH ── */
+.hero-section{padding:20px 16px 0}
+.greeting{font-size:13px;color:var(--text-3);margin-bottom:2px;font-weight:400}
+.hero-title{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text-1);margin-bottom:16px;line-height:1.2}
+.hero-title span{color:var(--indigo)}
+.search-bar{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface);
+  border:1.5px solid var(--border-strong);
+  border-radius:var(--radius-lg);
+  padding:10px 14px;
+  transition:border-color 0.15s,box-shadow 0.15s;
+}
+.search-bar:focus-within{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(79,70,229,0.1)}
+.search-bar svg{color:var(--text-3);flex-shrink:0;width:18px;height:18px}
+.search-bar input{border:none;outline:none;flex:1;font-family:var(--font-body);font-size:14px;color:var(--text-1);background:transparent}
+.search-bar input::placeholder{color:var(--text-3)}
+.search-filter-btn{background:var(--indigo);border:none;border-radius:var(--radius-sm);padding:6px 10px;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:white;font-family:var(--font-body)}
+
+/* ── FILTER CHIPS ── */
+.filter-row{display:flex;gap:8px;padding:14px 16px 0;overflow-x:auto;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:6px 14px;border-radius:50px;border:1.5px solid var(--border);background:var(--surface);font-size:13px;font-weight:500;color:var(--text-2);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.chip:hover{border-color:var(--indigo-mid);color:var(--indigo)}
+.chip.active{background:var(--indigo-light);border-color:var(--indigo);color:var(--indigo)}
+.chip svg{width:13px;height:13px}
+
+/* ── SECTION HEADER ── */
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:20px 16px 12px}
+.section-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--text-1)}
+.see-all{font-size:13px;font-weight:500;color:var(--indigo);cursor:pointer;border:none;background:none;padding:0}
+
+/* ── TRENDING HORIZONTAL SCROLL ── */
+.h-scroll{display:flex;gap:12px;padding:0 16px 4px;overflow-x:auto;scrollbar-width:none}
+.h-scroll::-webkit-scrollbar{display:none}
+
+.trend-card{
+  flex-shrink:0;width:200px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.trend-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.trend-card-img{width:100%;height:120px;object-fit:cover;display:block;background:var(--surface-3)}
+.trend-card-img-placeholder{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:32px}
+.trend-card-body{padding:10px 12px 12px}
+.trend-card-tag{font-size:10px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--indigo);margin-bottom:4px}
+.trend-card-name{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text-1);line-height:1.3;margin-bottom:4px}
+.trend-card-meta{font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:4px}
+.trend-card-meta svg{width:11px;height:11px}
+
+/* ── ENDING SOON CARD ── */
+.urgency-card{
+  flex-shrink:0;width:240px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  cursor:pointer;
+  display:flex;gap:0;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.urgency-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.urgency-card-img{width:76px;min-height:76px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--surface-3)}
+.urgency-card-body{padding:10px 12px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.urgency-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--red);background:var(--red-bg);padding:2px 7px;border-radius:50px;margin-bottom:5px}
+.urgency-badge-dot{width:5px;height:5px;background:var(--red);border-radius:50%}
+.urgency-card-name{font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--text-1);line-height:1.3;margin-bottom:3px}
+.urgency-card-sub{font-size:11px;color:var(--text-3)}
+
+/* ── EVENT FEED CARDS ── */
+.feed-section{padding:0 16px}
+.feed-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-xl);
+  overflow:hidden;
+  margin-bottom:16px;
+  cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.feed-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.feed-card-img-wrap{position:relative;width:100%;padding-top:52%;background:var(--surface-3);overflow:hidden}
+.feed-card-img-wrap .placeholder-img{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px}
+.feed-card-badge{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:0.04em;padding:4px 10px;border-radius:50px;text-transform:uppercase}
+.badge-free{background:var(--green-bg);color:var(--green);border:1px solid #BBF7D0}
+.badge-paid{background:var(--amber-bg);color:var(--amber);border:1px solid #FDE68A}
+.badge-prize{background:var(--indigo-light);color:var(--indigo);border:1px solid #C7D2FE}
+.feed-card-save{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2)}
+.feed-card-save svg{width:16px;height:16px}
+.feed-card-body{padding:14px 16px 16px}
+.feed-card-category{font-size:11px;font-weight:600;color:var(--indigo);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:4px}
+.feed-card-title{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--text-1);line-height:1.25;margin-bottom:4px}
+.feed-card-college{font-size:13px;color:var(--text-2);margin-bottom:10px;display:flex;align-items:center;gap:4px}
+.feed-card-college svg{width:13px;height:13px;color:var(--text-3);flex-shrink:0}
+.feed-card-meta{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border)}
+.feed-meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text-3)}
+.feed-meta-item svg{width:13px;height:13px}
+.feed-meta-item strong{color:var(--text-2);font-weight:500}
+.feed-card-action{margin-top:12px;display:flex;gap:8px}
+.btn-primary{flex:1;background:var(--indigo);color:white;border:none;border-radius:var(--radius-md);padding:10px 16px;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;transition:background 0.15s}
+.btn-primary:hover{background:var(--indigo-dark)}
+.btn-secondary{padding:10px 14px;border:1.5px solid var(--border-strong);border-radius:var(--radius-md);background:none;font-family:var(--font-body);font-size:14px;color:var(--text-2);cursor:pointer;transition:all 0.15s}
+.btn-secondary:hover{border-color:var(--indigo);color:var(--indigo)}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(12px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:8px 8px 12px;
+  z-index:100;
+}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 4px;border-radius:var(--radius-md);border:none;background:none;transition:background 0.15s}
+.nav-item:hover{background:var(--surface-3)}
+.nav-item svg{width:22px;height:22px;color:var(--text-3)}
+.nav-item.active svg{color:var(--indigo)}
+.nav-item span{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.02em}
+.nav-item.active span{color:var(--indigo)}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(17,17,16,0.6);
+  backdrop-filter:blur(4px);
+  z-index:200;
+  display:flex;align-items:flex-end;
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{
+  width:100%;max-width:430px;margin:0 auto;
+  background:var(--surface);
+  border-radius:var(--radius-xl) var(--radius-xl) 0 0;
+  max-height:92vh;overflow-y:auto;
+  transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);
+  scrollbar-width:none;
+}
+.modal-sheet::-webkit-scrollbar{display:none}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-handle{width:36px;height:4px;background:var(--border-strong);border-radius:2px;margin:12px auto 0}
+.modal-hero{width:100%;padding-top:56%;background:var(--surface-3);position:relative;overflow:hidden}
+.modal-hero .placeholder-img{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:72px}
+.modal-hero-badge{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;padding:5px 12px;border-radius:50px;text-transform:uppercase;letter-spacing:0.04em}
+.modal-body{padding:20px 20px 100px}
+.modal-category{font-size:11px;font-weight:700;color:var(--indigo);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px}
+.modal-title{font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1.2;margin-bottom:6px}
+.modal-college{font-size:14px;color:var(--text-2);display:flex;align-items:center;gap:5px;margin-bottom:16px}
+.modal-college svg{width:14px;height:14px;color:var(--text-3)}
+.modal-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.modal-info-card{background:var(--surface-2);border-radius:var(--radius-md);padding:12px 14px}
+.modal-info-label{font-size:11px;color:var(--text-3);font-weight:500;margin-bottom:3px}
+.modal-info-value{font-size:13px;font-weight:600;color:var(--text-1)}
+.modal-section-title{font-family:var(--font-display);font-size:15px;font-weight:700;margin-bottom:8px}
+.modal-about{font-size:14px;color:var(--text-2);line-height:1.6;margin-bottom:20px}
+.highlight-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.highlight-chip{display:flex;align-items:center;gap:6px;background:var(--indigo-light);border-radius:var(--radius-md);padding:7px 12px;font-size:13px;font-weight:500;color:var(--indigo)}
+.highlight-chip span{font-size:16px}
+.modal-sticky-footer{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);
+  border-top:1px solid var(--border);
+  padding:12px 20px 20px;
+  z-index:201;
+  display:flex;gap:10px;align-items:center;
+}
+.modal-price{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text-1)}
+.modal-price small{font-size:12px;font-weight:400;color:var(--text-3);font-family:var(--font-body)}
+.close-btn{width:36px;height:36px;border-radius:50%;background:var(--surface-3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2);flex-shrink:0}
+.close-btn svg{width:18px;height:18px}
+.modal-register-btn{flex:1;background:var(--indigo);color:white;border:none;border-radius:var(--radius-md);padding:13px 20px;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;transition:background 0.15s}
+.modal-register-btn:hover{background:var(--indigo-dark)}
+
+/* ── PROFILE SECTION ── */
+.profile-section{padding:20px 16px;display:none}
+.profile-section.visible{display:block}
+.profile-header{display:flex;align-items:center;gap:14px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);margin-bottom:16px}
+.profile-avatar{width:60px;height:60px;border-radius:50%;background:var(--indigo-light);border:3px solid var(--indigo);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--indigo);flex-shrink:0}
+.profile-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text-1);margin-bottom:2px}
+.profile-sub{font-size:13px;color:var(--text-3)}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.profile-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;text-align:center}
+.profile-stat-num{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--indigo);margin-bottom:2px}
+.profile-stat-label{font-size:11px;color:var(--text-3);font-weight:500}
+.registered-list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:16px}
+.registered-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border)}
+.registered-item:last-child{border-bottom:none}
+.reg-emoji{width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.reg-name{font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px}
+.reg-sub{font-size:12px;color:var(--text-3)}
+.reg-status{margin-left:auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;text-transform:uppercase;letter-spacing:0.03em;flex-shrink:0}
+.status-confirmed{background:var(--green-bg);color:var(--green)}
+.status-pending{background:var(--amber-bg);color:var(--amber)}
+
+/* ── EXPLORE SECTION ── */
+.explore-section{padding:0 16px;display:none}
+.explore-section.visible{display:block}
+.category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.category-tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;gap:8px}
+.category-tile:hover{border-color:var(--indigo);background:var(--indigo-light)}
+.category-tile:hover .category-tile-name{color:var(--indigo)}
+.category-emoji{font-size:28px}
+.category-tile-name{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--text-1)}
+.category-tile-count{font-size:12px;color:var(--text-3)}
+
+/* ── HOME VISIBLE TOGGLE ── */
+.home-content{display:block}
+.home-content.hidden{display:none}
+
+/* ── SAVED SECTION ── */
+.saved-section{display:none}
+.saved-section.visible{display:block;padding:0 16px}
+.empty-state{text-align:center;padding:60px 20px}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-title{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text-1);margin-bottom:6px}
+.empty-sub{font-size:14px;color:var(--text-3)}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:var(--text-1);color:white;
+  padding:10px 18px;border-radius:50px;
+  font-size:13px;font-weight:500;
+  opacity:0;transition:all 0.25s;
+  z-index:300;white-space:nowrap;
+  pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── SHIMMER (detail) ── */
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* ── COLORS for placeholders ── */
+.bg1{background:linear-gradient(135deg,#667eea22,#764ba222)}
+.bg2{background:linear-gradient(135deg,#f093fb22,#f5576c22)}
+.bg3{background:linear-gradient(135deg,#4facfe22,#00f2fe22)}
+.bg4{background:linear-gradient(135deg,#43e97b22,#38f9d722)}
+.bg5{background:linear-gradient(135deg,#fa709a22,#fee14022)}
+.bg6{background:linear-gradient(135deg,#a18cd122,#fbc2eb22)}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      FestNest
+    </div>
+    <div style="flex:1"></div>
+    <div class="nav-actions">
+      <button class="icon-btn" onclick="document.getElementById('searchInput').focus();switchTab('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <div class="avatar-btn" onclick="switchTab('profile')">AK</div>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR (desktop only) -->
+  <aside class="sidebar">
+    <button class="sidebar-item active" onclick="switchTab('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="sidebar-item" onclick="switchTab('explore')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      Explore
+    </button>
+    <button class="sidebar-item" onclick="switchTab('saved')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+      Saved
+    </button>
+    <button class="sidebar-item" onclick="switchTab('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </button>
+    <div class="sidebar-section">Discover</div>
+    <button class="sidebar-item" onclick="switchTab('explore')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Hackathons
+    </button>
+    <button class="sidebar-item" onclick="switchTab('explore')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      Workshops
+    </button>
+    <button class="sidebar-item" onclick="switchTab('explore')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+      Fests
+    </button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ── HOME ── -->
+    <div class="home-content" id="homeContent">
+
+      <!-- Hero search -->
+      <div class="hero-section">
+        <div class="greeting">Good afternoon 👋</div>
+        <div class="hero-title">Find your next<br><span>big moment</span></div>
+        <div class="search-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Events, colleges, cities…">
+          <button class="search-filter-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+            Filter
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter chips -->
+      <div class="filter-row">
+        <div class="chip active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          All
+        </div>
+        <div class="chip" onclick="toggleChip(this)">📅 This Week</div>
+        <div class="chip" onclick="toggleChip(this)">🏅 Hackathon</div>
+        <div class="chip" onclick="toggleChip(this)">🎉 Cultural Fest</div>
+        <div class="chip" onclick="toggleChip(this)">🆓 Free Entry</div>
+        <div class="chip" onclick="toggleChip(this)">📍 Near Me</div>
+        <div class="chip" onclick="toggleChip(this)">💰 Prize Pool</div>
+      </div>
+
+      <!-- Trending section -->
+      <div class="section-header">
+        <div class="section-title">🔥 Trending Now</div>
+        <button class="see-all" onclick="switchTab('explore')">See all</button>
+      </div>
+      <div class="h-scroll">
+
+        <div class="trend-card" onclick="openModal('techfest')">
+          <div class="trend-card-img-placeholder bg1">🖥️</div>
+          <div class="trend-card-body">
+            <div class="trend-card-tag">Hackathon</div>
+            <div class="trend-card-name">HackBits 2025</div>
+            <div class="trend-card-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              IIT Bombay
+            </div>
+          </div>
+        </div>
+
+        <div class="trend-card" onclick="openModal('culturals')">
+          <div class="trend-card-img-placeholder bg5">🎭</div>
+          <div class="trend-card-body">
+            <div class="trend-card-tag">Cultural Fest</div>
+            <div class="trend-card-name">Kaleidoscope '25</div>
+            <div class="trend-card-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              NIT Trichy
+            </div>
+          </div>
+        </div>
+
+        <div class="trend-card" onclick="openModal('design')">
+          <div class="trend-card-img-placeholder bg3">🎨</div>
+          <div class="trend-card-body">
+            <div class="trend-card-tag">Workshop</div>
+            <div class="trend-card-name">UX Design Sprint</div>
+            <div class="trend-card-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              BITS Pilani
+            </div>
+          </div>
+        </div>
+
+        <div class="trend-card" onclick="openModal('robotics')">
+          <div class="trend-card-img-placeholder bg4">🤖</div>
+          <div class="trend-card-body">
+            <div class="trend-card-tag">Competition</div>
+            <div class="trend-card-name">RoboWar Arena</div>
+            <div class="trend-card-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              VIT Vellore
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Ending soon -->
+      <div class="section-header">
+        <div class="section-title">⏰ Ending Soon</div>
+        <button class="see-all" onclick="switchTab('explore')">See all</button>
+      </div>
+      <div class="h-scroll">
+
+        <div class="urgency-card" onclick="openModal('ai')">
+          <div class="urgency-card-img bg6">🧠</div>
+          <div class="urgency-card-body">
+            <div class="urgency-badge"><div class="urgency-badge-dot"></div>2 days left</div>
+            <div class="urgency-card-name">AI Challenge '25</div>
+            <div class="urgency-card-sub">IISc Bangalore</div>
+          </div>
+        </div>
+
+        <div class="urgency-card" onclick="openModal('techfest')">
+          <div class="urgency-card-img bg1">💻</div>
+          <div class="urgency-card-body">
+            <div class="urgency-badge"><div class="urgency-badge-dot"></div>4 days left</div>
+            <div class="urgency-card-name">HackBits 2025</div>
+            <div class="urgency-card-sub">IIT Bombay</div>
+          </div>
+        </div>
+
+        <div class="urgency-card" onclick="openModal('design')">
+          <div class="urgency-card-img bg3">🎨</div>
+          <div class="urgency-card-body">
+            <div class="urgency-badge"><div class="urgency-badge-dot"></div>6 days left</div>
+            <div class="urgency-card-name">UX Sprint</div>
+            <div class="urgency-card-sub">BITS Pilani</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Feed -->
+      <div class="section-header">
+        <div class="section-title">For You</div>
+        <button class="see-all">Latest</button>
+      </div>
+
+      <div class="feed-section">
+
+        <!-- Card 1 -->
+        <div class="feed-card" onclick="openModal('techfest')">
+          <div class="feed-card-img-wrap bg1">
+            <div class="placeholder-img">💻</div>
+            <div class="feed-card-badge badge-prize">🏆 ₹2L Prize</div>
+            <button class="feed-card-save" onclick="saveEvent(event,'HackBits 2025')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            </button>
+          </div>
+          <div class="feed-card-body">
+            <div class="feed-card-category">Hackathon</div>
+            <div class="feed-card-title">HackBits 2025</div>
+            <div class="feed-card-college">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              IIT Bombay, Mumbai
+            </div>
+            <div class="feed-card-meta">
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <strong>18–19 May 2025</strong>
+              </div>
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <strong>1,240 registered</strong>
+              </div>
+            </div>
+            <div class="feed-card-action">
+              <button class="btn-primary" onclick="event.stopPropagation();showToast('Redirecting to registration…')">Register Free</button>
+              <button class="btn-secondary" onclick="event.stopPropagation();openModal('techfest')">Details</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feed-card" onclick="openModal('culturals')">
+          <div class="feed-card-img-wrap bg5">
+            <div class="placeholder-img">🎭</div>
+            <div class="feed-card-badge badge-paid">₹299 Entry</div>
+            <button class="feed-card-save" onclick="saveEvent(event,'Kaleidoscope 25')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            </button>
+          </div>
+          <div class="feed-card-body">
+            <div class="feed-card-category">Cultural Fest</div>
+            <div class="feed-card-title">Kaleidoscope '25</div>
+            <div class="feed-card-college">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              NIT Trichy, Tamil Nadu
+            </div>
+            <div class="feed-card-meta">
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <strong>22–24 May 2025</strong>
+              </div>
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <strong>3,800+ attending</strong>
+              </div>
+            </div>
+            <div class="feed-card-action">
+              <button class="btn-primary" onclick="event.stopPropagation();showToast('Redirecting to registration…')">Book Tickets</button>
+              <button class="btn-secondary" onclick="event.stopPropagation();openModal('culturals')">Details</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feed-card" onclick="openModal('ai')">
+          <div class="feed-card-img-wrap bg6">
+            <div class="placeholder-img">🧠</div>
+            <div class="feed-card-badge badge-prize">🏆 ₹5L Prize</div>
+            <button class="feed-card-save" onclick="saveEvent(event,'AI Challenge 25')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            </button>
+          </div>
+          <div class="feed-card-body">
+            <div class="feed-card-category">Competition</div>
+            <div class="feed-card-title">AI Challenge '25</div>
+            <div class="feed-card-college">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              IISc, Bangalore
+            </div>
+            <div class="feed-card-meta">
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <strong>30–31 May 2025</strong>
+              </div>
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <strong>620 registered</strong>
+              </div>
+            </div>
+            <div class="feed-card-action">
+              <button class="btn-primary" onclick="event.stopPropagation();showToast('Redirecting to registration…')">Register Now</button>
+              <button class="btn-secondary" onclick="event.stopPropagation();openModal('ai')">Details</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="feed-card" onclick="openModal('design')">
+          <div class="feed-card-img-wrap bg3">
+            <div class="placeholder-img">🎨</div>
+            <div class="feed-card-badge badge-free">Free Entry</div>
+            <button class="feed-card-save" onclick="saveEvent(event,'UX Design Sprint')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            </button>
+          </div>
+          <div class="feed-card-body">
+            <div class="feed-card-category">Workshop</div>
+            <div class="feed-card-title">UX Design Sprint</div>
+            <div class="feed-card-college">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              BITS Pilani, Rajasthan
+            </div>
+            <div class="feed-card-meta">
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <strong>25 May 2025</strong>
+              </div>
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <strong>48 seats left</strong>
+              </div>
+            </div>
+            <div class="feed-card-action">
+              <button class="btn-primary" onclick="event.stopPropagation();showToast('Redirecting to registration…')">Join Free</button>
+              <button class="btn-secondary" onclick="event.stopPropagation();openModal('design')">Details</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="feed-card" onclick="openModal('robotics')">
+          <div class="feed-card-img-wrap bg4">
+            <div class="placeholder-img">🤖</div>
+            <div class="feed-card-badge badge-prize">🏆 ₹1L Prize</div>
+            <button class="feed-card-save" onclick="saveEvent(event,'RoboWar Arena')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            </button>
+          </div>
+          <div class="feed-card-body">
+            <div class="feed-card-category">Competition</div>
+            <div class="feed-card-title">RoboWar Arena 2025</div>
+            <div class="feed-card-college">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              VIT Vellore, Tamil Nadu
+            </div>
+            <div class="feed-card-meta">
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <strong>7–8 Jun 2025</strong>
+              </div>
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <strong>280 teams</strong>
+              </div>
+            </div>
+            <div class="feed-card-action">
+              <button class="btn-primary" onclick="event.stopPropagation();showToast('Redirecting to registration…')">Register Team</button>
+              <button class="btn-secondary" onclick="event.stopPropagation();openModal('robotics')">Details</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── EXPLORE ── -->
+    <div class="explore-section" id="exploreContent">
+      <div class="section-header" style="padding-top:20px">
+        <div class="section-title">Browse Categories</div>
+      </div>
+      <div class="category-grid" style="padding:0 16px">
+        <div class="category-tile" onclick="showToast('Filtering hackathons…')">
+          <div class="category-emoji">💻</div>
+          <div class="category-tile-name">Hackathons</div>
+          <div class="category-tile-count">42 events</div>
+        </div>
+        <div class="category-tile" onclick="showToast('Filtering cultural fests…')">
+          <div class="category-emoji">🎭</div>
+          <div class="category-tile-name">Cultural Fests</div>
+          <div class="category-tile-count">31 events</div>
+        </div>
+        <div class="category-tile" onclick="showToast('Filtering workshops…')">
+          <div class="category-emoji">🛠️</div>
+          <div class="category-tile-name">Workshops</div>
+          <div class="category-tile-count">58 events</div>
+        </div>
+        <div class="category-tile" onclick="showToast('Filtering competitions…')">
+          <div class="category-emoji">🏆</div>
+          <div class="category-tile-name">Competitions</div>
+          <div class="category-tile-count">27 events</div>
+        </div>
+        <div class="category-tile" onclick="showToast('Filtering tech talks…')">
+          <div class="category-emoji">🎙️</div>
+          <div class="category-tile-name">Tech Talks</div>
+          <div class="category-tile-count">19 events</div>
+        </div>
+        <div class="category-tile" onclick="showToast('Filtering sports…')">
+          <div class="category-emoji">⚽</div>
+          <div class="category-tile-name">Sports Meets</div>
+          <div class="category-tile-count">14 events</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">All Events</div>
+        <button class="see-all">Filter</button>
+      </div>
+      <div class="feed-section">
+        <div class="feed-card" onclick="openModal('ai')">
+          <div class="feed-card-img-wrap bg6">
+            <div class="placeholder-img">🧠</div>
+            <div class="feed-card-badge badge-prize">🏆 ₹5L Prize</div>
+          </div>
+          <div class="feed-card-body">
+            <div class="feed-card-category">Competition</div>
+            <div class="feed-card-title">AI Challenge '25</div>
+            <div class="feed-card-college">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              IISc, Bangalore
+            </div>
+            <div class="feed-card-meta">
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <strong>30–31 May 2025</strong>
+              </div>
+              <div class="feed-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <strong>620 registered</strong>
+              </div>
+            </div>
+            <div class="feed-card-action">
+              <button class="btn-primary" onclick="event.stopPropagation();showToast('Redirecting to registration…')">Register Now</button>
+              <button class="btn-secondary" onclick="event.stopPropagation();openModal('ai')">Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SAVED ── -->
+    <div class="saved-section" id="savedContent">
+      <div class="section-header" style="padding-top:20px">
+        <div class="section-title">Saved Events</div>
+      </div>
+      <div id="savedList" style="padding:0 16px"></div>
+      <div class="empty-state" id="savedEmpty">
+        <div class="empty-icon">🔖</div>
+        <div class="empty-title">Nothing saved yet</div>
+        <div class="empty-sub">Tap the bookmark icon on any event to save it for later</div>
+      </div>
+    </div>
+
+    <!-- ── PROFILE ── -->
+    <div class="profile-section" id="profileContent">
+      <div class="profile-header">
+        <div class="profile-avatar">AK</div>
+        <div>
+          <div class="profile-name">Arjun Kumar</div>
+          <div class="profile-sub">3rd Year · Computer Science · NSIT Delhi</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-num">7</div>
+          <div class="profile-stat-label">Registered</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-num">3</div>
+          <div class="profile-stat-label">Attended</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-num">12</div>
+          <div class="profile-stat-label">Saved</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="padding:0 0 10px;font-family:var(--font-display);font-size:15px;font-weight:700">Registered Events</div>
+      <div class="registered-list">
+        <div class="registered-item">
+          <div class="reg-emoji bg1">💻</div>
+          <div>
+            <div class="reg-name">HackBits 2025</div>
+            <div class="reg-sub">IIT Bombay · 18–19 May</div>
+          </div>
+          <div class="reg-status status-confirmed">Confirmed</div>
+        </div>
+        <div class="registered-item">
+          <div class="reg-emoji bg6">🧠</div>
+          <div>
+            <div class="reg-name">AI Challenge '25</div>
+            <div class="reg-sub">IISc Bangalore · 30 May</div>
+          </div>
+          <div class="reg-status status-confirmed">Confirmed</div>
+        </div>
+        <div class="registered-item">
+          <div class="reg-emoji bg3">🎨</div>
+          <div>
+            <div class="reg-name">UX Design Sprint</div>
+            <div class="reg-sub">BITS Pilani · 25 May</div>
+          </div>
+          <div class="reg-status status-pending">Pending</div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="showToast('Opening settings…')">
+        <div style="display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--text-1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          Settings & Preferences
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3)"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+
+      <div style="margin-top:10px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="showToast('Sending notification preferences…')">
+        <div style="display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--text-1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Notification Preferences
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3)"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="navHome" onclick="switchTab('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" id="navExplore" onclick="switchTab('explore')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      <span>Explore</span>
+    </button>
+    <button class="nav-item" id="navSaved" onclick="switchTab('saved')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+      <span>Saved</span>
+    </button>
+    <button class="nav-item" id="navProfile" onclick="switchTab('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- ── EVENT DETAIL MODAL ── -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBg(event)">
+  <div class="modal-sheet" id="modalSheet">
+    <div class="modal-handle"></div>
+    <div class="modal-hero" id="modalHero">
+      <div class="placeholder-img" id="modalEmoji">💻</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-category" id="modalCategory">Hackathon</div>
+      <div class="modal-title" id="modalTitle">HackBits 2025</div>
+      <div class="modal-college" id="modalCollege">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="modalCollegeText">IIT Bombay, Mumbai</span>
+      </div>
+      <div class="modal-info-grid">
+        <div class="modal-info-card">
+          <div class="modal-info-label">📅 Date</div>
+          <div class="modal-info-value" id="modalDate">18–19 May 2025</div>
+        </div>
+        <div class="modal-info-card">
+          <div class="modal-info-label">⏰ Time</div>
+          <div class="modal-info-value" id="modalTime">9:00 AM onwards</div>
+        </div>
+        <div class="modal-info-card">
+          <div class="modal-info-label">📍 Venue</div>
+          <div class="modal-info-value" id="modalVenue">Main Auditorium</div>
+        </div>
+        <div class="modal-info-card">
+          <div class="modal-info-label">👥 Team Size</div>
+          <div class="modal-info-value" id="modalTeam">2–4 members</div>
+        </div>
+      </div>
+      <div class="modal-section-title">About</div>
+      <div class="modal-about" id="modalAbout">Loading…</div>
+      <div class="modal-section-title">Highlights</div>
+      <div class="highlight-chips" id="modalHighlights"></div>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+</div>
+
+<!-- Modal sticky footer -->
+<div class="modal-sticky-footer" id="modalFooter" style="display:none">
+  <button class="close-btn" onclick="closeModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <div class="modal-price"><span id="modalPrice">Free</span> <small id="modalPriceNote"></small></div>
+  <button class="modal-register-btn" onclick="showToast('Redirecting to registration portal…')">Register Now →</button>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const events = {
+  techfest:{
+    emoji:'💻',bg:'bg1',category:'Hackathon',title:'HackBits 2025',
+    college:'IIT Bombay, Mumbai',date:'18–19 May 2025',time:'9:00 AM onwards',
+    venue:'IITB Sports Complex',team:'2–4 members',
+    badge:'badge-prize',badgeText:'🏆 ₹2L Prize',
+    about:'HackBits is IIT Bombay\'s flagship 36-hour hackathon. Open to all college students across India, it brings together the brightest minds to build solutions across tracks including FinTech, HealthTech, EdTech, and Sustainability. Mentors from top startups and VC firms will be on-site throughout.',
+    highlights:['🏆 ₹2 Lakh Prize Pool','🍕 Food & Stay Included','📱 App & Web Tracks','🎤 Pitch to VCs','🎁 Swag for All'],
+    price:'Free to Register'
+  },
+  culturals:{
+    emoji:'🎭',bg:'bg5',category:'Cultural Fest',title:'Kaleidoscope \'25',
+    college:'NIT Trichy, Tamil Nadu',date:'22–24 May 2025',time:'10:00 AM – 11:00 PM',
+    venue:'NIT Open Air Theatre',team:'Individual / Group',
+    badge:'badge-paid',badgeText:'₹299 Entry',
+    about:'Kaleidoscope is NIT Trichy\'s annual three-day cultural extravaganza — one of South India\'s largest college festivals. With 80+ events across dance, music, drama, literary arts, and fine arts, it draws over 15,000 students every year. This year\'s headliner is a Bollywood night with top artists.',
+    highlights:['🎤 Bollywood Night Concert','💃 80+ Cultural Events','🎭 Battle of Bands','🖼️ Art Exhibition','🍜 Food Stalls'],
+    price:'₹299',
+    priceNote:'per person'
+  },
+  ai:{
+    emoji:'🧠',bg:'bg6',category:'Competition',title:'AI Challenge \'25',
+    college:'IISc, Bangalore',date:'30–31 May 2025',time:'8:00 AM onwards',
+    venue:'Faculty Hall, IISc',team:'1–3 members',
+    badge:'badge-prize',badgeText:'🏆 ₹5L Prize',
+    about:'AI Challenge \'25 is India\'s most prestigious student AI competition, hosted by IISc Bangalore. Participants tackle real-world problem statements in Computer Vision, NLP, and Reinforcement Learning. Shortlisted teams get to present to a panel including researchers from Google DeepMind and Microsoft Research.',
+    highlights:['🏆 ₹5 Lakh Prize Pool','🔬 Research Paper Track','🤝 Google & Microsoft Mentors','📊 3 AI Tracks','✈️ Travel Stipend for Finals'],
+    price:'Free to Register'
+  },
+  design:{
+    emoji:'🎨',bg:'bg3',category:'Workshop',title:'UX Design Sprint',
+    college:'BITS Pilani, Rajasthan',date:'25 May 2025',time:'10:00 AM – 6:00 PM',
+    venue:'NAB Lecture Hall',team:'Individual',
+    badge:'badge-free',badgeText:'Free Entry',
+    about:'A full-day, hands-on UX Design Sprint workshop led by product designers from Figma and InVision. Participants will learn design thinking, wireframing, prototyping, and usability testing — all in one day. Seats are limited to 120 to ensure an immersive, workshop-style experience.',
+    highlights:['🖥️ Figma Pro Access (3 months)','📜 Certificate of Completion','🎁 Design Kit','👩‍💼 Industry Mentorship','🍱 Lunch Included'],
+    price:'Free'
+  },
+  robotics:{
+    emoji:'🤖',bg:'bg4',category:'Competition',title:'RoboWar Arena 2025',
+    college:'VIT Vellore, Tamil Nadu',date:'7–8 Jun 2025',time:'9:00 AM – 8:00 PM',
+    venue:'Anna Auditorium, VIT',team:'3–6 members',
+    badge:'badge-prize',badgeText:'🏆 ₹1L Prize',
+    about:'RoboWar Arena is VIT\'s annual robot combat championship. Teams build custom robots under weight and size constraints and compete in a round-robin knockout format. Categories include Autonomous Bots, Line Followers, and Combat Bots. Open to teams from any engineering college across India.',
+    highlights:['🤖 3 Robot Categories','🏆 ₹1 Lakh Prize Pool','🔧 Workshop on Day 1','📡 Drone Racing Side Event','🏅 Best Design Award'],
+    price:'₹500',
+    priceNote:'per team'
+  }
+};
+
+let savedEvents = [];
+
+function openModal(key) {
+  const e = events[key];
+  if (!e) return;
+  const hero = document.getElementById('modalHero');
+  hero.className = 'modal-hero ' + e.bg;
+  document.getElementById('modalEmoji').textContent = e.emoji;
+  document.getElementById('modalCategory').textContent = e.category;
+  document.getElementById('modalTitle').textContent = e.title;
+  document.getElementById('modalCollegeText').textContent = e.college;
+  document.getElementById('modalDate').textContent = e.date;
+  document.getElementById('modalTime').textContent = e.time;
+  document.getElementById('modalVenue').textContent = e.venue;
+  document.getElementById('modalTeam').textContent = e.team;
+  document.getElementById('modalAbout').textContent = e.about;
+  document.getElementById('modalPrice').textContent = e.price;
+  document.getElementById('modalPriceNote').textContent = e.priceNote || '';
+  const chips = e.highlights.map(h => `<div class="highlight-chip"><span>${h.split(' ')[0]}</span>${h.split(' ').slice(1).join(' ')}</div>`).join('');
+  document.getElementById('modalHighlights').innerHTML = chips;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('modalFooter').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('modalFooter').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function closeModalOnBg(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function switchTab(tab) {
+  ['homeContent','exploreContent','savedContent','profileContent'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  ['navHome','navExplore','navSaved','navProfile'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+
+  const map = {home:'homeContent',explore:'exploreContent',saved:'savedContent',profile:'profileContent'};
+  const navMap = {home:'navHome',explore:'navExplore',saved:'navSaved',profile:'navProfile'};
+  const el = document.getElementById(map[tab]);
+  if (el) el.style.display = 'block';
+  const navEl = document.getElementById(navMap[tab]);
+  if (navEl) navEl.classList.add('active');
+
+  const sidebarBtns = document.querySelectorAll('.sidebar-item');
+  const sidebarMap = {home:0,explore:1,saved:2,profile:3};
+  if (sidebarBtns[sidebarMap[tab]]) sidebarBtns[sidebarMap[tab]].classList.add('active');
+
+  if (tab === 'saved') renderSaved();
+  window.scrollTo(0,0);
+}
+
+function toggleChip(el) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function saveEvent(e, name) {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  if (!savedEvents.includes(name)) {
+    savedEvents.push(name);
+    btn.style.color = 'var(--indigo)';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="var(--indigo)" stroke="var(--indigo)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>';
+    showToast('Saved to your list ✓');
+  } else {
+    savedEvents = savedEvents.filter(s => s !== name);
+    btn.style.color = '';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>';
+    showToast('Removed from saved');
+  }
+}
+
+function renderSaved() {
+  const list = document.getElementById('savedList');
+  const empty = document.getElementById('savedEmpty');
+  if (!savedEvents.length) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  list.innerHTML = savedEvents.map(name => {
+    const key = Object.keys(events).find(k => events[k].title === name) || '';
+    const ev = events[key];
+    if (!ev) return '';
+    return `<div class="feed-card" style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px">
+        <div class="reg-emoji ${ev.bg}" style="width:48px;height:48px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${ev.emoji}</div>
+        <div style="flex:1">
+          <div style="font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--text-1);margin-bottom:3px">${ev.title}</div>
+          <div style="font-size:12px;color:var(--text-3)">${ev.college} · ${ev.date}</div>
+        </div>
+        <button class="btn-primary" style="flex:none;padding:8px 14px;font-size:13px" onclick="openModal('${key}')">View</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+document.getElementById('searchInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && this.value.trim()) {
+    showToast('Searching for "' + this.value + '"…');
+  }
+});
+</script>
+</body>
+</html>
+
+

@@ -1,3 +1,90 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FestNest — Discover & Join College Events</title><link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{
+  --grad: linear-gradient(135deg,#5A4BFF,#7B2FF7);
+  --bg:#F4F6FB;
+  --card:#fff;
+  --text:#1A1A1A;
+  --sub:#666;
+  --radius:16px;
+}
 
-<i class="fa-regular fa-sliders"></i>
-<wa-icon name="sliders" variant="regular"></wa-icon>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.nav{position:fixed;top:0;width:100%;background:#fff;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,0.05);z-index:100}
+.logo{font-family:'Clash Display';font-weight:700;font-size:22px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav button{background:var(--grad);border:none;color:#fff;padding:10px 18px;border-radius:10px;cursor:pointer}
+
+/* HERO */
+.hero{padding:120px 40px 60px;display:flex;flex-wrap:wrap;align-items:center;gap:40px}
+.hero h1{font-family:'Clash Display';font-size:48px;line-height:1.1}
+.hero p{color:var(--sub);margin:16px 0}
+.hero button{background:var(--grad);color:#fff;border:none;padding:14px 24px;border-radius:12px;font-weight:600}
+
+.phone-preview{width:260px;border-radius:30px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.15);padding:16px}
+
+/* APP SECTION */
+.app{background:#fff;border-radius:30px;margin:40px auto;padding:20px;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,0.08)}
+.search{border:1px solid #ddd;padding:10px;border-radius:12px;margin-bottom:12px}
+.card{background:#fff;border-radius:16px;border:1px solid #eee;padding:12px;margin-bottom:12px}
+.card h3{font-size:16px;margin-bottom:4px}
+.card span{font-size:12px;color:var(--sub)}
+
+/* FEATURES */
+.features{padding:60px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.feature{background:#fff;padding:20px;border-radius:16px;border:1px solid #eee}
+
+/* FOOTER */
+.footer{text-align:center;padding:40px;color:#888}
+
+</style></head>
+<body><div class="nav">
+  <div class="logo">FestNest</div>
+  <button onclick="scrollToApp()">Open App</button>
+</div><section class="hero">
+  <div>
+    <h1>Discover College Events & Competitions</h1>
+    <p>Find fests, hackathons, workshops and more. Join, compete and win.</p>
+    <button onclick="scrollToApp()">Explore Events</button>
+  </div>  <div class="phone-preview">
+    <div class="search">🔍 Search events...</div>
+    <div class="card"><h3>Hackathon 2026</h3><span>IIT Bangalore • Apr 20</span></div>
+    <div class="card"><h3>Dance Fest</h3><span>Christ University • Apr 25</span></div>
+  </div>
+</section><section class="features">
+  <div class="feature">
+    <h3>🎯 Smart Discovery</h3>
+    <p>Find events based on your interests instantly.</p>
+  </div>
+  <div class="feature">
+    <h3>🏆 Compete & Win</h3>
+    <p>Join competitions and win prizes.</p>
+  </div>
+  <div class="feature">
+    <h3>📍 Nearby Events</h3>
+    <p>Discover events happening near you.</p>
+  </div>
+</section><section id="app" class="app">
+  <div class="search">🔍 Search events...</div>  <div class="card">
+    <h3>AI Hackathon</h3>
+    <span>RV College • Free • Apr 18</span>
+  </div>  <div class="card">
+    <h3>Startup Pitch Fest</h3>
+    <span>IIM Bangalore • Prize Pool ₹50K</span>
+  </div>  <div class="card">
+    <h3>Music Battle</h3>
+    <span>Christ University • Apr 22</span>
+  </div>
+</section><div class="footer">
+  © 2026 FestNest — Built for students 🚀
+</div><script>
+function scrollToApp(){
+  document.getElementById('app').scrollIntoView({behavior:'smooth'});
+}
+</script></body>
+</html>
