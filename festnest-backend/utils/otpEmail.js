@@ -18,17 +18,19 @@ const createTransporter = () => {
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: Number(process.env.EMAIL_PORT),
-    secure: false,      // Use TLS instead of SSL
-    requireTLS: true,   // Require TLS encryption
+    secure: true,       // Use SSL on port 465
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
   });
   
   console.log(`[EmailTransport] ✅ LIVE EMAIL CONFIG LOADED`);
   console.log(`[EmailTransport] Host: ${process.env.EMAIL_HOST}:${process.env.EMAIL_PORT}`);
-  console.log(`[EmailTransport] Secure (TLS): true (port 587)`);
+  console.log(`[EmailTransport] Secure (SSL): true (port 465)`);
   console.log(`[EmailTransport] User: ${process.env.EMAIL_USER}`);
   
   return transporter;
