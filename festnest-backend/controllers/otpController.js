@@ -46,9 +46,7 @@ exports.sendOTP = async (req, res, next) => {
     }
 
     /* ── Generate OTP (MongoDB) ── */
-    console.log('[SendOTP] 🔧 Calling generateOTP()...');
     const result = await generateOTP(email);
-    console.log('[SendOTP] 📊 generateOTP result:', result);
 
     if (!result.success) {
       console.log('[SendOTP] ⚠️ Rate limit:', result.message);
@@ -61,7 +59,6 @@ exports.sendOTP = async (req, res, next) => {
 
     /* ── Send email ── */
     try {
-      console.log('[SendOTP] 📧 Calling sendOTPEmail()...');
       await sendOTPEmail(email, result.otp);
       console.log('[SendOTP] ✅ OTP email sent to', email);
 
@@ -72,18 +69,16 @@ exports.sendOTP = async (req, res, next) => {
         expiresIn: result.expiresIn,
       });
     } catch (emailError) {
-      console.error('[SendOTP] ❌ EMAIL SEND FAILED:', emailError.message);
-      console.error('[SendOTP] Stack:', emailError.stack);
+      console.error('[SendOTP] ❌ Email send failed:', emailError.message);
       
-      /* If email fails, still return success (OTP is stored) */
+      /* If email fails, delete the OTP so user can retry */
       return res.status(500).json({
         success: false,
         message: 'Failed to send OTP email. Please try again.',
       });
     }
   } catch (error) {
-    console.error('[SendOTP] 💥 CRITICAL SERVER ERROR:', error.message);
-    console.error('[SendOTP] Stack:', error.stack);
+    console.error('[SendOTP] 💥 Server error:', error.message);
     return res.status(500).json({
       success: false,
       message: 'Server error. Please try again.',

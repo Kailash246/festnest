@@ -24,9 +24,6 @@ initializeFirebase();
 
 const app = express();
 
-/* ── Render proxy trust (for X-Forwarded-* headers) ───────── */
-app.set('trust proxy', 1);
-
 /* ── Database ─────────────────────────────────────────────── */
 if (!process.env.MONGODB_URI) {
   console.error('❌  FATAL: MONGODB_URI environment variable is not set!');
@@ -41,48 +38,29 @@ mongoose.connect(process.env.MONGODB_URI)
 
 /* ── Security ─────────────────────────────────────────────── */
 app.use(helmet({
-  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
 }));
 
 /* ── CORS ─────────────────────────────────────────────────── */
 const ALLOWED = [
-  'http://localhost:5000',          // backend self-serves frontend
+  'http://localhost:5000',   // backend self-serves frontend
   'http://127.0.0.1:5000',
-  'http://localhost:5500',          // VS Code Live Server
+  'http://localhost:5500',   // VS Code Live Server
   'http://127.0.0.1:5500',
   'http://localhost:3000',
-  'https://festnest.in',            // Production custom domain
-  'https://www.festnest.in',        // Production custom domain with www
-  'https://festnest.vercel.app',    // Vercel deployment
-  'https://festnest.onrender.com',  // Render backend
+  'https://festnest.in',         // Production custom domain
+  'https://www.festnest.in',     // Production custom domain with www
+  'https://festnest.vercel.app', // Vercel deployment
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
 app.use(cors({
   origin(origin, cb) {
-    // Log incoming origin for debugging
-    console.log(`[CORS] Incoming request from: ${origin || '(no origin - Postman/curl)'}`);
-    
-    // Allow Postman / curl (no origin)
-    if (!origin) {
-      console.log(`[CORS] ✅ Allowed (no origin)`);
-      return cb(null, true);
-    }
-    
-    // Check if origin is in allowed list
-    if (ALLOWED.includes(origin)) {
-      console.log(`[CORS] ✅ Allowed (in ALLOWED list)`);
-      return cb(null, true);
-    }
-    
-    // In development allow everything as fallback
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`[CORS] ✅ Allowed (development mode)`);
-      return cb(null, true);
-    }
-    
-    // In production, only allowed origins get through
-    console.log(`[CORS] ❌ BLOCKED (production + not in ALLOWED list)`);
+    // Allow Postman / curl (no origin) and any allowed origin
+    if (!origin || ALLOWED.includes(origin)) return cb(null, true);
+    // In development allow everything
+    if (process.env.NODE_ENV !== 'production') return cb(null, true);
     cb(new Error('CORS: Origin not allowed — ' + origin));
   },
   credentials: true,

@@ -58,7 +58,7 @@
 .ev-card-banner{height:clamp(140px,30vw,180px);display:flex;align-items:center;justify-content:center;font-size:clamp(40px,8vw,56px);position:relative;flex-shrink:0;overflow:hidden}
 .ev-card-banner img{width:100%;height:100%;object-fit:cover}
 .ev-card-tags{position:absolute;top:clamp(8px,2vw,12px);left:clamp(8px,2vw,12px);display:flex;gap:6px;flex-wrap:wrap;z-index:2}
-.ev-tag{padding:clamp(3px,1vw,4px) clamp(8px,2vw,10px);border-radius:var(--radius);font-size:clamp(9px,1.5vw,10px);font-weight:800;color:#fff}
+.ev-tag{padding:clamp(3px,1vw,4px) clamp(8px,2vw,10px);border-radius:20px;font-size:clamp(9px,1.5vw,10px);font-weight:800;color:#fff}
 .ev-tag--mega{background:linear-gradient(135deg,#FF8A00,#FF5722)}
 .ev-tag--trending{background:linear-gradient(135deg,#7B2FF7,#2F80ED)}
 .ev-tag--new{background:linear-gradient(135deg,#00BFA5,#1DE9B6)}
@@ -80,7 +80,7 @@
 .ev-card-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;flex:1;font-size:clamp(10px,1.5vw,11px)}
 .ev-meta-item{display:flex;align-items:center;gap:4px;color:var(--text-2);font-weight:600}
 .ev-card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bg);padding-top:clamp(8px,2vw,12px);margin-top:auto;flex-wrap:wrap;gap:8px}
-.ev-prize-badge{background:var(--pastel-yellow);padding:clamp(4px,1vw,5px) clamp(10px,2vw,12px);border-radius:var(--radius);font-size:clamp(10px,1.5vw,11px);font-weight:800;color:#B8680A}
+.ev-prize-badge{background:var(--pastel-yellow);padding:clamp(4px,1vw,5px) clamp(10px,2vw,12px);border-radius:20px;font-size:clamp(10px,1.5vw,11px);font-weight:800;color:#B8680A}
 .ev-register-btn{background:var(--grad);color:#fff;border:none;border-radius:var(--radius);padding:clamp(6px,1.5vw,8px) clamp(12px,2vw,16px);font-size:clamp(10px,1.5vw,11px);font-weight:800;cursor:pointer;transition:var(--transition);font-family:inherit;min-height:32px}
 .ev-register-btn:hover{opacity:.9;transform:scale(1.03)}
 
@@ -130,7 +130,7 @@
 
 /* ── Filter Chips ── */
 .filter-chip{
-  padding:clamp(6px,1.5vw,7px) clamp(12px,3vw,14px);border-radius:var(--radius);
+  padding:clamp(6px,1.5vw,7px) clamp(12px,3vw,14px);border-radius:24px;
   font-size:clamp(11px,2vw,12px);font-weight:700;
   border:1.5px solid var(--border);background:var(--bg-card);
   color:var(--text-2);cursor:pointer;transition:all 0.2s ease-out;
@@ -298,7 +298,7 @@
 .stat-card-label{font-size:12px;color:var(--text-2);font-weight:600;margin-top:4px}
 
 /* ── Badge ── */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:var(--radius);font-size:11px;font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
 .badge--purple{background:var(--pastel-purple);color:var(--color-primary)}
 .badge--green{background:var(--pastel-green);color:#2E7D32}
 .badge--blue{background:var(--pastel-blue);color:#1565C0}
