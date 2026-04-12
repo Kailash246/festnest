@@ -36,9 +36,11 @@ exports.generateOTP = async (email) => {
 
     console.log(`\n[OTP Service] 🔄 generateOTP called for ${cleanEmail}`);
     console.log(`[OTP Service] 💾 Using MongoDB storage (survives restarts & load balancing)`);
+    console.log(`[OTP Service] 🔍 Otp model loaded:`, !!Otp);
 
     /* ── Check rate limit (60 seconds) ── */
     const existingOtp = await Otp.findOne({ email: cleanEmail });
+    console.log(`[OTP Service] 📊 Existing OTP found:`, !!existingOtp);
 
     if (existingOtp && existingOtp.expiresAt > now) {
       const timeSinceCreated = now - existingOtp.createdAt;
@@ -59,6 +61,9 @@ exports.generateOTP = async (email) => {
     const code = generateOTPCode();
     const expiresAt = new Date(now.getTime() + 5 * 60 * 1000); /* 5 minutes */
 
+    console.log(`[OTP Service] 🔐 Generated OTP code: ${code}`);
+    console.log(`[OTP Service] 💾 Attempting to save to MongoDB...`);
+
     /* ── Save or update OTP in MongoDB ── */
     const otpRecord = await Otp.findOneAndUpdate(
       { email: cleanEmail },
@@ -72,7 +77,8 @@ exports.generateOTP = async (email) => {
       { upsert: true, new: true }
     );
 
-    console.log(`[OTP Service] ✅ OTP ${code} stored in DB for ${cleanEmail}`);
+    console.log(`[OTP Service] ✅ OTP SAVED SUCCESSFULLY`);
+    console.log(`[OTP Service] 📄 Record:`, JSON.stringify(otpRecord, null, 2));
     console.log(`[OTP Service] ⏰ Expires at: ${expiresAt.toISOString()}`);
 
     return {
@@ -82,7 +88,9 @@ exports.generateOTP = async (email) => {
       expiresIn: 300, /* 5 minutes in seconds */
     };
   } catch (error) {
-    console.error(`[OTP Service] 💥 generateOTP error:`, error.message);
+    console.error(`[OTP Service] 💥 CRITICAL generateOTP ERROR:`, error.message);
+    console.error(`[OTP Service] Stack:`, error.stack);
+    console.error(`[OTP Service] Full Error:`, error);
     throw error;
   }
 };
@@ -170,7 +178,9 @@ exports.verifyOTP = async (email, code) => {
       message: 'OTP verified successfully',
     };
   } catch (error) {
-    console.error(`[OTP Service] 💥 verifyOTP error:`, error.message);
+    console.error(`[OTP Service] 💥 CRITICAL verifyOTP ERROR:`, error.message);
+    console.error(`[OTP Service] Stack:`, error.stack);
+    console.error(`[OTP Service] Full Error:`, error);
     throw error;
   }
 };
