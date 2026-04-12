@@ -72,6 +72,9 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+/* ── Proxy trust (required for rate-limit on Render) ─────── */
+app.set('trust proxy', 1);
+
 /* ── Logging ──────────────────────────────────────────────── */
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 
